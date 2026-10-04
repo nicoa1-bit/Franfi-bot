@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Franfi - Asistente Académico Universitario</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Mammoth.js para Word .docx -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <!-- PDF.js para lectura de documentos -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            facu: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#082f49'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans h-screen flex flex-col antialiased">
+
+  <!-- Header Superior -->
+  <header class="bg-facu-800 text-white shadow-md z-20 flex-shrink-0">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-facu-600 flex items-center justify-center font-bold text-xl border-2 border-sky-300 shadow-inner">
+          <i class="fa-solid fa-robot text-sky-200"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-xl font-bold tracking-tight">Franfi</h1>
+            <span id="aiBadge" class="bg-amber-500/20 text-amber-300 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Modo Local
+            </span>
+          </div>
+          <p class="text-xs text-sky-200">Asistente de trámites, reglamentos y documentación oficial</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button id="btnOpenAdmin" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow transition">
+          <i class="fa-solid fa-gear"></i>
+          <span>Panel Admin & API</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-3 sm:p-4 flex flex-col md:flex-row gap-4 overflow-hidden">
+    
+    <!-- Barra Lateral -->
+    <aside class="hidden md:flex flex-col w-72 bg-white rounded-xl shadow-sm border border-slate-200 p-4 overflow-y-auto">
+      <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+        <i class="fa-solid fa-folder-open text-facu-600"></i> Repositorio Oficial
+      </h2>
+      <p class="text-xs text-slate-500 mb-3">Documentos, escaneos e imágenes cargadas. Si pedís el archivo en el chat, Franfi te da la descarga.</p>
+      
+      <div id="sideFileList" class="space-y-2 flex-1 overflow-y-auto">
+        <!-- Render dinámico -->
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-slate-100 bg-sky-50 -mx-4 -mb-4 p-3 rounded-b-xl">
+        <p class="text-[11px] text-sky-800 leading-tight">
+          <i class="fa-solid fa-eye text-sky-600 mr-1"></i>
+          <strong>Visión Multimodal:</strong> Franfi analiza PDFs escaneados, fotos de carteleras y resoluciones con IA.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Área de Chat -->
+    <section class="flex-1 bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col overflow-hidden">
+      
+      <!-- Sugerencias Rápidas -->
+      <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs gap-2 overflow-x-auto whitespace-nowrap">
+        <span class="text-slate-500 font-medium flex items-center gap-1">
+          <i class="fa-regular fa-lightbulb text-amber-500"></i> Ejemplos:
+        </span>
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
+          Hola Franfi, ¿cómo estás?
+        </button>
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
+          ¿Qué dice la ordenanza sobre regularidad?
+        </button>
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
+          Pasame el PDF de la ordenanza
+        </button>
+      </div>
+
+      <!-- Mensajes -->
+      <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-4">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-facu-700 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 shadow">
+            F
+          </div>
+          <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
+            <p class="font-semibold text-facu-800 mb-1">¡Hola! Soy Franfi 👋</p>
+            <p>Estoy para responder tus dudas sobre la facultad basándome en los reglamentos, fotos y PDFs subidos al sistema. Podés saludarme, hacerme preguntas o pedirme directamente los archivos para descargarlos.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input de Chat -->
+      <div class="p-3 sm:p-4 bg-white border-t border-slate-200">
+        <form id="chatForm" class="flex items-center gap-2">
+          <input 
+            type="text" 
+            id="chatInput"
+            placeholder="Saludá a Franfi o consultale sobre una ordenanza..." 
+            class="flex-1 bg-slate-50 border border-slate-300 focus:border-facu-600 focus:bg-white focus:outline-none rounded-xl px-4 py-2.5 text-sm transition placeholder-slate-400"
+            required
+            autocomplete="off"
+          />
+          <button 
+            type="submit" 
+            id="btnSendMessage"
+            class="bg-facu-700 hover:bg-facu-800 active:scale-95 text-white w-10 h-10 rounded-xl flex items-center justify-center shadow transition flex-shrink-0">
+            <i class="fa-solid fa-paper-plane text-sm"></i>
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL ADMIN -->
+  <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+      
+      <div class="bg-facu-800 text-white px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-sky-300"></i>
+          <h3 class="font-bold text-base">Panel de Gestión y Configuración de Franfi</h3>
+        </div>
+        <button id="btnCloseAdmin" class="text-slate-300 hover:text-white transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Login -->
+      <div id="adminAuthView" class="p-6">
+        <div class="max-w-xs mx-auto text-center space-y-3">
+          <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-xl">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <h4 class="font-bold text-slate-800">Acceso Administrador</h4>
+          <p class="text-xs text-slate-500">Contraseña predeterminada: <code class="bg-slate-100 px-1 py-0.5 rounded text-facu-700 font-bold">admin123</code></p>
+          <input 
+            type="password" 
+            id="adminPassInput" 
+            placeholder="Contraseña" 
+            class="w-full text-center border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-facu-600"
+          />
+          <button 
+            id="btnAdminLogin"
+            class="w-full bg-facu-700 hover:bg-facu-800 text-white font-medium py-2 rounded-lg text-sm transition">
+            Ingresar
+          </button>
+          <p id="adminAuthError" class="text-xs text-rose-500 font-semibold hidden">Contraseña incorrecta.</p>
+        </div>
+      </div>
+
+      <!-- Dashboard -->
+      <div id="adminDashboardView" class="hidden flex-1 overflow-y-auto p-6 space-y-6">
+        
+        <!-- Configuración API Gemini -->
+        <div class="bg-sky-50 border border-sky-200 rounded-xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-bold text-sky-900 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-brain text-sky-600"></i> Gemini API Key (Visión e IA Real)
+            </label>
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[11px] text-sky-700 hover:underline flex items-center gap-1">
+              Obtener clave gratis <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+          <p class="text-xs text-slate-600 mb-2">Necesaria para que Franfi lea resoluciones escaneadas y entienda preguntas con lenguaje natural.</p>
+          <div class="flex gap-2">
+            <input 
+              type="password" 
+              id="apiKeyInput" 
+              placeholder="Pegá acá tu clave (AIzaSy...)" 
+              class="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-facu-600 font-mono"
+            />
+            <button id="btnSaveApiKey" class="bg-facu-700 hover:bg-facu-800 text-white px-4 py-2 rounded-lg text-xs font-semibold transition">
+              Guardar
+            </button>
+          </div>
+          <p id="apiKeyStatus" class="text-[11px] text-emerald-600 font-semibold mt-1.5 hidden">
+            <i class="fa-solid fa-circle-check"></i> Clave configurada y activa.
+          </p>
+        </div>
+
+        <!-- Carga de Archivos -->
+        <div class="border-2 border-dashed border-sky-300 bg-sky-50/40 hover:bg-sky-50 rounded-xl p-5 text-center transition cursor-pointer relative" id="dropArea">
+          <input type="file" id="fileUploadInput" accept=".pdf,.docx,.doc,.txt,image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" multiple>
+          <div class="flex flex-col items-center justify-center gap-2">
+            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-facu-600 shadow-sm border border-sky-200">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <p class="text-sm font-semibold text-slate-700">Subir PDF (Texto o Escaneado), Word o Imágenes</p>
+            <p class="text-xs text-slate-500">Soporta .pdf, .docx, .txt, .jpg, .png</p>
+          </div>
+        </div>
+
+        <div id="uploadStatus" class="hidden text-xs bg-slate-100 border border-slate-200 p-2.5 rounded-lg flex items-center gap-2">
+          <i class="fa-solid fa-spinner fa-spin text-facu-600"></i>
+          <span id="uploadStatusText" class="text-slate-700 font-medium">Indexando archivo...</span>
+        </div>
+
+        <!-- Lista de Documentos -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h4 class="font-bold text-sm text-slate-700 flex items-center gap-2">
+              <i class="fa-solid fa-database text-facu-600"></i> Documentos Cargados
+            </h4>
+            <span id="docCountBadge" class="text-xs bg-slate-200 text-slate-700 font-bold px-2 py-0.5 rounded-full">0</span>
+          </div>
+          <div id="adminDocTable" class="border border-slate-200 rounded-lg overflow-hidden divide-y divide-slate-200 bg-white"></div>
+        </div>
+
+      </div>
+
+      <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 flex justify-between items-center text-xs text-slate-500">
+        <span>Franfi AI System</span>
+        <button id="btnLogoutAdmin" class="text-rose-600 hover:underline font-semibold hidden">Cerrar Sesión</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    let documents = JSON.parse(localStorage.getItem('franfi_docs')) || [];
+    let GEMINI_API_KEY = localStorage.getItem('franfi_gemini_key') || '';
+
+    const chatMessages = document.getElementById('chatMessages');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const sideFileList = document.getElementById('sideFileList');
+    const aiBadge = document.getElementById('aiBadge');
+
+    const btnOpenAdmin = document.getElementById('btnOpenAdmin');
+    const btnCloseAdmin = document.getElementById('btnCloseAdmin');
+    const adminModal = document.getElementById('adminModal');
+    const adminAuthView = document.getElementById('adminAuthView');
+    const adminDashboardView = document.getElementById('adminDashboardView');
+    const adminPassInput = document.getElementById('adminPassInput');
+    const btnAdminLogin = document.getElementById('btnAdminLogin');
+    const adminAuthError = document.getElementById('adminAuthError');
+    const btnLogoutAdmin = document.getElementById('btnLogoutAdmin');
+    const fileUploadInput = document.getElementById('fileUploadInput');
+    const adminDocTable = document.getElementById('adminDocTable');
+    const docCountBadge = document.getElementById('docCountBadge');
+    const uploadStatus = document.getElementById('uploadStatus');
+    const uploadStatusText = document.getElementById('uploadStatusText');
+    const apiKeyInput = document.getElementById('apiKeyInput');
+    const btnSaveApiKey = document.getElementById('btnSaveApiKey');
+    const apiKeyStatus = document.getElementById('apiKeyStatus');
+
+    let isAdminLoggedIn = false;
+
+    function updateAiBadge() {
+      if (GEMINI_API_KEY) {
+        aiBadge.className = 'bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-emerald-400/30 flex items-center gap-1';
+        aiBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Gemini Conectado';
+      } else {
+        aiBadge.className = 'bg-amber-500/20 text-amber-300 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1';
+        aiBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Modo Búsqueda Local';
+      }
+    }
+
+    btnOpenAdmin.addEventListener('click', () => {
+      adminModal.classList.remove('hidden');
+      if (!isAdminLoggedIn) {
+        adminAuthView.classList.remove('hidden');
+        adminDashboardView.classList.add('hidden');
+        btnLogoutAdmin.classList.add('hidden');
+        adminPassInput.value = '';
+        adminPassInput.focus();
+      } else {
+        adminAuthView.classList.add('hidden');
+        adminDashboardView.classList.remove('hidden');
+        btnLogoutAdmin.classList.remove('hidden');
+        if (GEMINI_API_KEY) {
+          apiKeyInput.value = GEMINI_API_KEY;
+          apiKeyStatus.classList.remove('hidden');
+        }
+      }
+    });
+
+    btnCloseAdmin.addEventListener('click', () => adminModal.classList.add('hidden'));
+
+    btnAdminLogin.addEventListener('click', () => {
+      if (adminPassInput.value === 'admin123') {
+        isAdminLoggedIn = true;
+        adminAuthView.classList.add('hidden');
+        adminDashboardView.classList.remove('hidden');
+        btnLogoutAdmin.classList.remove('hidden');
+        adminAuthError.classList.add('hidden');
+        if (GEMINI_API_KEY) {
+          apiKeyInput.value = GEMINI_API_KEY;
+          apiKeyStatus.classList.remove('hidden');
+        }
+        renderAdminDocs();
+      } else {
+        adminAuthError.classList.remove('hidden');
+      }
+    });
+
+    btnLogoutAdmin.addEventListener('click', () => {
+      isAdminLoggedIn = false;
+      adminAuthView.classList.remove('hidden');
+      adminDashboardView.classList.add('hidden');
+      btnLogoutAdmin.classList.add('hidden');
+    });
+
+    btnSaveApiKey.addEventListener('click', () => {
+      const key = apiKeyInput.value.trim();
+      GEMINI_API_KEY = key;
+      localStorage.setItem('franfi_gemini_key', key);
+      apiKeyStatus.classList.remove('hidden');
+      updateAiBadge();
+      alert('Clave guardada con éxito.');
+    });
+
+    function saveDocuments() {
+      try {
+        localStorage.setItem('franfi_docs', JSON.stringify(documents));
+      } catch (e) {
+        alert('Límite de memoria local alcanzado. Para archivos muy pesados, procurá comprimirlos o usar PDFs de texto livianos.');
+      }
+      renderAdminDocs();
+      renderSideDocs();
+    }
+
+    function renderSideDocs() {
+      sideFileList.innerHTML = '';
+      if (documents.length === 0) {
+        sideFileList.innerHTML = `<p class="text-xs text-slate-400 italic">No hay documentos cargados aún.</p>`;
+        return;
+      }
+
+      documents.forEach(doc => {
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between p-2 rounded-lg border border-slate-100 bg-slate-50 hover:bg-sky-50 transition text-xs';
+        
+        let iconClass = 'fa-file-lines text-slate-400';
+        if (doc.type === 'pdf') iconClass = 'fa-file-pdf text-red-500';
+        if (doc.type === 'docx' || doc.type === 'doc') iconClass = 'fa-file-word text-blue-600';
+        if (['jpg','jpeg','png','webp'].includes(doc.type)) iconClass = 'fa-file-image text-emerald-600';
+
+        item.innerHTML = `
+          <div class="flex items-center gap-2 overflow-hidden pr-1">
+            <i class="fa-solid ${iconClass} text-sm"></i>
+            <span class="truncate font-medium text-slate-700" title="${doc.title}">${doc.title}</span>
+          </div>
+          <button onclick="downloadDoc('${doc.id}')" class="text-facu-600 hover:text-facu-800 p-1" title="Descargar archivo">
+            <i class="fa-solid fa-download"></i>
+          </button>
+        `;
+        sideFileList.appendChild(item);
+      });
+    }
+
+    function renderAdminDocs() {
+      docCountBadge.textContent = documents.length;
+      adminDocTable.innerHTML = '';
+
+      if (documents.length === 0) {
+        adminDocTable.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">Sin archivos en el repositorio.</div>`;
+        return;
+      }
+
+      documents.forEach(doc => {
+        const row = document.createElement('div');
+        row.className = 'p-3 flex items-center justify-between text-xs hover:bg-slate-50 transition';
+        
+        let icon = 'fa-file text-slate-400';
+        if (doc.type === 'pdf') icon = 'fa-file-pdf text-red-500';
+        if (doc.type === 'docx' || doc.type === 'doc') icon = 'fa-file-word text-blue-500';
+        if (['jpg','jpeg','png','webp'].includes(doc.type)) icon = 'fa-file-image text-emerald-500';
+
+        const isScanned = (doc.type === 'pdf' && (!doc.content || doc.content.length < 50));
+        const badge = isScanned 
+          ? `<span class="text-[10px] bg-amber-100 text-amber-800 font-semibold px-1.5 py-0.5 rounded ml-1">Escaneado/Imagen</span>` : '';
+
+        row.innerHTML = `
+          <div class="flex items-center gap-3 overflow-hidden">
+            <i class="fa-solid ${icon} text-base"></i>
+            <div>
+              <p class="font-bold text-slate-800 truncate">${doc.title} ${badge}</p>
+              <p class="text-[11px] text-slate-400">${doc.size} • Subido: ${doc.date}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="downloadDoc('${doc.id}')" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition" title="Descargar">
+              <i class="fa-solid fa-download"></i>
+            </button>
+            <button onclick="deleteDoc('${doc.id}')" class="px-2 py-1 rounded bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs transition" title="Eliminar">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        `;
+        adminDocTable.appendChild(row);
+      });
+    }
+
+    window.downloadDoc = function(docId) {
+      const doc = documents.find(d => d.id === docId);
+      if (!doc) return;
+
+      if (doc.dataUrl) {
+        const a = document.createElement('a');
+        a.href = doc.dataUrl;
+        a.download = doc.title;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+    };
+
+    window.deleteDoc = function(docId) {
+      if (confirm('¿Seguro que querés eliminar este documento de la base de datos?')) {
+        documents = documents.filter(d => d.id !== docId);
+        saveDocuments();
+      }
+    };
+
+    fileUploadInput.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+
+      uploadStatus.classList.remove('hidden');
+
+      for (const file of files) {
+        uploadStatusText.textContent = `Procesando ${file.name}...`;
+        try {
+          let extractedText = '';
+          const ext = file.name.split('.').pop().toLowerCase();
+          const sizeKb = Math.round(file.size / 1024) + ' KB';
+          const fileDataUrl = await readFileAsDataURL(file);
+
+          if (ext === 'txt') {
+            extractedText = await file.text();
+          } else if (ext === 'docx') {
+            const arrayBuffer = await file.arrayBuffer();
+            const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+            extractedText = result.value;
+          } else if (ext === 'pdf') {
+            try {
+              const arrayBuffer = await file.arrayBuffer();
+              const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+              let fullText = '';
+              for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                fullText += `\n[Página ${i}]\n` + pageText;
+              }
+              extractedText = fullText.trim();
+            } catch (err) {
+              console.warn("PDF escaneado detectado; se enviará como documento visual.");
+            }
+          }
+
+          documents.unshift({
+            id: 'doc-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+            title: file.name,
+            type: ext,
+            mimeType: file.type || (ext === 'pdf' ? 'application/pdf' : 'application/octet-stream'),
+            size: sizeKb,
+            date: new Date().toLocaleDateString('es-AR'),
+            content: extractedText,
+            dataUrl: fileDataUrl
+          });
+
+        } catch (err) {
+          console.error("Error al procesar archivo:", err);
+          alert(`Error al procesar ${file.name}`);
+        }
+      }
+
+      saveDocuments();
+      uploadStatus.classList.add('hidden');
+      fileUploadInput.value = '';
+    });
+
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // LLAMADA A GEMINI CON INTERACCIÓN NATURAL Y MANEJO DE ERRORES CON FALLBACK
+    async function askGemini(userQuestion) {
+      // Lista de modelos ordenados por prioridad de disponibilidad
+      const candidateModels = ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
+
+      const systemInstruction = `Sos Franfi, el asistente virtual de la facultad.
+Tus características de personalidad y atención:
+1. Sé cálido, cordial y hablá en español argentino / rioplatense pero respetuoso y claro (usá "che", "hola!", "un gusto", "consultame lo que necesites").
+2. Si el estudiante te saluda (ej: "hola", "buen día", "cómo estás?"), respondelo amablemente e invitalo a consultar sobre trámites, materias, reglamentos o pedir archivos.
+3. Para consultas académicas, basate prioritariamente en los documentos de la facultad provistos. Si la duda específica no está en los documentos, podés guiarlo amablemente hacia Alumnos o Bedelía, o explicarle que no figura aún en el sistema.
+4. Si te piden un archivo, recordale que ya tiene el botón de descarga en el chat.
+5. No respondas temas completamente ajenos al estudio o vida cotidiana (ej: recetas de cocina, deportes internacionales, etc.).`;
+
+      const parts = [];
+
+      // Contexto de documentos cargados
+      if (documents.length > 0) {
+        let textKnowledge = "--- ARCHIVOS Y DOCUMENTACIÓN DE LA FACULTAD ---\n";
+        documents.forEach(doc => {
+          if (doc.content && doc.content.length > 20) {
+            textKnowledge += `\n[DOCUMENTO: ${doc.title}]\n${doc.content}\n`;
+          }
+        });
+        parts.push({ text: textKnowledge });
+
+        // Enviar PDFs escaneados o fotos
+        documents.forEach(doc => {
+          if (doc.dataUrl && (doc.type === 'pdf' || ['png','jpg','jpeg','webp'].includes(doc.type))) {
+            const base64Data = doc.dataUrl.split(',')[1];
+            if (base64Data) {
+              parts.push({
+                inline_data: {
+                  mime_type: doc.mimeType || (doc.type === 'pdf' ? 'application/pdf' : 'image/jpeg'),
+                  data: base64Data
+                }
+              });
+            }
+          }
+        });
+      }
+
+      parts.push({ text: `Mensaje del estudiante: ${userQuestion}` });
+
+      const requestBody = {
+        system_instruction: {
+          parts: [{ text: systemInstruction }]
+        },
+        contents: [
+          {
+            role: "user",
+            parts: parts
+          }
+        ],
+        generationConfig: {
+          temperature: 0.3
+        }
+      };
+
+      let lastError = null;
+
+      // Intentar con los modelos disponibles con timeout de 15 segundos
+      for (const model of candidateModels) {
+        try {
+          const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+          
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+            signal: controller.signal
+          });
+
+          clearTimeout(timeoutId);
+
+          if (response.ok) {
+            const data = await response.json();
+            const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (replyText) return replyText;
+          } else {
+            const errData = await response.json();
+            lastError = new Error(errData.error?.message || `HTTP ${response.status}`);
+          }
+        } catch (err) {
+          lastError = err;
+        }
+      }
+
+      throw lastError || new Error("No se pudo conectar con los servidores de Google AI. Comprobá tu conexión o clave.");
+    }
+
+    // Detector de pedido de archivos
+    function findRequestedDoc(query) {
+      const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const asksForFile = ['pasame', 'dame', 'descargar', 'descarga', 'archivo', 'pdf', 'word', 'mandame', 'enviame', 'documento'].some(w => q.includes(w));
+      
+      let best = null;
+      let highestScore = 0;
+
+      documents.forEach(doc => {
+        const titleNormalized = doc.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        let score = 0;
+        const words = q.split(' ').filter(w => w.length > 3);
+        words.forEach(w => {
+          if (titleNormalized.includes(w)) score += 5;
+        });
+        if (score > highestScore) {
+          highestScore = score;
+          best = doc;
+        }
+      });
+
+      if (asksForFile && best) return best;
+      if (highestScore >= 5) return best;
+      return null;
+    }
+
+    // Respuestas amigables locales si no hay API Key o para saludos rápidos
+    function checkSimpleGreeting(text) {
+      const t = text.toLowerCase().trim();
+      const greetings = ['hola', 'hola franfi', 'buenas', 'buen dia', 'buenas tardes', 'buenas noches', 'que tal', 'como estas', 'como te va'];
+      if (greetings.includes(t)) {
+        return "¡Hola! ¿Cómo andás? Soy Franfi, el asistente de la facultad. ¿En qué te puedo ayudar hoy? Podés consultarme sobre resoluciones, materias, fechas o pedirme archivos.";
+      }
+      return null;
+    }
+
+    function appendMessage(sender, text, matchedDoc = null) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = sender === 'user' ? 'flex items-start justify-end gap-3' : 'flex items-start gap-3';
+
+      if (sender === 'user') {
+        msgDiv.innerHTML = `
+          <div class="bg-facu-700 text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] text-sm shadow-sm">
+            <p>${text}</p>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center font-bold text-xs flex-shrink-0">
+            Tú
+          </div>
+        `;
+      } else {
+        let cardHtml = '';
+        if (matchedDoc) {
+          const doc = matchedDoc;
+          let fileBadge = doc.type === 'pdf' ? 'bg-red-50 text-red-600 border-red-200' : 'bg-blue-50 text-blue-600 border-blue-200';
+          if (['jpg','jpeg','png'].includes(doc.type)) fileBadge = 'bg-emerald-50 text-emerald-600 border-emerald-200';
+
+          cardHtml = `
+            <div class="mt-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2 overflow-hidden">
+                <span class="text-xs px-2 py-1 rounded font-bold border ${fileBadge} uppercase">${doc.type}</span>
+                <div class="truncate">
+                  <p class="font-semibold text-xs text-slate-800 truncate">${doc.title}</p>
+                  <p class="text-[10px] text-slate-400">${doc.size}</p>
+                </div>
+              </div>
+              <button onclick="downloadDoc('${doc.id}')" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
+                <i class="fa-solid fa-cloud-arrow-down"></i>
+                <span>Descargar</span>
+              </button>
+            </div>
+          `;
+        }
+
+        msgDiv.innerHTML = `
+          <div class="w-8 h-8 rounded-full bg-facu-700 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 shadow">
+            F
+          </div>
+          <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
+            <p class="whitespace-pre-line">${text}</p>
+            ${cardHtml}
+          </div>
+        `;
+      }
+
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return msgDiv;
+    }
+
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      appendMessage('user', text);
+      chatInput.value = '';
+
+      const matchedDoc = findRequestedDoc(text);
+
+      // Si es un saludo simple y no hay API Key activa, responder de inmediato
+      const simpleGreeting = checkSimpleGreeting(text);
+      if (!GEMINI_API_KEY && simpleGreeting) {
+        appendMessage('bot', simpleGreeting, matchedDoc);
+        return;
+      }
+
+      if (GEMINI_API_KEY) {
+        const loadingDiv = appendMessage('bot', 'Franfi está pensando...');
+        try {
+          const aiResponse = await askGemini(text);
+          loadingDiv.remove();
+          appendMessage('bot', aiResponse, matchedDoc);
+        } catch (err) {
+          loadingDiv.remove();
+          console.error(err);
+          // Si falló la llamada a la IA pero pidió un archivo, entregárselo igual
+          if (matchedDoc) {
+            appendMessage('bot', `Tuve una demora al procesar el texto con la IA, pero acá encontré el archivo que necesitás: **${matchedDoc.title}**. Podés descargarlo acá abajo.`, matchedDoc);
+          } else {
+            appendMessage('bot', `⚠️ No pude conectar con el servicio: ${err.message}. Verificá que la clave en el Panel Admin sea válida o consultá nuevamente.`);
+          }
+        }
+      } else {
+        setTimeout(() => {
+          if (matchedDoc) {
+            appendMessage('bot', `Acá tenés el documento que coincide con tu consulta: **${matchedDoc.title}**.`, matchedDoc);
+          } else {
+            appendMessage('bot', "¡Hola! Estoy en modo local. Para que pueda leer fotos o PDFs escaneados y responder preguntas abiertas, configurá una API Key gratuita en el botón 'Panel Admin & API' arriba a la derecha.");
+          }
+        }, 300);
+      }
+    });
+
+    document.querySelectorAll('.quick-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        chatInput.value = btn.textContent.trim();
+        chatForm.dispatchEvent(new Event('submit'));
+      });
+    });
+
+    updateAiBadge();
+    renderAdminDocs();
+    renderSideDocs();
+  </script>
+</body>
+</html>
