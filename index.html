@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Franfi - Asistente Académico Universitario</title>
+  <title>Franfi - Asistente Académico FTyCA - UNCA</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Mammoth.js para extraer texto de Word .docx -->
+  
+  <!-- LIBRERÍAS DE LECTURA DE ARCHIVOS -->
+  <!-- Mammoth.js para Word (.docx) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-  <!-- PDF.js para lectura de documentos -->
+  <!-- PDF.js para PDFs -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- SheetJS para Excel (.xlsx, .xls, .csv) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <!-- JSZip para PowerPoint (.pptx) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
   <script>
     tailwind.config = {
@@ -49,7 +55,7 @@
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> FTyCA - UNCA
             </span>
           </div>
-          <p class="text-xs text-sky-200">Asistente oficial: trámites, SIU Guaraní, ordenanzas y contacto estudiantil</p>
+          <p class="text-xs text-sky-200">Asistente oficial: trámites, horarios, aulas, reglamentos y SIU Guaraní</p>
         </div>
       </div>
 
@@ -70,10 +76,10 @@
       <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
         <i class="fa-solid fa-compass text-facu-600"></i> Accesos y Archivos
       </h2>
-      <p class="text-xs text-slate-500 mb-3">Portales UNCA, SIU Guaraní, programas y reglamentaciones oficiales.</p>
+      <p class="text-xs text-slate-500 mb-3">Portales DAA, horarios, aulas, formularios, SIU Guaraní y documentos.</p>
       
       <div id="sideFileList" class="space-y-2 flex-1 overflow-y-auto">
-        <!-- Render dinámico de enlaces y documentos -->
+        <!-- Render dinámico -->
       </div>
 
       <!-- Tarjeta del Centro de Estudiantes y Canales -->
@@ -82,7 +88,7 @@
           <i class="fa-solid fa-users text-facu-600"></i> Centro & Agrupación
         </p>
         <p class="text-[11px] text-slate-600 leading-tight mb-2">
-          Canales de difusión, Instagram oficial y números de guardia.
+          Canales de WhatsApp, Instagram oficial y delegados de guardia.
         </p>
         <button onclick="showCentroContactModal()" class="w-full bg-facu-600 hover:bg-facu-700 text-white text-xs font-semibold py-1.5 rounded-lg shadow-xs transition">
           Ver contactos y redes
@@ -99,19 +105,19 @@
           <i class="fa-regular fa-lightbulb text-amber-500"></i> Accesos rápidos:
         </span>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Ingresar al SIU Guaraní UNCA
+          Horarios de clases
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Link de Preinscripción
+          Ubicación de las aulas
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Programas analíticos
+          Formularios y Notas
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Campus Virtual Moodle
+          Práctica Profesional (PPS)
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Canales y Redes Estudiantiles
+          SIU Guaraní UNCA
         </button>
       </div>
 
@@ -123,7 +129,7 @@
           </div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
             <p class="font-semibold text-facu-800 mb-1">¡Hola! Soy Franfi 👋</p>
-            <p>Estoy para ayudarte con información de la facultad, ordenanzas de exámenes, fechas y materias. También te comparto los enlaces oficiales al **SIU Guaraní UNCA**, **Preinscripción**, el Campus Moodle, la página oficial de la facultad o los canales de difusión de **CETECA** y **Franja Morada**.</p>
+            <p>Soy el asistente académico de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA). Podés consultarme sobre **horarios de clases, aulas, docentes, fechas de exámenes, PPS, notas/formularios o pedirme enlaces oficiales** como SIU Guaraní o el Campus Moodle.</p>
           </div>
         </div>
       </div>
@@ -134,7 +140,7 @@
           <input 
             type="text" 
             id="chatInput"
-            placeholder="Preguntale a Franfi por SIU Guaraní, materias, ordenanzas o contactos..." 
+            placeholder="Preguntale a Franfi por materias, horarios, aulas o trámites..." 
             class="flex-1 bg-slate-50 border border-slate-300 focus:border-facu-600 focus:bg-white focus:outline-none rounded-xl px-4 py-2.5 text-sm transition placeholder-slate-400"
             required
             autocomplete="off"
@@ -169,26 +175,53 @@
     </div>
   </div>
 
-  <!-- MODAL ADMIN OCULTO -->
+  <!-- MODAL ADMIN OCULTO: SUBIDA MULTIFORMATO Y GESTIÓN -->
   <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden flex flex-col">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
       <div class="bg-slate-900 text-white px-5 py-3 flex items-center justify-between">
-        <h3 class="font-bold text-xs uppercase tracking-wider text-slate-300"><i class="fa-solid fa-lock text-amber-400 mr-1.5"></i> Configuración Franfi</h3>
+        <h3 class="font-bold text-xs uppercase tracking-wider text-slate-300"><i class="fa-solid fa-lock text-amber-400 mr-1.5"></i> Administración Franfi</h3>
         <button id="btnCloseAdmin" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
+      <!-- Login -->
       <div id="adminAuthView" class="p-6 text-center space-y-3">
-        <p class="text-xs text-slate-600">Acceso exclusivo de administración.</p>
+        <p class="text-xs text-slate-600">Acceso exclusivo para administradores.</p>
         <input type="password" id="adminPassInput" placeholder="Clave de Administrador" class="w-full text-center border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-facu-600">
         <button id="btnAdminLogin" class="w-full bg-facu-700 hover:bg-facu-800 text-white text-xs font-semibold py-2 rounded-lg transition">Ingresar</button>
         <p id="adminAuthError" class="text-xs text-rose-500 font-semibold hidden">Clave incorrecta.</p>
       </div>
 
+      <!-- Dashboard Admin con subida universal -->
       <div id="adminDashboardView" class="hidden p-5 space-y-4 max-h-[75vh] overflow-y-auto text-xs">
         <div>
           <label class="font-bold text-slate-700 block mb-1">Google Gemini API Key:</label>
-          <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full border border-slate-300 rounded p-2 font-mono text-xs">
-          <button id="btnSaveApiKey" class="mt-1.5 bg-facu-600 text-white px-3 py-1 rounded text-xs font-semibold">Guardar Clave</button>
+          <div class="flex gap-2">
+            <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="flex-1 border border-slate-300 rounded p-2 font-mono text-xs">
+            <button id="btnSaveApiKey" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1 rounded text-xs font-semibold">Guardar Clave</button>
+          </div>
+        </div>
+
+        <!-- Zona de Carga Universal -->
+        <div class="border-2 border-dashed border-sky-300 bg-sky-50/50 rounded-xl p-4 text-center cursor-pointer relative" id="dropArea">
+          <input type="file" id="fileUploadInput" accept=".pdf,.docx,.doc,.txt,.xlsx,.xls,.csv,.pptx,image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" multiple>
+          <div class="flex flex-col items-center justify-center gap-1.5">
+            <i class="fa-solid fa-cloud-arrow-up text-facu-600 text-2xl"></i>
+            <p class="text-xs font-bold text-slate-700">Subir PDF, Word, Excel, PPT o Imágenes</p>
+            <p class="text-[10px] text-slate-500">Soporta tablas de horarios (.xlsx), resúmenes (.docx, .pptx), ordenanzas (.pdf) y fotos.</p>
+          </div>
+        </div>
+
+        <div id="uploadStatus" class="hidden text-xs bg-slate-100 border border-slate-200 p-2 rounded flex items-center gap-2">
+          <i class="fa-solid fa-spinner fa-spin text-facu-600"></i>
+          <span id="uploadStatusText">Procesando archivo...</span>
+        </div>
+
+        <!-- Listado de Documentos Dinámicos Subidos -->
+        <div>
+          <h4 class="font-bold text-slate-700 mb-1 flex items-center gap-1">
+            <i class="fa-solid fa-database text-facu-600"></i> Documentos Cargados en el Navegador:
+          </h4>
+          <div id="adminDocTable" class="border border-slate-200 rounded divide-y divide-slate-100 max-h-40 overflow-y-auto bg-white"></div>
         </div>
       </div>
     </div>
@@ -198,9 +231,54 @@
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
     // -------------------------------------------------------------
-    // BASE DE REPOSITORIO Y ENLACES OFICIALES (INCLUYE SIU Y PREINSCRIPCIÓN)
+    // BASE DE REPOSITORIO Y ENLACES OFICIALES (DAA - UNCA)
     // -------------------------------------------------------------
     const DOCUMENTOS_GLOBALES = [
+      {
+        id: 'link-horarios',
+        title: 'Horarios de Clases y Cursadas (DAA)',
+        type: 'link',
+        size: 'Portal Oficial',
+        date: 'Activo',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#horarios',
+        content: `Horarios oficiales de cursada y comisiones para todas las carreras de la Facultad de Tecnología y Ciencias Aplicadas (Ingenierías, Licenciaturas y Tecnicaturas).`
+      },
+      {
+        id: 'link-aulas',
+        title: 'Distribución y Ubicación de Aulas (DAA)',
+        type: 'link',
+        size: 'Portal Oficial',
+        date: 'Activo',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#aulas',
+        content: `Ubicación física, planos y distribución de aulas, laboratorios y salas de conferencias de la Facultad de Tecnología y Ciencias Aplicadas.`
+      },
+      {
+        id: 'link-formularios',
+        title: 'Formularios y Notas Oficiales (DAA)',
+        type: 'link',
+        size: 'Portal Oficial',
+        date: 'Activo',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#formularios',
+        content: `Modelos de notas, solicitudes de prórrogas, mesas extraordinarias, trámites de equivalencias y formularios oficiales para presentar ante Secretaría Académica y Bedelía.`
+      },
+      {
+        id: 'link-pps',
+        title: 'Práctica Profesional Supervisada (PPS)',
+        type: 'link',
+        size: 'Portal Oficial',
+        date: 'Activo',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#pps',
+        content: `Requisitos, reglamentos, convenios con empresas y formularios de presentación para la Práctica Profesional Supervisada (PPS) de las carreras de ingeniería.`
+      },
+      {
+        id: 'link-reglamentos',
+        title: 'Reglamentos y Normativas Oficiales (DAA)',
+        type: 'link',
+        size: 'Portal Oficial',
+        date: 'Activo',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#reglamentos',
+        content: `Reglamento general de alumnos, ordenanzas de exámenes, régimen de regularidad, correlatividades y estatutos vigentes en la FTyCA.`
+      },
       {
         id: 'link-siu-unca',
         title: 'SIU Guaraní UNCA (Autogestión Alumnos)',
@@ -208,7 +286,7 @@
         size: 'Portal Oficial',
         date: 'Activo',
         externalUrl: 'https://guarani.unca.edu.ar/',
-        content: `Portal oficial del SIU Guaraní de la Universidad Nacional de Catamarca (UNCA). Utilizado para inscripciones a materias, solicitud de exámenes finales, certificados de regularidad e historia académica.`
+        content: `Portal oficial del SIU Guaraní de la UNCA: inscripciones a asignaturas, exámenes finales, solicitud de certificados de alumno regular e historia académica.`
       },
       {
         id: 'link-preinscripcion-unca',
@@ -217,7 +295,7 @@
         size: 'Portal Ingresantes',
         date: 'Activo',
         externalUrl: 'https://preinscripcion.unca.edu.ar/',
-        content: `Sistema oficial de preinscripción para nuevos ingresantes y aspirantes a las carreras universitarias de la UNCA y de la FTyCA.`
+        content: `Sistema oficial de preinscripción para aspirantes y nuevos ingresantes a las carreras de la FTyCA y la UNCA.`
       },
       {
         id: 'link-programas',
@@ -226,7 +304,7 @@
         size: 'Sistema Web',
         date: 'Activo',
         externalUrl: 'https://script.google.com/macros/s/AKfycbx8GbcwR_45vAxDMX1HpWTeAEIVWLIBMr1Utpo8ctfSBxFBWCO1a1lK65e1p7A646Z19A/exec',
-        content: `Consulta y descarga de los programas analíticos oficiales de todas las asignaturas y carreras de la Facultad de Tecnología y Ciencias Aplicadas.`
+        content: `Programas analíticos oficiales, contenidos mínimos y bibliografía de todas las materias de la Facultad de Tecnología y Ciencias Aplicadas.`
       },
       {
         id: 'link-facultad',
@@ -235,7 +313,7 @@
         size: 'Sitio Web',
         date: 'Activo',
         externalUrl: 'https://daa.unca.edu.ar/',
-        content: `Página web oficial de la Facultad de Tecnología y Ciencias Aplicadas (UNCA) - Departamento Alumnos y Bedelía: resoluciones, noticias, novedades de carreras y avisos generales.`
+        content: `Sitio web oficial del Departamento Alumnos y Bedelía de la FTyCA.`
       },
       {
         id: 'link-moodle',
@@ -244,7 +322,7 @@
         size: 'Plataforma Virtual',
         date: 'Activo',
         externalUrl: 'https://moodle-ftyca.unca.edu.ar/',
-        content: `Plataforma de cursada online y aulas virtuales de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA) para entregas de trabajos prácticos, foros y material de cátedra.`
+        content: `Aulas virtuales y cursada online para entrega de trabajos y foros de la FTyCA.`
       },
       {
         id: 'ord-003-2018',
@@ -252,7 +330,7 @@
         type: 'pdf',
         size: '572 KB',
         date: '03/10/2026',
-        externalUrl: null,
+        officialPageUrl: 'https://daa.unca.edu.ar/?page_id=32#reglamentos',
         downloadUrl: 'docs/Ordenanza_CD_003_2018.pdf',
         content: `Ordenanza CD Nº 003/2018:
         - Modificación de fechas e instancias de exámenes finales y turnos generales.
@@ -264,7 +342,7 @@
         type: 'pdf',
         size: '310 KB',
         date: '01/03/2026',
-        externalUrl: null,
+        officialPageUrl: 'https://daa.unca.edu.ar/?page_id=32#horarios',
         downloadUrl: 'docs/Calendario_Academico_2026.pdf',
         content: `Calendario Académico 2026:
         - 1º Cuatrimestre: 18 de marzo al 26 de junio de 2026.
@@ -273,7 +351,46 @@
       }
     ];
 
-    // Contactos y Canales
+    // Documentos subidos localmente por el admin en el navegador
+    let localDocs = JSON.parse(localStorage.getItem('franfi_local_docs')) || [];
+
+    // Redes y Canales
+    const CANALES_Y_REDES = [
+      {
+        titulo: 'Canal de Difusión - Franja Morada',
+        subtitulo: 'Avisos de cursada, becas y fechas',
+        url: 'https://whatsapp.com/channel/0029VaKI6W72P59hmu1S3i1s',
+        icono: 'fa-brands fa-whatsapp text-emerald-600',
+        btnText: 'Unirme',
+        btnColor: 'bg-emerald-600 hover:bg-emerald-700'
+      },
+      {
+        titulo: 'Canal de Difusión - CETECA',
+        subtitulo: 'Centro de Estudiantes de Tecnología',
+        url: 'https://whatsapp.com/channel/0029Vau4HZ63rZZjQWltvs2V',
+        icono: 'fa-brands fa-whatsapp text-emerald-600',
+        btnText: 'Unirme',
+        btnColor: 'bg-emerald-600 hover:bg-emerald-700'
+      },
+      {
+        titulo: 'Instagram Franja Morada Tecno',
+        subtitulo: '@franja.moradatecno',
+        url: 'https://www.instagram.com/franja.moradatecno/',
+        icono: 'fa-brands fa-instagram text-rose-500',
+        btnText: 'Instagram',
+        btnColor: 'bg-gradient-to-r from-purple-600 to-rose-500 hover:opacity-90'
+      },
+      {
+        titulo: 'Instagram CETECA',
+        subtitulo: '@cetecat',
+        url: 'https://www.instagram.com/cetecat/',
+        icono: 'fa-brands fa-instagram text-rose-500',
+        btnText: 'Instagram',
+        btnColor: 'bg-gradient-to-r from-purple-600 to-rose-500 hover:opacity-90'
+      }
+    ];
+
+    // CONTACTOS OFICIALES DE GUARDIA ACTUALIZADOS
     const MIEMBROS_CENTRO = [
       {
         nombre: 'Milagros Duarte',
@@ -282,49 +399,10 @@
         numeroVisible: '+54 9 383 428-8482'
       },
       {
-        nombre: 'Nicoalas Aguero',
+        nombre: 'Nicolás Agüero',
         cargo: 'Secretario Estudiantil',
         telefono: '5493834249192',
         numeroVisible: '+54 9 383 424-9192'
-      }
-    ];
-
-    const CANALES_Y_REDES = [
-      {
-        titulo: 'Canal de Difusión - Franja Morada',
-        subtitulo: 'Avisos, novedades de cursada y fechas',
-        tipo: 'whatsapp',
-        url: 'https://whatsapp.com/channel/0029VaKI6W72P59hmu1S3i1s',
-        icono: 'fa-brands fa-whatsapp text-emerald-600',
-        btnText: 'Unirme al Canal',
-        btnColor: 'bg-emerald-600 hover:bg-emerald-700'
-      },
-      {
-        titulo: 'Canal de Difusión - CETECA (Centro de Estudiantes)',
-        subtitulo: 'Canal oficial del Centro de Estudiantes de Tecnología',
-        tipo: 'whatsapp',
-        url: 'https://whatsapp.com/channel/0029Vau4HZ63rZZjQWltvs2V',
-        icono: 'fa-brands fa-whatsapp text-emerald-600',
-        btnText: 'Unirme al Canal',
-        btnColor: 'bg-emerald-600 hover:bg-emerald-700'
-      },
-      {
-        titulo: 'Instagram Franja Morada Tecno',
-        subtitulo: '@franja.moradatecno',
-        tipo: 'instagram',
-        url: 'https://www.instagram.com/franja.moradatecno/',
-        icono: 'fa-brands fa-instagram text-rose-500',
-        btnText: 'Ver Instagram',
-        btnColor: 'bg-gradient-to-r from-purple-600 to-rose-500 hover:opacity-90'
-      },
-      {
-        titulo: 'Instagram CETECA',
-        subtitulo: '@cetecat',
-        tipo: 'instagram',
-        url: 'https://www.instagram.com/cetecat/',
-        icono: 'fa-brands fa-instagram text-rose-500',
-        btnText: 'Ver Instagram',
-        btnColor: 'bg-gradient-to-r from-purple-600 to-rose-500 hover:opacity-90'
       }
     ];
 
@@ -347,6 +425,10 @@
     const adminDashboardView = document.getElementById('adminDashboardView');
     const apiKeyInput = document.getElementById('apiKeyInput');
     const btnSaveApiKey = document.getElementById('btnSaveApiKey');
+    const fileUploadInput = document.getElementById('fileUploadInput');
+    const uploadStatus = document.getElementById('uploadStatus');
+    const uploadStatusText = document.getElementById('uploadStatusText');
+    const adminDocTable = document.getElementById('adminDocTable');
 
     // Admin Oculto (?admin=true o Ctrl+Alt+A)
     const urlParams = new URLSearchParams(window.location.search);
@@ -373,6 +455,7 @@
         adminAuthView.classList.add('hidden');
         adminDashboardView.classList.remove('hidden');
         if (GEMINI_API_KEY) apiKeyInput.value = GEMINI_API_KEY;
+        renderAdminDocs();
       } else {
         adminAuthError.classList.remove('hidden');
       }
@@ -382,22 +465,157 @@
       GEMINI_API_KEY = apiKeyInput.value.trim();
       localStorage.setItem('franfi_gemini_key', GEMINI_API_KEY);
       alert('Clave guardada con éxito.');
-      adminModal.classList.add('hidden');
     });
 
-    // Render lateral de accesos y archivos
+    // -------------------------------------------------------------
+    // LECTOR UNIVERSAL DE ARCHIVOS: PDF, WORD, EXCEL, PPT, IMÁGENES
+    // -------------------------------------------------------------
+    fileUploadInput.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+
+      uploadStatus.classList.remove('hidden');
+
+      for (const file of files) {
+        uploadStatusText.textContent = `Leyendo e interpretando ${file.name}...`;
+        try {
+          let extractedText = '';
+          const ext = file.name.split('.').pop().toLowerCase();
+          const sizeKb = Math.round(file.size / 1024) + ' KB';
+          const fileDataUrl = await readFileAsDataURL(file);
+
+          if (ext === 'txt') {
+            extractedText = await file.text();
+          } 
+          else if (ext === 'docx') {
+            const arrayBuffer = await file.arrayBuffer();
+            const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+            extractedText = result.value;
+          } 
+          else if (['xlsx', 'xls', 'csv'].includes(ext)) {
+            const arrayBuffer = await file.arrayBuffer();
+            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+            let sheetTexts = [];
+            workbook.SheetNames.forEach(sheetName => {
+              const worksheet = workbook.Sheets[sheetName];
+              const csvData = XLSX.utils.sheet_to_csv(worksheet);
+              sheetTexts.push(`--- HOJA: ${sheetName} ---\n${csvData}`);
+            });
+            extractedText = sheetTexts.join('\n\n');
+          }
+          else if (ext === 'pptx') {
+            const arrayBuffer = await file.arrayBuffer();
+            const zip = await JSZip.loadAsync(arrayBuffer);
+            const slideFiles = Object.keys(zip.files).filter(name => name.startsWith('ppt/slides/slide') && name.endsWith('.xml'));
+            let pptText = '';
+            for (let i = 0; i < slideFiles.length; i++) {
+              const xmlContent = await zip.files[slideFiles[i]].async('text');
+              const parser = new DOMParser();
+              const xmlDoc = parser.parseFromString(xmlContent, 'text/xml');
+              const texts = Array.from(xmlDoc.getElementsByTagName('a:t')).map(node => node.textContent).join(' ');
+              pptText += `\n[Diapositiva ${i+1}]: ${texts}`;
+            }
+            extractedText = pptText;
+          }
+          else if (ext === 'pdf') {
+            try {
+              const arrayBuffer = await file.arrayBuffer();
+              const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+              let fullText = '';
+              for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                fullText += `\n[Página ${i}]\n` + pageText;
+              }
+              extractedText = fullText.trim();
+            } catch (err) {
+              console.warn("PDF escaneado detectado; se procesará mediante visión con Gemini.");
+            }
+          }
+
+          localDocs.unshift({
+            id: 'doc-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+            title: file.name,
+            type: ext,
+            mimeType: file.type || (ext === 'pdf' ? 'application/pdf' : 'application/octet-stream'),
+            size: sizeKb,
+            date: new Date().toLocaleDateString('es-AR'),
+            content: extractedText,
+            dataUrl: fileDataUrl
+          });
+
+        } catch (err) {
+          console.error("Error al procesar archivo:", err);
+          alert(`Error al procesar ${file.name}`);
+        }
+      }
+
+      localStorage.setItem('franfi_local_docs', JSON.stringify(localDocs));
+      uploadStatus.classList.add('hidden');
+      fileUploadInput.value = '';
+      renderAdminDocs();
+      renderGlobalDocs();
+    });
+
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderAdminDocs() {
+      adminDocTable.innerHTML = '';
+      if (localDocs.length === 0) {
+        adminDocTable.innerHTML = `<div class="p-3 text-center text-slate-400">Sin archivos locales cargados.</div>`;
+        return;
+      }
+      localDocs.forEach(d => {
+        const row = document.createElement('div');
+        row.className = 'p-2 flex items-center justify-between text-xs hover:bg-slate-50';
+        row.innerHTML = `
+          <div class="truncate pr-2">
+            <p class="font-bold text-slate-800 truncate">${d.title}</p>
+            <p class="text-[10px] text-slate-400">${d.type.toUpperCase()} • ${d.size}</p>
+          </div>
+          <button onclick="deleteLocalDoc('${d.id}')" class="text-rose-600 hover:text-rose-800 p-1"><i class="fa-solid fa-trash"></i></button>
+        `;
+        adminDocTable.appendChild(row);
+      });
+    }
+
+    window.deleteLocalDoc = function(docId) {
+      localDocs = localDocs.filter(d => d.id !== docId);
+      localStorage.setItem('franfi_local_docs', JSON.stringify(localDocs));
+      renderAdminDocs();
+      renderGlobalDocs();
+    };
+
     function renderGlobalDocs() {
       sideFileList.innerHTML = '';
-      DOCUMENTOS_GLOBALES.forEach(doc => {
+      const allDocs = [...DOCUMENTOS_GLOBALES, ...localDocs];
+
+      allDocs.forEach(doc => {
         const item = document.createElement('div');
         item.className = 'flex items-center justify-between p-2.5 rounded-lg border border-slate-100 bg-slate-50 hover:bg-sky-50 transition text-xs';
         
         let iconHtml = '<i class="fa-solid fa-file-pdf text-red-500 text-sm"></i>';
-        let actionBtn = `<button onclick="downloadGlobalDoc('${doc.id}')" class="text-facu-600 hover:text-facu-800 p-1" title="Descargar"><i class="fa-solid fa-download"></i></button>`;
+        let actionBtn = `<button onclick="downloadDoc('${doc.id}')" class="text-facu-600 hover:text-facu-800 p-1" title="Descargar"><i class="fa-solid fa-download"></i></button>`;
 
         if (doc.type === 'link') {
           iconHtml = '<i class="fa-solid fa-arrow-up-right-from-square text-sky-600 text-sm"></i>';
           actionBtn = `<a href="${doc.externalUrl}" target="_blank" class="text-sky-600 hover:text-sky-800 p-1" title="Abrir página"><i class="fa-solid fa-external-link"></i></a>`;
+        } else if (['xlsx', 'xls', 'csv'].includes(doc.type)) {
+          iconHtml = '<i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i>';
+        } else if (['pptx', 'ppt'].includes(doc.type)) {
+          iconHtml = '<i class="fa-solid fa-file-powerpoint text-orange-600 text-sm"></i>';
+        } else if (doc.type === 'docx' || doc.type === 'doc') {
+          iconHtml = '<i class="fa-solid fa-file-word text-blue-600 text-sm"></i>';
+        } else if (['jpg', 'jpeg', 'png'].includes(doc.type)) {
+          iconHtml = '<i class="fa-solid fa-file-image text-purple-600 text-sm"></i>';
         }
 
         item.innerHTML = `
@@ -411,11 +629,19 @@
       });
     }
 
-    window.downloadGlobalDoc = function(docId) {
-      const doc = DOCUMENTOS_GLOBALES.find(d => d.id === docId);
+    window.downloadDoc = function(docId) {
+      const allDocs = [...DOCUMENTOS_GLOBALES, ...localDocs];
+      const doc = allDocs.find(d => d.id === docId);
       if (!doc || doc.type === 'link') return;
 
-      if (doc.downloadUrl && doc.downloadUrl !== '#') {
+      if (doc.dataUrl) {
+        const a = document.createElement('a');
+        a.href = doc.dataUrl;
+        a.download = doc.title;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else if (doc.downloadUrl && doc.downloadUrl !== '#') {
         const a = document.createElement('a');
         a.href = doc.downloadUrl;
         a.download = doc.title;
@@ -532,24 +758,41 @@
     async function askGemini(userQuestion) {
       const candidateModels = ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
       const systemInstruction = `Sos Franfi, el asistente virtual oficial de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA).
-Características:
+Reglas:
 1. Usá tono universitario cordial, argentino / rioplatense (usá "che", "hola!", "un gusto", "consultame lo que necesites").
-2. Si el estudiante pide links (SIU Guaraní UNCA, Preinscripción, Moodle, Facultad, Programas Analíticos, Instagram o Canales de WhatsApp), explicale brevemente para qué sirve y recordale que abajo tiene el botón directo para ingresar.
-3. Si pide ordenanzas o calendarios, indicale que tiene la tarjeta de descarga disponible abajo.
-4. Si no figura la información o es un trámite particular que requiera gestión, recomendale contactar al Centro de Estudiantes CETECA o a Franja Morada.`;
+2. Si te consultan por horarios de clases, materias o tablas de Excel, detallá claramente DÍA, HORA, AULA y DOCENTE A CARGO según los datos cargados.
+3. Si el estudiante pide links oficiales (Horarios, Aulas, PPS, Formularios/Notas, Reglamentos, SIU Guaraní, Preinscripción, Moodle), explicale brevemente y recordale que abajo tiene el botón directo para ingresar.
+4. Si piden un archivo, recordale que tiene la tarjeta interactiva para descargarlo y también el link a la página oficial.
+5. Si no figura la información, sugerí consultar directamente en los canales de difusión de CETECA o Franja Morada.`;
 
-      let context = "--- ENLACES Y REPOSITORIO DE LA FACULTAD ---\n";
-      DOCUMENTOS_GLOBALES.forEach(d => {
-        context += `\n[TIPO: ${d.type} | TÍTULO: ${d.title}]\n${d.content}\n${d.externalUrl ? 'URL: ' + d.externalUrl : ''}\n`;
+      let context = "--- ENLACES Y DOCUMENTOS OFICIALES ---\n";
+      const allDocs = [...DOCUMENTOS_GLOBALES, ...localDocs];
+
+      allDocs.forEach(d => {
+        context += `\n[TIPO: ${d.type} | TÍTULO: ${d.title}]\n${d.content}\n${d.externalUrl ? 'URL directa: ' + d.externalUrl : ''}\n`;
       });
-      context += "\n--- CANALES Y REDES ESTUDIANTILES ---\n";
-      CANALES_Y_REDES.forEach(r => {
-        context += `\n[RED/CANAL: ${r.titulo}] Enlace: ${r.url}\n`;
+
+      const parts = [{ text: context }];
+
+      localDocs.forEach(doc => {
+        if (doc.dataUrl && (doc.type === 'pdf' || ['png','jpg','jpeg','webp'].includes(doc.type))) {
+          const base64Data = doc.dataUrl.split(',')[1];
+          if (base64Data) {
+            parts.push({
+              inline_data: {
+                mime_type: doc.mimeType || (doc.type === 'pdf' ? 'application/pdf' : 'image/jpeg'),
+                data: base64Data
+              }
+            });
+          }
+        }
       });
+
+      parts.push({ text: `Consulta del estudiante: ${userQuestion}` });
 
       const requestBody = {
         system_instruction: { parts: [{ text: systemInstruction }] },
-        contents: [{ role: "user", parts: [{ text: context }, { text: `Consulta: ${userQuestion}` }] }],
+        contents: [{ role: "user", parts: parts }],
         generationConfig: { temperature: 0.25 }
       };
 
@@ -572,33 +815,42 @@ Características:
       return null;
     }
 
-    // Buscador de coincidencias exactas para SIU, Preinscripción, Moodle, etc.
     function findMatchingDocOrLink(query) {
       const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      
-      if (q.includes('preinscripcion') || q.includes('ingresante') || q.includes('anotarme') || q.includes('inscribirme a la carrera')) {
-        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-preinscripcion-unca');
+      const allDocs = [...DOCUMENTOS_GLOBALES, ...localDocs];
+
+      if (q.includes('horario') || q.includes('cursada') || q.includes('clases')) {
+        return allDocs.find(d => d.id === 'link-horarios') || allDocs.find(d => d.title.toLowerCase().includes('horario'));
       }
-      if (q.includes('siu') || q.includes('guarani') || q.includes('autogestion') || q.includes('certificado de alumno regular')) {
-        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-siu-unca');
+      if (q.includes('aula') || q.includes('donde queda') || q.includes('ubicacion')) {
+        return allDocs.find(d => d.id === 'link-aulas');
       }
-      if (q.includes('programa') || q.includes('analitico') || q.includes('plan de estudio')) {
-        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-programas');
+      if (q.includes('formulario') || q.includes('nota') || q.includes('modelo de nota') || q.includes('prorroga')) {
+        return allDocs.find(d => d.id === 'link-formularios');
       }
-      if (q.includes('moodle') || q.includes('campus') || q.includes('aula virtual')) {
-        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-moodle');
+      if (q.includes('pps') || q.includes('practica profesional')) {
+        return allDocs.find(d => d.id === 'link-pps');
       }
-      if (q.includes('pagina') || q.includes('web') || q.includes('daa') || q.includes('facultad')) {
-        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-facultad');
+      if (q.includes('reglamento') || q.includes('estatuto')) {
+        return allDocs.find(d => d.id === 'link-reglamentos');
+      }
+      if (q.includes('preinscripcion') || q.includes('ingresante')) {
+        return allDocs.find(d => d.id === 'link-preinscripcion-unca');
+      }
+      if (q.includes('siu') || q.includes('guarani') || q.includes('regular')) {
+        return allDocs.find(d => d.id === 'link-siu-unca');
+      }
+      if (q.includes('programa') || q.includes('analitico')) {
+        return allDocs.find(d => d.id === 'link-programas');
+      }
+      if (q.includes('moodle') || q.includes('campus')) {
+        return allDocs.find(d => d.id === 'link-moodle');
       }
       if (q.includes('ordenanza')) {
-        return DOCUMENTOS_GLOBALES.find(d => d.id === 'ord-003-2018');
-      }
-      if (q.includes('calendario')) {
-        return DOCUMENTOS_GLOBALES.find(d => d.id === 'cal-2026');
+        return allDocs.find(d => d.id === 'ord-003-2018');
       }
 
-      return DOCUMENTOS_GLOBALES.find(d => {
+      return allDocs.find(d => {
         const title = d.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         return title.split(' ').some(w => w.length > 4 && q.includes(w));
       });
@@ -630,7 +882,6 @@ Características:
       return msgDiv;
     }
 
-    // Submit del chat
     chatForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const text = chatInput.value.trim();
@@ -651,7 +902,7 @@ Características:
                 <span class="text-xs px-2 py-1 rounded font-bold border bg-sky-50 text-sky-700 border-sky-200 uppercase">ENLACE</span>
                 <div class="truncate">
                   <p class="font-semibold text-xs text-slate-800 truncate">${matched.title}</p>
-                  <p class="text-[10px] text-slate-400">Portal oficial de la UNCA</p>
+                  <p class="text-[10px] text-slate-400">Portal oficial de la FTyCA - UNCA</p>
                 </div>
               </div>
               <a href="${matched.externalUrl}" target="_blank" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
@@ -660,31 +911,44 @@ Características:
             </div>
           `;
         } else {
+          let badgeColor = 'bg-red-50 text-red-600 border-red-200';
+          if (['xlsx','xls','csv'].includes(matched.type)) badgeColor = 'bg-emerald-50 text-emerald-600 border-emerald-200';
+          if (['pptx','ppt'].includes(matched.type)) badgeColor = 'bg-orange-50 text-orange-600 border-orange-200';
+          if (matched.type === 'docx') badgeColor = 'bg-blue-50 text-blue-600 border-blue-200';
+
+          const officialLinkBtn = matched.officialPageUrl ? `
+            <a href="${matched.officialPageUrl}" target="_blank" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 shadow-xs transition" title="Ver en página oficial">
+              <i class="fa-solid fa-globe"></i> Web
+            </a>
+          ` : '';
+
           interactiveCard = `
             <div class="mt-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs flex items-center justify-between gap-3">
               <div class="flex items-center gap-2 overflow-hidden">
-                <span class="text-xs px-2 py-1 rounded font-bold border bg-red-50 text-red-600 border-red-200 uppercase">${matched.type}</span>
+                <span class="text-xs px-2 py-1 rounded font-bold border ${badgeColor} uppercase">${matched.type}</span>
                 <div class="truncate">
                   <p class="font-semibold text-xs text-slate-800 truncate">${matched.title}</p>
                   <p class="text-[10px] text-slate-400">${matched.size}</p>
                 </div>
               </div>
-              <button onclick="downloadGlobalDoc('${matched.id}')" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
-                <i class="fa-solid fa-cloud-arrow-down"></i> Descargar
-              </button>
+              <div class="flex items-center gap-1.5 flex-shrink-0">
+                ${officialLinkBtn}
+                <button onclick="downloadDoc('${matched.id}')" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+                  <i class="fa-solid fa-cloud-arrow-down"></i> Descargar
+                </button>
+              </div>
             </div>
           `;
         }
       }
 
-      // Si pide contacto, centro, redes, instagram o canal de difusión
-      if (lower.includes('centro') || lower.includes('estudiantes') || lower.includes('contacto') || lower.includes('delegado') || lower.includes('telefono') || lower.includes('instagram') || lower.includes('canal') || lower.includes('difusion') || lower.includes('franja') || lower.includes('ceteca')) {
+      if (lower.includes('centro') || lower.includes('estudiantes') || lower.includes('contacto') || lower.includes('delegado') || lower.includes('telefono') || lower.includes('instagram') || lower.includes('canal') || lower.includes('difusion') || lower.includes('franja') || lower.includes('ceteca') || lower.includes('milagros') || lower.includes('nicolas')) {
         appendMessage('bot', 'Acá tenés los canales de difusión de WhatsApp, Instagram oficial y los contactos directos de guardia:', generateCentroChatCard());
         return;
       }
 
       if (GEMINI_API_KEY) {
-        const loading = appendMessage('bot', 'Franfi está consultando las fuentes oficiales...');
+        const loading = appendMessage('bot', 'Franfi está buscando en los documentos y portales oficiales...');
         try {
           const aiResponse = await askGemini(text);
           loading.remove();
@@ -698,20 +962,20 @@ Características:
           }
         } catch (err) {
           loading.remove();
-          appendMessage('bot', 'Tuve una pequeña demora con el servidor. Te dejo los canales y contactos de ayuda:', generateCentroChatCard());
+          appendMessage('bot', 'Tuve una demora con el servidor. Te dejo los canales y accesos disponibles:', generateCentroChatCard());
         }
       } else {
         setTimeout(() => {
           if (matched) {
             if (matched.type === 'link') {
-              appendMessage('bot', `Acá tenés el enlace oficial que necesitás:`, interactiveCard);
+              appendMessage('bot', `Acá tenés el enlace oficial:`, interactiveCard);
             } else {
-              appendMessage('bot', `Acá tenés el documento oficial que solicitaste:`, interactiveCard);
+              appendMessage('bot', `Acá tenés el documento que pediste:`, interactiveCard);
             }
           } else if (lower.includes('hola') || lower.includes('buenas')) {
-            appendMessage('bot', '¡Hola! ¿Cómo estás? Soy Franfi. Consultame por SIU Guaraní, preinscripciones, programas analíticos, Moodle, ordenanzas o canales del Centro de Estudiantes.');
+            appendMessage('bot', '¡Hola! ¿Cómo estás? Soy Franfi. Consultame por horarios de clases, aulas, PPS, formularios, SIU Guaraní o pedime archivos.');
           } else {
-            appendMessage('bot', 'No encontré esa información en los registros cargados. Podés consultar directamente en los canales de difusión o con el Centro de Estudiantes:', generateCentroChatCard());
+            appendMessage('bot', 'No encontré esa información en los registros actuales. Podés consultar directamente en los canales de difusión o con el Centro de Estudiantes:', generateCentroChatCard());
           }
         }, 300);
       }
