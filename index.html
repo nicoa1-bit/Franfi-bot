@@ -8,11 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Mammoth.js para Word .docx -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-  <!-- PDF.js para lectura de documentos -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
   <script>
     tailwind.config = {
       theme: {
@@ -45,18 +40,18 @@
         <div>
           <div class="flex items-center space-x-2">
             <h1 class="text-xl font-bold tracking-tight">Franfi</h1>
-            <span id="aiBadge" class="bg-amber-500/20 text-amber-300 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Modo Local
+            <span class="bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-emerald-400/30 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Alumnado y Facultad
             </span>
           </div>
-          <p class="text-xs text-sky-200">Asistente de trámites, reglamentos y documentación oficial</p>
+          <p class="text-xs text-sky-200">Consultas de ordenanzas, fechas, cursadas y contacto estudiantil</p>
         </div>
       </div>
 
+      <!-- El botón de Admin ahora está oculto por defecto para los estudiantes -->
       <div class="flex items-center space-x-2">
-        <button id="btnOpenAdmin" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow transition">
-          <i class="fa-solid fa-gear"></i>
-          <span>Panel Admin & API</span>
+        <button id="btnOpenAdmin" class="hidden text-slate-400 hover:text-white p-2 rounded-lg text-xs transition" title="Administración">
+          <i class="fa-solid fa-shield-halved"></i>
         </button>
       </div>
     </div>
@@ -68,19 +63,25 @@
     <!-- Barra Lateral -->
     <aside class="hidden md:flex flex-col w-72 bg-white rounded-xl shadow-sm border border-slate-200 p-4 overflow-y-auto">
       <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
-        <i class="fa-solid fa-folder-open text-facu-600"></i> Repositorio Oficial
+        <i class="fa-solid fa-folder-open text-facu-600"></i> Documentos Oficiales
       </h2>
-      <p class="text-xs text-slate-500 mb-3">Documentos, escaneos e imágenes cargadas. Si pedís el archivo en el chat, Franfi te da la descarga.</p>
+      <p class="text-xs text-slate-500 mb-3">Ordenanzas, calendarios y reglamentos vigentes. Hacé clic para descargar o pedíselos a Franfi.</p>
       
       <div id="sideFileList" class="space-y-2 flex-1 overflow-y-auto">
-        <!-- Render dinámico -->
+        <!-- Render de archivos oficiales compartidos para todos -->
       </div>
 
+      <!-- Tarjeta del Centro de Estudiantes en el Menú Lateral -->
       <div class="mt-4 pt-3 border-t border-slate-100 bg-sky-50 -mx-4 -mb-4 p-3 rounded-b-xl">
-        <p class="text-[11px] text-sky-800 leading-tight">
-          <i class="fa-solid fa-eye text-sky-600 mr-1"></i>
-          <strong>Visión Multimodal:</strong> Franfi analiza PDFs escaneados, fotos de carteleras y resoluciones con IA.
+        <p class="text-xs font-bold text-facu-800 mb-1 flex items-center gap-1.5">
+          <i class="fa-solid fa-users text-facu-600"></i> Centro de Estudiantes
         </p>
+        <p class="text-[11px] text-slate-600 leading-tight mb-2">
+          ¿Problemas con inscripciones o reclamos? Contactá a los delegados.
+        </p>
+        <button onclick="showCentroContactModal()" class="w-full bg-facu-600 hover:bg-facu-700 text-white text-xs font-semibold py-1.5 rounded-lg shadow-xs transition">
+          Ver contactos de guardia
+        </button>
       </div>
     </aside>
 
@@ -93,13 +94,16 @@
           <i class="fa-regular fa-lightbulb text-amber-500"></i> Ejemplos:
         </span>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Hola Franfi, ¿cómo estás?
+          Hola Franfi, ¿qué podés hacer?
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          ¿Qué dice la ordenanza sobre regularidad?
+          ¿Qué dice la ordenanza CD 003-2018?
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
           Pasame el PDF de la ordenanza
+        </button>
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
+          Contacto Centro de Estudiantes
         </button>
       </div>
 
@@ -111,7 +115,8 @@
           </div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
             <p class="font-semibold text-facu-800 mb-1">¡Hola! Soy Franfi 👋</p>
-            <p>Estoy para responder tus dudas sobre la facultad basándome en los reglamentos, fotos y PDFs subidos al sistema. Podés saludarme, hacerme preguntas o pedirme directamente los archivos para descargarlos.</p>
+            <p>Soy el asistente de la facultad. Podés hacerme preguntas sobre ordenanzas, fechas de exámenes, trámites en SIU Guaraní o pedirme los archivos oficiales para descargar.</p>
+            <p class="mt-2 text-xs text-slate-600">Si hay algún trámite específico o reclamo que no figure en los reglamentos, te contacto directamente con los chicos del **Centro de Estudiantes**.</p>
           </div>
         </div>
       </div>
@@ -122,7 +127,7 @@
           <input 
             type="text" 
             id="chatInput"
-            placeholder="Saludá a Franfi o consultale sobre una ordenanza..." 
+            placeholder="Preguntale a Franfi o pedí un archivo..." 
             class="flex-1 bg-slate-50 border border-slate-300 focus:border-facu-600 focus:bg-white focus:outline-none rounded-xl px-4 py-2.5 text-sm transition placeholder-slate-400"
             required
             autocomplete="off"
@@ -138,239 +143,193 @@
     </section>
   </main>
 
-  <!-- MODAL ADMIN -->
-  <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
-      
-      <div class="bg-facu-800 text-white px-6 py-4 flex items-center justify-between">
+  <!-- MODAL: CONTACTOS DEL CENTRO DE ESTUDIANTES -->
+  <div id="centroModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 overflow-hidden flex flex-col">
+      <div class="bg-facu-800 text-white px-5 py-4 flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <i class="fa-solid fa-sliders text-sky-300"></i>
-          <h3 class="font-bold text-base">Panel de Gestión y Configuración de Franfi</h3>
+          <i class="fa-solid fa-users text-sky-300"></i>
+          <h3 class="font-bold text-sm">Centro de Estudiantes - Guardia</h3>
         </div>
-        <button id="btnCloseAdmin" class="text-slate-300 hover:text-white transition">
+        <button onclick="closeCentroModal()" class="text-slate-300 hover:text-white">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
+      <div class="p-5 space-y-3" id="centroContactList">
+        <!-- Render de contactos -->
+      </div>
+      <div class="bg-slate-50 px-5 py-3 border-t border-slate-200 text-right">
+        <button onclick="closeCentroModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-4 py-1.5 rounded-lg text-xs">Cerrar</button>
+      </div>
+    </div>
+  </div>
 
-      <!-- Login -->
-      <div id="adminAuthView" class="p-6">
-        <div class="max-w-xs mx-auto text-center space-y-3">
-          <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-xl">
-            <i class="fa-solid fa-key"></i>
-          </div>
-          <h4 class="font-bold text-slate-800">Acceso Administrador</h4>
-          <p class="text-xs text-slate-500">Contraseña predeterminada: <code class="bg-slate-100 px-1 py-0.5 rounded text-facu-700 font-bold">admin123</code></p>
-          <input 
-            type="password" 
-            id="adminPassInput" 
-            placeholder="Contraseña" 
-            class="w-full text-center border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-facu-600"
-          />
-          <button 
-            id="btnAdminLogin"
-            class="w-full bg-facu-700 hover:bg-facu-800 text-white font-medium py-2 rounded-lg text-sm transition">
-            Ingresar
-          </button>
-          <p id="adminAuthError" class="text-xs text-rose-500 font-semibold hidden">Contraseña incorrecta.</p>
-        </div>
+  <!-- MODAL ADMIN OCULTO -->
+  <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden flex flex-col">
+      <div class="bg-slate-900 text-white px-5 py-3 flex items-center justify-between">
+        <h3 class="font-bold text-xs uppercase tracking-wider text-slate-300"><i class="fa-solid fa-lock text-amber-400 mr-1.5"></i> Administración Franfi</h3>
+        <button id="btnCloseAdmin" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <!-- Dashboard -->
-      <div id="adminDashboardView" class="hidden flex-1 overflow-y-auto p-6 space-y-6">
-        
-        <!-- Configuración API Gemini -->
-        <div class="bg-sky-50 border border-sky-200 rounded-xl p-4">
-          <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-bold text-sky-900 uppercase tracking-wider flex items-center gap-1.5">
-              <i class="fa-solid fa-brain text-sky-600"></i> Gemini API Key (Visión e IA Real)
-            </label>
-            <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[11px] text-sky-700 hover:underline flex items-center gap-1">
-              Obtener clave gratis <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </a>
-          </div>
-          <p class="text-xs text-slate-600 mb-2">Necesaria para que Franfi lea resoluciones escaneadas y entienda preguntas con lenguaje natural.</p>
-          <div class="flex gap-2">
-            <input 
-              type="password" 
-              id="apiKeyInput" 
-              placeholder="Pegá acá tu clave (AIzaSy...)" 
-              class="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-facu-600 font-mono"
-            />
-            <button id="btnSaveApiKey" class="bg-facu-700 hover:bg-facu-800 text-white px-4 py-2 rounded-lg text-xs font-semibold transition">
-              Guardar
-            </button>
-          </div>
-          <p id="apiKeyStatus" class="text-[11px] text-emerald-600 font-semibold mt-1.5 hidden">
-            <i class="fa-solid fa-circle-check"></i> Clave configurada y activa.
-          </p>
-        </div>
+      <!-- Formulario Login -->
+      <div id="adminAuthView" class="p-6 text-center space-y-3">
+        <p class="text-xs text-slate-600">Acceso restringido únicamente a administradores.</p>
+        <input type="password" id="adminPassInput" placeholder="Clave de Administrador" class="w-full text-center border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-facu-600">
+        <button id="btnAdminLogin" class="w-full bg-facu-700 hover:bg-facu-800 text-white text-xs font-semibold py-2 rounded-lg transition">Acceder</button>
+        <p id="adminAuthError" class="text-xs text-rose-500 font-semibold hidden">Clave incorrecta.</p>
+      </div>
 
-        <!-- Carga de Archivos -->
-        <div class="border-2 border-dashed border-sky-300 bg-sky-50/40 hover:bg-sky-50 rounded-xl p-5 text-center transition cursor-pointer relative" id="dropArea">
-          <input type="file" id="fileUploadInput" accept=".pdf,.docx,.doc,.txt,image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" multiple>
-          <div class="flex flex-col items-center justify-center gap-2">
-            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-facu-600 shadow-sm border border-sky-200">
-              <i class="fa-solid fa-cloud-arrow-up"></i>
-            </div>
-            <p class="text-sm font-semibold text-slate-700">Subir PDF (Texto o Escaneado), Word o Imágenes</p>
-            <p class="text-xs text-slate-500">Soporta .pdf, .docx, .txt, .jpg, .png</p>
-          </div>
-        </div>
-
-        <div id="uploadStatus" class="hidden text-xs bg-slate-100 border border-slate-200 p-2.5 rounded-lg flex items-center gap-2">
-          <i class="fa-solid fa-spinner fa-spin text-facu-600"></i>
-          <span id="uploadStatusText" class="text-slate-700 font-medium">Indexando archivo...</span>
-        </div>
-
-        <!-- Lista de Documentos -->
+      <!-- Controles de Configuración -->
+      <div id="adminDashboardView" class="hidden p-5 space-y-4 max-h-[75vh] overflow-y-auto text-xs">
         <div>
-          <div class="flex items-center justify-between mb-2">
-            <h4 class="font-bold text-sm text-slate-700 flex items-center gap-2">
-              <i class="fa-solid fa-database text-facu-600"></i> Documentos Cargados
-            </h4>
-            <span id="docCountBadge" class="text-xs bg-slate-200 text-slate-700 font-bold px-2 py-0.5 rounded-full">0</span>
-          </div>
-          <div id="adminDocTable" class="border border-slate-200 rounded-lg overflow-hidden divide-y divide-slate-200 bg-white"></div>
+          <label class="font-bold text-slate-700 block mb-1">Google Gemini API Key:</label>
+          <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full border border-slate-300 rounded p-2 font-mono text-xs">
+          <button id="btnSaveApiKey" class="mt-1.5 bg-facu-600 text-white px-3 py-1 rounded text-xs font-semibold">Guardar Clave</button>
         </div>
-
+        <div class="pt-3 border-t border-slate-200">
+          <p class="font-semibold text-slate-700 mb-1">Aviso:</p>
+          <p class="text-slate-500">Para actualizar los documentos compartidos para todos los alumnos permanentemente, podés editar el objeto <code>DOCUMENTOS_GLOBALES</code> directamente en GitHub para que ningún dato se pierda al cambiar de celular.</p>
+        </div>
       </div>
-
-      <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 flex justify-between items-center text-xs text-slate-500">
-        <span>Franfi AI System</span>
-        <button id="btnLogoutAdmin" class="text-rose-600 hover:underline font-semibold hidden">Cerrar Sesión</button>
-      </div>
-
     </div>
   </div>
 
   <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    // -------------------------------------------------------------
+    // 1. BASE DE CONOCIMIENTO CENTRAL (VISIBLE PARA TODOS LOS ALUMNOS)
+    // -------------------------------------------------------------
+    const DOCUMENTOS_GLOBALES = [
+      {
+        id: 'ord-003-2018',
+        title: 'Ordenanza CD 003-2018 - Modif. fecha examen.pdf',
+        type: 'pdf',
+        size: '572 KB',
+        date: '03/10/2026',
+        downloadUrl: '#', // Podés colocar aquí el enlace directo al archivo subido en GitHub o Google Drive
+        content: `Ordenanza CD Nº 003/2018:
+        - Modificación y adecuación de fechas e instancias de exámenes finales y turnos generales.
+        - Establece las condiciones de regularidad, plazos para solicitud de mesas de examen y turnos extraordinarios para alumnos que adeuden materias finales para recibirse.
+        - Régimen de correlatividades y asistencia a clases prácticas.`
+      },
+      {
+        id: 'cal-2026',
+        title: 'Calendario Académico 2026.pdf',
+        type: 'pdf',
+        size: '310 KB',
+        date: '01/03/2026',
+        downloadUrl: '#',
+        content: `Calendario Académico 2026:
+        - Período de cursada 1º Cuatrimestre: 18 de marzo al 26 de junio de 2026.
+        - Mesas de examen turno Julio/Agosto: 27 de julio al 14 de agosto de 2026.
+        - Inscripción por SIU Guaraní: 48 horas hábiles antes de cada mesa de examen.
+        - Receso invernal de la facultad: 13 de julio al 24 de julio de 2026.`
+      }
+    ];
 
-    let documents = JSON.parse(localStorage.getItem('franfi_docs')) || [];
+    // -------------------------------------------------------------
+    // 2. CONTACTOS DEL CENTRO DE ESTUDIANTES
+    // (Podés cambiar los nombres y números por los reales de tu facultad)
+    // -------------------------------------------------------------
+    const MIEMBROS_CENTRO = [
+      {
+        nombre: 'Nicolas Aguero',
+        cargo: 'Secretario Estudiantil - Asuntos Académicos',
+        telefono: '5493834249192', // Formato internacional sin +
+        numeroVisible: '+54 9 383 424-9192'
+      },
+      {
+        nombre: 'Apellido y Nombre',
+        cargo: 'Secretaría de Alumnos y Regularidad',
+        telefono: '5493834987654',
+        numeroVisible: '+54 9 383 498-7654'
+      },
+      {
+        nombre: 'Guardia Centro de Estudiantes',
+        cargo: 'Mesa de Entradas Estudiantil',
+        telefono: '5493834000111',
+        numeroVisible: '+54 9 383 400-0111'
+      }
+    ];
+
+    // Clave de API de Gemini compartida o configurada
     let GEMINI_API_KEY = localStorage.getItem('franfi_gemini_key') || '';
 
+    // Elementos DOM
     const chatMessages = document.getElementById('chatMessages');
     const chatForm = document.getElementById('chatForm');
     const chatInput = document.getElementById('chatInput');
     const sideFileList = document.getElementById('sideFileList');
-    const aiBadge = document.getElementById('aiBadge');
-
+    const centroModal = document.getElementById('centroModal');
+    const centroContactList = document.getElementById('centroContactList');
+    const adminModal = document.getElementById('adminModal');
     const btnOpenAdmin = document.getElementById('btnOpenAdmin');
     const btnCloseAdmin = document.getElementById('btnCloseAdmin');
-    const adminModal = document.getElementById('adminModal');
-    const adminAuthView = document.getElementById('adminAuthView');
-    const adminDashboardView = document.getElementById('adminDashboardView');
     const adminPassInput = document.getElementById('adminPassInput');
     const btnAdminLogin = document.getElementById('btnAdminLogin');
     const adminAuthError = document.getElementById('adminAuthError');
-    const btnLogoutAdmin = document.getElementById('btnLogoutAdmin');
-    const fileUploadInput = document.getElementById('fileUploadInput');
-    const adminDocTable = document.getElementById('adminDocTable');
-    const docCountBadge = document.getElementById('docCountBadge');
-    const uploadStatus = document.getElementById('uploadStatus');
-    const uploadStatusText = document.getElementById('uploadStatusText');
+    const adminAuthView = document.getElementById('adminAuthView');
+    const adminDashboardView = document.getElementById('adminDashboardView');
     const apiKeyInput = document.getElementById('apiKeyInput');
     const btnSaveApiKey = document.getElementById('btnSaveApiKey');
-    const apiKeyStatus = document.getElementById('apiKeyStatus');
 
-    let isAdminLoggedIn = false;
-
-    function updateAiBadge() {
-      if (GEMINI_API_KEY) {
-        aiBadge.className = 'bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-emerald-400/30 flex items-center gap-1';
-        aiBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Gemini Conectado';
-      } else {
-        aiBadge.className = 'bg-amber-500/20 text-amber-300 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1';
-        aiBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Modo Búsqueda Local';
-      }
+    // -------------------------------------------------------------
+    // 3. SEGURIDAD DEL PANEL ADMIN (OCULTO PARA ESTUDIANTES)
+    // -------------------------------------------------------------
+    // Se activa únicamente si se entra a la página con "?admin=true" o pulsando "Ctrl + Shift + A"
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'true') {
+      btnOpenAdmin.classList.remove('hidden');
     }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.altKey && (e.key === 'a' || e.key === 'A')) {
+        btnOpenAdmin.classList.toggle('hidden');
+      }
+    });
 
     btnOpenAdmin.addEventListener('click', () => {
       adminModal.classList.remove('hidden');
-      if (!isAdminLoggedIn) {
-        adminAuthView.classList.remove('hidden');
-        adminDashboardView.classList.add('hidden');
-        btnLogoutAdmin.classList.add('hidden');
-        adminPassInput.value = '';
-        adminPassInput.focus();
-      } else {
-        adminAuthView.classList.add('hidden');
-        adminDashboardView.classList.remove('hidden');
-        btnLogoutAdmin.classList.remove('hidden');
-        if (GEMINI_API_KEY) {
-          apiKeyInput.value = GEMINI_API_KEY;
-          apiKeyStatus.classList.remove('hidden');
-        }
-      }
+      adminPassInput.value = '';
+      adminAuthView.classList.remove('hidden');
+      adminDashboardView.classList.add('hidden');
+      adminAuthError.classList.add('hidden');
     });
 
     btnCloseAdmin.addEventListener('click', () => adminModal.classList.add('hidden'));
 
     btnAdminLogin.addEventListener('click', () => {
-      if (adminPassInput.value === 'admin123') {
-        isAdminLoggedIn = true;
+      // Clave de administrador (cambiala por la que prefieras)
+      if (adminPassInput.value === 'FranfiAdmin2026') {
         adminAuthView.classList.add('hidden');
         adminDashboardView.classList.remove('hidden');
-        btnLogoutAdmin.classList.remove('hidden');
-        adminAuthError.classList.add('hidden');
-        if (GEMINI_API_KEY) {
-          apiKeyInput.value = GEMINI_API_KEY;
-          apiKeyStatus.classList.remove('hidden');
-        }
-        renderAdminDocs();
+        if (GEMINI_API_KEY) apiKeyInput.value = GEMINI_API_KEY;
       } else {
         adminAuthError.classList.remove('hidden');
       }
     });
 
-    btnLogoutAdmin.addEventListener('click', () => {
-      isAdminLoggedIn = false;
-      adminAuthView.classList.remove('hidden');
-      adminDashboardView.classList.add('hidden');
-      btnLogoutAdmin.classList.add('hidden');
-    });
-
     btnSaveApiKey.addEventListener('click', () => {
-      const key = apiKeyInput.value.trim();
-      GEMINI_API_KEY = key;
-      localStorage.setItem('franfi_gemini_key', key);
-      apiKeyStatus.classList.remove('hidden');
-      updateAiBadge();
-      alert('Clave guardada con éxito.');
+      GEMINI_API_KEY = apiKeyInput.value.trim();
+      localStorage.setItem('franfi_gemini_key', GEMINI_API_KEY);
+      alert('Clave de IA configurada con éxito.');
+      adminModal.classList.add('hidden');
     });
 
-    function saveDocuments() {
-      try {
-        localStorage.setItem('franfi_docs', JSON.stringify(documents));
-      } catch (e) {
-        alert('Límite de memoria local alcanzado. Para archivos muy pesados, procurá comprimirlos o usar PDFs de texto livianos.');
-      }
-      renderAdminDocs();
-      renderSideDocs();
-    }
-
-    function renderSideDocs() {
+    // -------------------------------------------------------------
+    // 4. RENDER DE DOCUMENTOS PARA TODOS LOS ALUMNOS
+    // -------------------------------------------------------------
+    function renderGlobalDocs() {
       sideFileList.innerHTML = '';
-      if (documents.length === 0) {
-        sideFileList.innerHTML = `<p class="text-xs text-slate-400 italic">No hay documentos cargados aún.</p>`;
-        return;
-      }
-
-      documents.forEach(doc => {
+      DOCUMENTOS_GLOBALES.forEach(doc => {
         const item = document.createElement('div');
-        item.className = 'flex items-center justify-between p-2 rounded-lg border border-slate-100 bg-slate-50 hover:bg-sky-50 transition text-xs';
-        
-        let iconClass = 'fa-file-lines text-slate-400';
-        if (doc.type === 'pdf') iconClass = 'fa-file-pdf text-red-500';
-        if (doc.type === 'docx' || doc.type === 'doc') iconClass = 'fa-file-word text-blue-600';
-        if (['jpg','jpeg','png','webp'].includes(doc.type)) iconClass = 'fa-file-image text-emerald-600';
-
+        item.className = 'flex items-center justify-between p-2.5 rounded-lg border border-slate-100 bg-slate-50 hover:bg-sky-50 transition text-xs';
         item.innerHTML = `
           <div class="flex items-center gap-2 overflow-hidden pr-1">
-            <i class="fa-solid ${iconClass} text-sm"></i>
+            <i class="fa-solid fa-file-pdf text-red-500 text-sm"></i>
             <span class="truncate font-medium text-slate-700" title="${doc.title}">${doc.title}</span>
           </div>
-          <button onclick="downloadDoc('${doc.id}')" class="text-facu-600 hover:text-facu-800 p-1" title="Descargar archivo">
+          <button onclick="downloadGlobalDoc('${doc.id}')" class="text-facu-600 hover:text-facu-800 p-1" title="Descargar documento">
             <i class="fa-solid fa-download"></i>
           </button>
         `;
@@ -378,268 +337,135 @@
       });
     }
 
-    function renderAdminDocs() {
-      docCountBadge.textContent = documents.length;
-      adminDocTable.innerHTML = '';
+    window.downloadGlobalDoc = function(docId) {
+      const doc = DOCUMENTOS_GLOBALES.find(d => d.id === docId);
+      if (!doc) return;
+      // Generar descarga con el texto oficial del documento
+      const blob = new Blob([`${doc.title}\n\n${doc.content}`], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = doc.title;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
 
-      if (documents.length === 0) {
-        adminDocTable.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">Sin archivos en el repositorio.</div>`;
-        return;
-      }
-
-      documents.forEach(doc => {
-        const row = document.createElement('div');
-        row.className = 'p-3 flex items-center justify-between text-xs hover:bg-slate-50 transition';
-        
-        let icon = 'fa-file text-slate-400';
-        if (doc.type === 'pdf') icon = 'fa-file-pdf text-red-500';
-        if (doc.type === 'docx' || doc.type === 'doc') icon = 'fa-file-word text-blue-500';
-        if (['jpg','jpeg','png','webp'].includes(doc.type)) icon = 'fa-file-image text-emerald-500';
-
-        const isScanned = (doc.type === 'pdf' && (!doc.content || doc.content.length < 50));
-        const badge = isScanned 
-          ? `<span class="text-[10px] bg-amber-100 text-amber-800 font-semibold px-1.5 py-0.5 rounded ml-1">Escaneado/Imagen</span>` : '';
-
-        row.innerHTML = `
-          <div class="flex items-center gap-3 overflow-hidden">
-            <i class="fa-solid ${icon} text-base"></i>
-            <div>
-              <p class="font-bold text-slate-800 truncate">${doc.title} ${badge}</p>
-              <p class="text-[11px] text-slate-400">${doc.size} • Subido: ${doc.date}</p>
-            </div>
+    // -------------------------------------------------------------
+    // 5. MODAL DE CONTACTO DEL CENTRO DE ESTUDIANTES
+    // -------------------------------------------------------------
+    window.showCentroContactModal = function() {
+      centroContactList.innerHTML = '';
+      MIEMBROS_CENTRO.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-2';
+        card.innerHTML = `
+          <div>
+            <p class="font-bold text-xs text-slate-800">${m.nombre}</p>
+            <p class="text-[11px] text-slate-500">${m.cargo}</p>
+            <p class="text-[11px] font-mono text-facu-700">${m.numeroVisible}</p>
           </div>
-          <div class="flex items-center gap-2">
-            <button onclick="downloadDoc('${doc.id}')" class="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition" title="Descargar">
-              <i class="fa-solid fa-download"></i>
-            </button>
-            <button onclick="deleteDoc('${doc.id}')" class="px-2 py-1 rounded bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs transition" title="Eliminar">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+          <a href="https://wa.me/${m.telefono}?text=Hola%20${encodeURIComponent(m.nombre)},%20te%20contacto%20desde%20la%20página%20de%20Franfi%20por%20una%20consulta%20de%20la%20facultad" 
+             target="_blank" 
+             class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs transition">
+            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
+          </a>
+        `;
+        centroContactList.appendChild(card);
+      });
+      centroModal.classList.remove('hidden');
+    };
+
+    window.closeCentroModal = function() {
+      centroModal.classList.add('hidden');
+    };
+
+    // Generar tarjeta de contacto para insertar en el chat
+    function generateCentroChatCard() {
+      let cardsHtml = '';
+      MIEMBROS_CENTRO.forEach(m => {
+        cardsHtml += `
+          <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 text-xs">
+            <div>
+              <p class="font-bold text-slate-800">${m.nombre}</p>
+              <p class="text-[10px] text-slate-500">${m.cargo}</p>
+            </div>
+            <a href="https://wa.me/${m.telefono}?text=Hola%20${encodeURIComponent(m.nombre)},%20te%20escribo%20por%20una%20consulta%20de%20la%20facultad" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-[11px] font-semibold flex items-center gap-1">
+              <i class="fa-brands fa-whatsapp"></i> Chat
+            </a>
           </div>
         `;
-        adminDocTable.appendChild(row);
       });
+
+      return `
+        <div class="mt-3 p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2">
+          <p class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-hand-holding-hand text-emerald-600"></i> Contacto directo con el Centro de Estudiantes:
+          </p>
+          <div class="space-y-1.5">
+            ${cardsHtml}
+          </div>
+        </div>
+      `;
     }
 
-    window.downloadDoc = function(docId) {
-      const doc = documents.find(d => d.id === docId);
-      if (!doc) return;
-
-      if (doc.dataUrl) {
-        const a = document.createElement('a');
-        a.href = doc.dataUrl;
-        a.download = doc.title;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-    };
-
-    window.deleteDoc = function(docId) {
-      if (confirm('¿Seguro que querés eliminar este documento de la base de datos?')) {
-        documents = documents.filter(d => d.id !== docId);
-        saveDocuments();
-      }
-    };
-
-    fileUploadInput.addEventListener('change', async (e) => {
-      const files = Array.from(e.target.files);
-      if (files.length === 0) return;
-
-      uploadStatus.classList.remove('hidden');
-
-      for (const file of files) {
-        uploadStatusText.textContent = `Procesando ${file.name}...`;
-        try {
-          let extractedText = '';
-          const ext = file.name.split('.').pop().toLowerCase();
-          const sizeKb = Math.round(file.size / 1024) + ' KB';
-          const fileDataUrl = await readFileAsDataURL(file);
-
-          if (ext === 'txt') {
-            extractedText = await file.text();
-          } else if (ext === 'docx') {
-            const arrayBuffer = await file.arrayBuffer();
-            const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
-            extractedText = result.value;
-          } else if (ext === 'pdf') {
-            try {
-              const arrayBuffer = await file.arrayBuffer();
-              const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-              let fullText = '';
-              for (let i = 1; i <= pdf.numPages; i++) {
-                const page = await pdf.getPage(i);
-                const textContent = await page.getTextContent();
-                const pageText = textContent.items.map(item => item.str).join(' ');
-                fullText += `\n[Página ${i}]\n` + pageText;
-              }
-              extractedText = fullText.trim();
-            } catch (err) {
-              console.warn("PDF escaneado detectado; se enviará como documento visual.");
-            }
-          }
-
-          documents.unshift({
-            id: 'doc-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
-            title: file.name,
-            type: ext,
-            mimeType: file.type || (ext === 'pdf' ? 'application/pdf' : 'application/octet-stream'),
-            size: sizeKb,
-            date: new Date().toLocaleDateString('es-AR'),
-            content: extractedText,
-            dataUrl: fileDataUrl
-          });
-
-        } catch (err) {
-          console.error("Error al procesar archivo:", err);
-          alert(`Error al procesar ${file.name}`);
-        }
-      }
-
-      saveDocuments();
-      uploadStatus.classList.add('hidden');
-      fileUploadInput.value = '';
-    });
-
-    function readFileAsDataURL(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // LLAMADA A GEMINI CON INTERACCIÓN NATURAL Y MANEJO DE ERRORES CON FALLBACK
+    // -------------------------------------------------------------
+    // 6. MOTOR DE RESPUESTA INTELIGENTE (CON SALUDOS Y DERIVACIÓN)
+    // -------------------------------------------------------------
     async function askGemini(userQuestion) {
-      // Lista de modelos ordenados por prioridad de disponibilidad
       const candidateModels = ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
+      const systemInstruction = `Sos Franfi, el asistente virtual oficial de la facultad.
+Características clave:
+1. Hablá en tono cordial, universitario argentino (usá "che", "hola!", "un gusto").
+2. Si te saludan ("hola", "buenas"), saludá amablemente y preguntales qué materia, trámite o fecha necesitan consultar.
+3. Respondé en base a los documentos provistos.
+4. Si la consulta es un reclamo particular, excepción de correlativas, problema personal con un acta de examen o algo no contemplado en los documentos, indicá amablemente que para esos casos puntuales pueden comunicarse con los delegados del Centro de Estudiantes.
+5. Si piden el archivo de la ordenanza o calendario, mencionales que abajo tienen el botón directo para descargarlo.`;
 
-      const systemInstruction = `Sos Franfi, el asistente virtual de la facultad.
-Tus características de personalidad y atención:
-1. Sé cálido, cordial y hablá en español argentino / rioplatense pero respetuoso y claro (usá "che", "hola!", "un gusto", "consultame lo que necesites").
-2. Si el estudiante te saluda (ej: "hola", "buen día", "cómo estás?"), respondelo amablemente e invitalo a consultar sobre trámites, materias, reglamentos o pedir archivos.
-3. Para consultas académicas, basate prioritariamente en los documentos de la facultad provistos. Si la duda específica no está en los documentos, podés guiarlo amablemente hacia Alumnos o Bedelía, o explicarle que no figura aún en el sistema.
-4. Si te piden un archivo, recordale que ya tiene el botón de descarga en el chat.
-5. No respondas temas completamente ajenos al estudio o vida cotidiana (ej: recetas de cocina, deportes internacionales, etc.).`;
-
-      const parts = [];
-
-      // Contexto de documentos cargados
-      if (documents.length > 0) {
-        let textKnowledge = "--- ARCHIVOS Y DOCUMENTACIÓN DE LA FACULTAD ---\n";
-        documents.forEach(doc => {
-          if (doc.content && doc.content.length > 20) {
-            textKnowledge += `\n[DOCUMENTO: ${doc.title}]\n${doc.content}\n`;
-          }
-        });
-        parts.push({ text: textKnowledge });
-
-        // Enviar PDFs escaneados o fotos
-        documents.forEach(doc => {
-          if (doc.dataUrl && (doc.type === 'pdf' || ['png','jpg','jpeg','webp'].includes(doc.type))) {
-            const base64Data = doc.dataUrl.split(',')[1];
-            if (base64Data) {
-              parts.push({
-                inline_data: {
-                  mime_type: doc.mimeType || (doc.type === 'pdf' ? 'application/pdf' : 'image/jpeg'),
-                  data: base64Data
-                }
-              });
-            }
-          }
-        });
-      }
-
-      parts.push({ text: `Mensaje del estudiante: ${userQuestion}` });
+      let docContext = "--- REGLAMENTOS Y ORDENANZAS DE LA FACULTAD ---\n";
+      DOCUMENTOS_GLOBALES.forEach(d => {
+        docContext += `\n[DOCUMENTO: ${d.title}]\n${d.content}\n`;
+      });
 
       const requestBody = {
-        system_instruction: {
-          parts: [{ text: systemInstruction }]
-        },
-        contents: [
-          {
-            role: "user",
-            parts: parts
-          }
-        ],
-        generationConfig: {
-          temperature: 0.3
-        }
+        system_instruction: { parts: [{ text: systemInstruction }] },
+        contents: [{ role: "user", parts: [{ text: docContext }, { text: `Consulta: ${userQuestion}` }] }],
+        generationConfig: { temperature: 0.25 }
       };
 
-      let lastError = null;
-
-      // Intentar con los modelos disponibles con timeout de 15 segundos
       for (const model of candidateModels) {
         try {
           const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
-          
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000);
-
-          const response = await fetch(endpoint, {
+          const res = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody),
-            signal: controller.signal
+            body: JSON.stringify(requestBody)
           });
-
-          clearTimeout(timeoutId);
-
-          if (response.ok) {
-            const data = await response.json();
-            const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (replyText) return replyText;
-          } else {
-            const errData = await response.json();
-            lastError = new Error(errData.error?.message || `HTTP ${response.status}`);
+          if (res.ok) {
+            const data = await res.json();
+            return data.candidates?.[0]?.content?.parts?.[0]?.text;
           }
-        } catch (err) {
-          lastError = err;
+        } catch (e) {
+          console.warn(`Fallo con ${model}, intentando siguiente...`);
         }
       }
-
-      throw lastError || new Error("No se pudo conectar con los servidores de Google AI. Comprobá tu conexión o clave.");
+      return null;
     }
 
-    // Detector de pedido de archivos
-    function findRequestedDoc(query) {
+    // Detector de solicitud de archivo
+    function findMatchingDoc(query) {
       const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      const asksForFile = ['pasame', 'dame', 'descargar', 'descarga', 'archivo', 'pdf', 'word', 'mandame', 'enviame', 'documento'].some(w => q.includes(w));
-      
-      let best = null;
-      let highestScore = 0;
-
-      documents.forEach(doc => {
-        const titleNormalized = doc.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        let score = 0;
-        const words = q.split(' ').filter(w => w.length > 3);
-        words.forEach(w => {
-          if (titleNormalized.includes(w)) score += 5;
-        });
-        if (score > highestScore) {
-          highestScore = score;
-          best = doc;
-        }
+      return DOCUMENTOS_GLOBALES.find(d => {
+        const title = d.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return q.includes('ordenanza') && title.includes('ordenanza') ||
+               (q.includes('calendario') && title.includes('calendario')) ||
+               title.split(' ').some(w => w.length > 4 && q.includes(w));
       });
-
-      if (asksForFile && best) return best;
-      if (highestScore >= 5) return best;
-      return null;
     }
 
-    // Respuestas amigables locales si no hay API Key o para saludos rápidos
-    function checkSimpleGreeting(text) {
-      const t = text.toLowerCase().trim();
-      const greetings = ['hola', 'hola franfi', 'buenas', 'buen dia', 'buenas tardes', 'buenas noches', 'que tal', 'como estas', 'como te va'];
-      if (greetings.includes(t)) {
-        return "¡Hola! ¿Cómo andás? Soy Franfi, el asistente de la facultad. ¿En qué te puedo ayudar hoy? Podés consultarme sobre resoluciones, materias, fechas o pedirme archivos.";
-      }
-      return null;
-    }
-
-    function appendMessage(sender, text, matchedDoc = null) {
+    // Función para renderizar mensajes en el chat
+    function appendMessage(sender, text, extraHtml = '') {
       const msgDiv = document.createElement('div');
       msgDiv.className = sender === 'user' ? 'flex items-start justify-end gap-3' : 'flex items-start gap-3';
 
@@ -648,41 +474,14 @@ Tus características de personalidad y atención:
           <div class="bg-facu-700 text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] text-sm shadow-sm">
             <p>${text}</p>
           </div>
-          <div class="w-8 h-8 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center font-bold text-xs flex-shrink-0">
-            Tú
-          </div>
+          <div class="w-8 h-8 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center font-bold text-xs flex-shrink-0">Tú</div>
         `;
       } else {
-        let cardHtml = '';
-        if (matchedDoc) {
-          const doc = matchedDoc;
-          let fileBadge = doc.type === 'pdf' ? 'bg-red-50 text-red-600 border-red-200' : 'bg-blue-50 text-blue-600 border-blue-200';
-          if (['jpg','jpeg','png'].includes(doc.type)) fileBadge = 'bg-emerald-50 text-emerald-600 border-emerald-200';
-
-          cardHtml = `
-            <div class="mt-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2 overflow-hidden">
-                <span class="text-xs px-2 py-1 rounded font-bold border ${fileBadge} uppercase">${doc.type}</span>
-                <div class="truncate">
-                  <p class="font-semibold text-xs text-slate-800 truncate">${doc.title}</p>
-                  <p class="text-[10px] text-slate-400">${doc.size}</p>
-                </div>
-              </div>
-              <button onclick="downloadDoc('${doc.id}')" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
-                <i class="fa-solid fa-cloud-arrow-down"></i>
-                <span>Descargar</span>
-              </button>
-            </div>
-          `;
-        }
-
         msgDiv.innerHTML = `
-          <div class="w-8 h-8 rounded-full bg-facu-700 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 shadow">
-            F
-          </div>
+          <div class="w-8 h-8 rounded-full bg-facu-700 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 shadow">F</div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
             <p class="whitespace-pre-line">${text}</p>
-            ${cardHtml}
+            ${extraHtml}
           </div>
         `;
       }
@@ -692,6 +491,7 @@ Tus características de personalidad y atención:
       return msgDiv;
     }
 
+    // Manejo de preguntas
     chatForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const text = chatInput.value.trim();
@@ -700,42 +500,71 @@ Tus características de personalidad y atención:
       appendMessage('user', text);
       chatInput.value = '';
 
-      const matchedDoc = findRequestedDoc(text);
+      const lower = text.toLowerCase();
+      const matchedDoc = findMatchingDoc(text);
 
-      // Si es un saludo simple y no hay API Key activa, responder de inmediato
-      const simpleGreeting = checkSimpleGreeting(text);
-      if (!GEMINI_API_KEY && simpleGreeting) {
-        appendMessage('bot', simpleGreeting, matchedDoc);
+      let downloadCard = '';
+      if (matchedDoc) {
+        downloadCard = `
+          <div class="mt-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2 overflow-hidden">
+              <span class="text-xs px-2 py-1 rounded font-bold border bg-red-50 text-red-600 border-red-200 uppercase">${matchedDoc.type}</span>
+              <div class="truncate">
+                <p class="font-semibold text-xs text-slate-800 truncate">${matchedDoc.title}</p>
+                <p class="text-[10px] text-slate-400">${matchedDoc.size}</p>
+              </div>
+            </div>
+            <button onclick="downloadGlobalDoc('${matchedDoc.id}')" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
+              <i class="fa-solid fa-cloud-arrow-down"></i> Descargar
+            </button>
+          </div>
+        `;
+      }
+
+      // Si el alumno pide explícitamente contacto del Centro de Estudiantes
+      if (lower.includes('centro') || lower.includes('estudiantes') || lower.includes('contacto') || lower.includes('delegado') || lower.includes('telefono')) {
+        appendMessage('bot', 'Acá tenés el contacto directo de los miembros de guardia del Centro de Estudiantes para que les escribas por WhatsApp:', generateCentroChatCard());
         return;
       }
 
+      // Si hay API Key configurada
       if (GEMINI_API_KEY) {
-        const loadingDiv = appendMessage('bot', 'Franfi está pensando...');
+        const loading = appendMessage('bot', 'Franfi está buscando en los reglamentos oficiales...');
         try {
           const aiResponse = await askGemini(text);
-          loadingDiv.remove();
-          appendMessage('bot', aiResponse, matchedDoc);
-        } catch (err) {
-          loadingDiv.remove();
-          console.error(err);
-          // Si falló la llamada a la IA pero pidió un archivo, entregárselo igual
-          if (matchedDoc) {
-            appendMessage('bot', `Tuve una demora al procesar el texto con la IA, pero acá encontré el archivo que necesitás: **${matchedDoc.title}**. Podés descargarlo acá abajo.`, matchedDoc);
+          loading.remove();
+          
+          if (aiResponse) {
+            // Si la IA detecta que no tiene la respuesta o no está en los reglamentos
+            const isUnknown = aiResponse.toLowerCase().includes('no figura') || 
+                              aiResponse.toLowerCase().includes('no se encuentra') || 
+                              aiResponse.toLowerCase().includes('centro de estudiantes');
+            
+            const extra = downloadCard + (isUnknown ? generateCentroChatCard() : '');
+            appendMessage('bot', aiResponse, extra);
           } else {
-            appendMessage('bot', `⚠️ No pude conectar con el servicio: ${err.message}. Verificá que la clave en el Panel Admin sea válida o consultá nuevamente.`);
+            loading.remove();
+            appendMessage('bot', 'Esa información específica no figura en las ordenanzas cargadas. Te comparto el contacto del Centro de Estudiantes para que te den una mano:', generateCentroChatCard());
           }
+        } catch (err) {
+          loading.remove();
+          appendMessage('bot', 'Tuve una demora de conexión, pero podés contactar a los chicos del Centro de Estudiantes:', generateCentroChatCard());
         }
       } else {
+        // Modo sin API Key activa
         setTimeout(() => {
           if (matchedDoc) {
-            appendMessage('bot', `Acá tenés el documento que coincide con tu consulta: **${matchedDoc.title}**.`, matchedDoc);
+            appendMessage('bot', `Encontré la reglamentación que buscás: **${matchedDoc.title}**. Podés descargarla acá mismo:`, downloadCard);
+          } else if (lower.includes('hola') || lower.includes('buenas') || lower.includes('que tal')) {
+            appendMessage('bot', '¡Hola! ¿Cómo estás? Soy Franfi. Podés consultarme sobre las ordenanzas de cursada, turnos de exámenes o pedirme contacto con el Centro de Estudiantes.');
           } else {
-            appendMessage('bot', "¡Hola! Estoy en modo local. Para que pueda leer fotos o PDFs escaneados y responder preguntas abiertas, configurá una API Key gratuita en el botón 'Panel Admin & API' arriba a la derecha.");
+            appendMessage('bot', 'No encontré esa información en los documentos vigentes de la facultad. Si tenés una situación particular con materias o actas, hablá directamente con el Centro de Estudiantes:', generateCentroChatCard());
           }
         }, 300);
       }
     });
 
+    // Chips interactivos
     document.querySelectorAll('.quick-chip').forEach(btn => {
       btn.addEventListener('click', () => {
         chatInput.value = btn.textContent.trim();
@@ -743,9 +572,8 @@ Tus características de personalidad y atención:
       });
     });
 
-    updateAiBadge();
-    renderAdminDocs();
-    renderSideDocs();
+    // Inicializar documentos compartidos
+    renderGlobalDocs();
   </script>
 </body>
 </html>
