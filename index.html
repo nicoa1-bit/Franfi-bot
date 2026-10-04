@@ -51,7 +51,7 @@
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> FTyCA - UNCA
             </span>
           </div>
-          <p class="text-xs text-sky-200">Asistente oficial: horarios 2°C, aulas, notas/formularios, reglamentos y SIU Guaraní</p>
+          <p class="text-xs text-sky-200">Asistente oficial: trámites, horarios, aulas, portales UNCA y todas las facultades</p>
         </div>
       </div>
 
@@ -69,13 +69,13 @@
     <!-- Barra Lateral -->
     <aside class="hidden md:flex flex-col w-72 bg-white rounded-xl shadow-sm border border-slate-200 p-4 overflow-y-auto">
       <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
-        <i class="fa-solid fa-folder-open text-facu-600"></i> Repositorio Oficial
+        <i class="fa-solid fa-folder-open text-facu-600"></i> Repositorio y Portales
       </h2>
-      <p class="text-xs text-slate-500 mb-2">Hacé clic para descargar horarios, reglamentos, modelos de notas y ver planos.</p>
+      <p class="text-xs text-slate-500 mb-2">Buscá horarios, notas, reglamentos o accesos directos a facultades UNCA.</p>
       
       <!-- Buscador interno en la barra lateral -->
       <div class="relative mb-3">
-        <input type="text" id="sideDocSearch" placeholder="Filtrar archivos..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-7 pr-2 py-1.5 focus:outline-none focus:border-facu-600">
+        <input type="text" id="sideDocSearch" placeholder="Buscar archivo o facultad..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-7 pr-2 py-1.5 focus:outline-none focus:border-facu-600">
         <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
       </div>
 
@@ -91,8 +91,8 @@
         <p class="text-[11px] text-slate-600 leading-tight mb-2">
           Canales de WhatsApp, Instagram y números de guardia.
         </p>
-        <button onclick="showCentroContactModal()" class="w-full bg-facu-600 hover:bg-facu-700 text-white text-xs font-semibold py-1.5 rounded-lg shadow-xs transition">
-          Ver contactos y redes
+        <button onclick="showCentroContactModal()" class="w-full bg-facu-600 hover:bg-facu-700 text-white text-xs font-semibold py-1.5 rounded-lg shadow-xs transition flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-address-book"></i> Ver contactos y redes
         </button>
       </div>
     </aside>
@@ -105,23 +105,20 @@
         <span class="text-slate-500 font-medium flex items-center gap-1">
           <i class="fa-regular fa-lightbulb text-amber-500"></i> Rápidos:
         </span>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Horarios de Minas 2°C
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
+          <i class="fa-solid fa-file-excel text-emerald-600"></i> Horarios de Minas 2°C
         </button>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Horarios de Informática 2°C
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
+          <i class="fa-solid fa-file-excel text-emerald-600"></i> Horarios de Informática 2°C
         </button>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Plano de aulas
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
+          <i class="fa-solid fa-map text-purple-600"></i> Plano de aulas
         </button>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Nota de mesa especial
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
+          <i class="fa-solid fa-graduation-cap text-sky-600"></i> SIU Guaraní UNCA
         </button>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Formulario PPS
-        </button>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          SIU Guaraní UNCA
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
+          <i class="fa-solid fa-building-columns text-slate-600"></i> Otras Facultades UNCA
         </button>
       </div>
 
@@ -133,8 +130,8 @@
           </div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
             <p class="font-semibold text-facu-800 mb-1">¡Hola! Soy Franfi 👋</p>
-            <p>Soy el asistente académico de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA). Tengo cargados los **horarios en Excel de todas las carreras (2°C 2026), el plano de aulas, afiche del calendario, notas modelo para descargar y reglamentos vigentes**.</p>
-            <p class="mt-1 text-xs text-slate-600">Podés pedirme un archivo para descargar, consultar por días y aulas de cursada, o pedirme los enlaces y contactos del Centro de Estudiantes.</p>
+            <p>Soy el asistente académico de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA). Tengo cargados los horarios en Excel de todas las carreras, plano de aulas, notas modelo y reglamentos oficiales.</p>
+            <p class="mt-1 text-xs text-slate-600">También puedo derivarte directamente con un botón oficial si buscás otra facultad de la UNCA (Económicas, Salud, Derecho, Humanidades, Agrarias, Exactas o el portal central).</p>
           </div>
         </div>
       </div>
@@ -145,7 +142,7 @@
           <input 
             type="text" 
             id="chatInput"
-            placeholder="Pedí un horario de tu carrera, una nota o consultale a Franfi..." 
+            placeholder="Pedí un horario, nota, o consultá por carreras de la UNCA..." 
             class="flex-1 bg-slate-50 border border-slate-300 focus:border-facu-600 focus:bg-white focus:outline-none rounded-xl px-4 py-2.5 text-sm transition placeholder-slate-400"
             required
             autocomplete="off"
@@ -180,7 +177,7 @@
     </div>
   </div>
 
-  <!-- MODAL ADMIN OCULTO (Ctrl+Alt+A o ?admin=true) -->
+  <!-- MODAL ADMIN OCULTO -->
   <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden flex flex-col">
       <div class="bg-slate-900 text-white px-5 py-3 flex items-center justify-between">
@@ -209,22 +206,82 @@
 
   <script>
     // -------------------------------------------------------------
-    // BASE DE DATOS EXACTA DE ARCHIVOS Y ENLACES (EN LA RAÍZ DEL REPO)
+    // BASE DE DATOS EXACTA DE ARCHIVOS Y ENLACES (FTyCA + TODAS LAS FACULTADES UNCA)
     // -------------------------------------------------------------
     const DOCUMENTOS_GLOBALES = [
+      // --- OTRAS FACULTADES Y PORTAL GENERAL DE LA UNCA ---
+      {
+        id: 'link-unca-general',
+        title: 'Portal Oficial General UNCA',
+        type: 'link',
+        btnText: 'Ir a Página Central UNCA',
+        externalUrl: 'https://www.unca.edu.ar/',
+        content: `Portal web central de la Universidad Nacional de Catamarca: noticias institucionales, secretarías generales, rectorado, becas y servicios generales.`
+      },
+      {
+        id: 'link-fac-economica',
+        title: 'Facultad de Ciencias Económicas y de Administración',
+        type: 'link',
+        btnText: 'Ir a Facultad de Cs. Económicas',
+        externalUrl: 'https://eco.unca.edu.ar/',
+        content: `Facultad de Ciencias Económicas y de Administración de la UNCA: Contador Público, Licenciatura en Administración, etc.`
+      },
+      {
+        id: 'link-fac-salud',
+        title: 'Facultad de Ciencias de la Salud',
+        type: 'link',
+        btnText: 'Ir a Facultad de Cs. de la Salud',
+        externalUrl: 'https://salud.unca.edu.ar/',
+        content: `Facultad de Ciencias de la Salud de la UNCA: Licenciatura en Enfermería, Nutrición, Bromatología, etc.`
+      },
+      {
+        id: 'link-fac-derecho',
+        title: 'Facultad de Derecho',
+        type: 'link',
+        btnText: 'Ir a Facultad de Derecho',
+        externalUrl: 'https://derecho.unca.edu.ar/',
+        content: `Facultad de Derecho de la UNCA: carrera de Abogacía, peritajes y ciencias jurídicas.`
+      },
+      {
+        id: 'link-fac-humanidades',
+        title: 'Facultad de Humanidades',
+        type: 'link',
+        btnText: 'Ir a Facultad de Humanidades',
+        externalUrl: 'https://huma.unca.edu.ar/',
+        content: `Facultad de Humanidades de la UNCA: Profesorados, Letras, Historia, Geografía, Filosofía, Lenguas Extranjeras y Ciencias de la Educación.`
+      },
+      {
+        id: 'link-fac-agrarias',
+        title: 'Facultad de Ciencias Agrarias',
+        type: 'link',
+        btnText: 'Ir a Facultad de Cs. Agrarias',
+        externalUrl: 'https://agrarias.unca.edu.ar/',
+        content: `Facultad de Ciencias Agrarias de la UNCA: Ingeniería Agronómica, Tecnicatura en Producción Vegetal, etc.`
+      },
+      {
+        id: 'link-fac-exactas',
+        title: 'Facultad de Ciencias Exactas y Naturales',
+        type: 'link',
+        btnText: 'Ir a Facultad de Cs. Exactas',
+        externalUrl: 'https://informes-exactas.unca.edu.ar/exactas_sitio/',
+        content: `Facultad de Ciencias Exactas y Naturales de la UNCA: Licenciaturas y Profesorados en Matemática, Física, Química, Biología y Ciencias Ambientales.`
+      },
+
       // --- HORARIOS DE CURSADA 2°C 2026 (EXCEL) ---
       {
         id: 'h-minas',
         fileName: 'MINAS 2°C- 2026.xlsx',
         title: 'Horarios Ingeniería de Minas (2°C 2026)',
         type: 'xlsx',
-        content: `Planilla de horarios de cursada del 2° Cuatrimestre 2026 para la carrera Ingeniería de Minas. Días, horarios, aulas y docentes.`
+        btnText: 'Descargar Horarios Minas (.xlsx)',
+        content: `Planilla de horarios de cursada del 2° Cuatrimestre 2026 para la carrera Ingeniería de Minas.`
       },
       {
         id: 'h-informatica',
         fileName: 'INFORMATICA 2° C- 2026.xlsx',
         title: 'Horarios Ingeniería en Informática (2°C 2026)',
         type: 'xlsx',
+        btnText: 'Descargar Horarios Informática (.xlsx)',
         content: `Planilla de horarios de cursada del 2° Cuatrimestre 2026 para Ingeniería en Informática.`
       },
       {
@@ -232,6 +289,7 @@
         fileName: 'ELECTRONICA 2º C 2026.xlsx',
         title: 'Horarios Ingeniería Electrónica (2°C 2026)',
         type: 'xlsx',
+        btnText: 'Descargar Horarios Electrónica (.xlsx)',
         content: `Planilla de horarios de cursada del 2° Cuatrimestre 2026 para Ingeniería Electrónica.`
       },
       {
@@ -239,6 +297,7 @@
         fileName: 'AGRIMENSURA 2°C 2026.xlsx',
         title: 'Horarios Ingeniería en Agrimensura (2°C 2026)',
         type: 'xlsx',
+        btnText: 'Descargar Horarios Agrimensura (.xlsx)',
         content: `Planilla de horarios de cursada del 2° Cuatrimestre 2026 para Ingeniería en Agrimensura.`
       },
       {
@@ -246,6 +305,7 @@
         fileName: 'GEOLOGIA 2° C- 2026.xlsx',
         title: 'Horarios Licenciatura en Geología (2°C 2026)',
         type: 'xlsx',
+        btnText: 'Descargar Horarios Geología (.xlsx)',
         content: `Planilla de horarios de cursada del 2° Cuatrimestre 2026 para Licenciatura en Geología.`
       },
       {
@@ -253,6 +313,7 @@
         fileName: 'ARQUITECTURA 2°C- 2026.xlsx',
         title: 'Horarios Arquitectura (2°C 2026)',
         type: 'xlsx',
+        btnText: 'Descargar Horarios Arquitectura (.xlsx)',
         content: `Planilla de horarios de cursada y talleres del 2° Cuatrimestre 2026 para Arquitectura.`
       },
       {
@@ -260,13 +321,15 @@
         fileName: 'TUDS -2º C - 2026.xlsx',
         title: 'Horarios TUDS (Desarrollo de Software - 2°C 2026)',
         type: 'xlsx',
-        content: `Planilla de horarios de cursada 2°C 2026 para la Tecnicatura Universitaria en Desarrollo de Software (TUDS).`
+        btnText: 'Descargar Horarios TUDS (.xlsx)',
+        content: `Planilla de horarios de cursada 2°C 2026 para TUDS.`
       },
       {
         id: 'h-tupsli',
         fileName: 'TUPSLi -2o C - 2026.xlsx',
         title: 'Horarios TUPSLi (Software Libre - 2°C 2026)',
         type: 'xlsx',
+        btnText: 'Descargar Horarios TUPSLi (.xlsx)',
         content: `Planilla de horarios de cursada 2°C 2026 para TUPSLi.`
       },
       {
@@ -274,7 +337,8 @@
         fileName: 'TUI 2° C-2026.xlsx',
         title: 'Horarios TUI (Tecnicatura Univ. en Informática - 2°C 2026)',
         type: 'xlsx',
-        content: `Planilla de horarios de cursada 2°C 2026 para la Tecnicatura Universitaria en Informática (TUI).`
+        btnText: 'Descargar Horarios TUI (.xlsx)',
+        content: `Planilla de horarios de cursada 2°C 2026 para TUI.`
       },
 
       // --- IMÁGENES Y PLANOS ---
@@ -283,13 +347,15 @@
         fileName: 'AULAS-UBICACION-web-1-1024x939-1.png',
         title: 'Plano y Ubicación de Aulas FTyCA',
         type: 'png',
-        content: `Plano y distribución física de las aulas, laboratorios y dependencias de la Facultad de Tecnología y Ciencias Aplicadas.`
+        btnText: 'Ver y Descargar Plano de Aulas',
+        content: `Plano y distribución física de las aulas, laboratorios y dependencias de la FTyCA.`
       },
       {
         id: 'img-calendario',
         fileName: 'Calendario academico 2026.jpeg',
-        title: 'Calendario Académico 2026 (Afiche)',
+        title: 'Calendario Académico Oficial 2026',
         type: 'jpeg',
+        btnText: 'Ver Calendario Académico 2026',
         content: `Afiche oficial del Calendario Académico 2026: fechas de cuatrimestres, receso y turnos de exámenes.`
       },
 
@@ -299,6 +365,7 @@
         fileName: 'Solicitud - Mesa Especial.docx',
         title: 'Solicitud de Mesa Especial (Modelo Word)',
         type: 'docx',
+        btnText: 'Descargar Solicitud de Mesa Especial (.docx)',
         content: `Modelo de nota en Word para pedir mesa especial de examen final ante Decanato/Secretaría Académica.`
       },
       {
@@ -306,6 +373,7 @@
         fileName: 'Solicitud - Cambio de Plan de Estudio.docx',
         title: 'Solicitud de Cambio de Plan de Estudio',
         type: 'docx',
+        btnText: 'Descargar Solicitud de Cambio de Plan (.docx)',
         content: `Modelo de nota en Word para pedir cambio o pase de plan de estudio.`
       },
       {
@@ -313,6 +381,7 @@
         fileName: 'REG-Solicitud-de-Equivalencia-1.pdf',
         title: 'Formulario de Solicitud de Equivalencia',
         type: 'pdf',
+        btnText: 'Descargar Formulario de Equivalencias (.pdf)',
         content: `Formulario oficial para pedir equivalencias de materias aprobadas.`
       },
       {
@@ -320,6 +389,7 @@
         fileName: 'Solicitud de Eximición Curso Nivelacion-2019.pdf',
         title: 'Solicitud de Eximición Curso de Nivelación',
         type: 'pdf',
+        btnText: 'Descargar Nota Eximición Nivelación (.pdf)',
         content: `Formulario para solicitar ser eximido del cursado de nivelación de ingreso.`
       },
 
@@ -329,6 +399,7 @@
         fileName: '1-FSI-PPS.doc',
         title: '1-FSI-PPS: Solicitud de Inscripción a PPS',
         type: 'doc',
+        btnText: 'Descargar Formulario 1 PPS (.doc)',
         content: `Formulario 1 de PPS para solicitar inscripción e inicio de la práctica.`
       },
       {
@@ -336,6 +407,7 @@
         fileName: '2-FAER-PPS.doc',
         title: '2-FAER-PPS: Aceptación de la Empresa',
         type: 'doc',
+        btnText: 'Descargar Formulario 2 PPS (.doc)',
         content: `Formulario 2 de PPS con conformidad de la empresa receptora.`
       },
       {
@@ -343,6 +415,7 @@
         fileName: '3-FSA-PPS.doc',
         title: '3-FSA-PPS: Seguimiento y Avance de PPS',
         type: 'doc',
+        btnText: 'Descargar Formulario 3 PPS (.doc)',
         content: `Formulario 3 de PPS para control periódico y avance.`
       },
       {
@@ -350,6 +423,7 @@
         fileName: '4-FE-PPS.doc',
         title: '4-FE-PPS: Evaluación Final de PPS',
         type: 'doc',
+        btnText: 'Descargar Formulario 4 PPS (.doc)',
         content: `Formulario 4 de PPS de evaluación y cierre de la práctica.`
       },
       {
@@ -357,6 +431,7 @@
         fileName: 'Reglamento PPS (OCD.002-2013).PDF',
         title: 'Reglamento de PPS (Ordenanza CD 002/2013)',
         type: 'pdf',
+        btnText: 'Descargar Reglamento de PPS (.pdf)',
         content: `Reglamento oficial de la Práctica Profesional Supervisada en ingenierías.`
       },
       {
@@ -364,6 +439,7 @@
         fileName: 'Ordenanza 003-2015-Reglamento PP - Geología.pdf',
         title: 'Reglamento de Práctica Profesional - Geología',
         type: 'pdf',
+        btnText: 'Descargar Reglamento PP Geología (.pdf)',
         content: `Ordenanza CD 003/2015 de prácticas profesionales para Geología.`
       },
       {
@@ -371,6 +447,7 @@
         fileName: 'Reglamento PPA - Arquitectura.pdf',
         title: 'Reglamento PPA - Arquitectura',
         type: 'pdf',
+        btnText: 'Descargar Reglamento PPA Arquitectura (.pdf)',
         content: `Reglamento de Práctica Profesional Asistida (PPA) de Arquitectura.`
       },
       {
@@ -378,6 +455,7 @@
         fileName: 'FORMA 1 - FI-PPA- Arquitectura (Versión 2).docx',
         title: 'Forma 1: Inscripción PPA Arquitectura',
         type: 'docx',
+        btnText: 'Descargar Forma 1 PPA Arquitectura (.docx)',
         content: `Formulario Forma 1 para inicio de PPA en Arquitectura.`
       },
       {
@@ -385,6 +463,7 @@
         fileName: 'FORMA 2 - FA-PPA- Arquitectura.docx',
         title: 'Forma 2: Aceptación PPA Arquitectura',
         type: 'docx',
+        btnText: 'Descargar Forma 2 PPA Arquitectura (.docx)',
         content: `Formulario Forma 2 de aceptación de entidad para Arquitectura.`
       },
 
@@ -394,6 +473,7 @@
         fileName: 'Reglamento TF General.pdf',
         title: 'Reglamento General de Trabajo Final (TF)',
         type: 'pdf',
+        btnText: 'Descargar Reglamento Trabajo Final (.pdf)',
         content: `Reglamento de presentación, tribunal y defensa del Trabajo Final.`
       },
       {
@@ -401,6 +481,7 @@
         fileName: 'Anexo TF.doc',
         title: 'Anexo de Trabajo Final (Plantilla)',
         type: 'doc',
+        btnText: 'Descargar Plantilla Anexo TF (.doc)',
         content: `Plantilla modelo para carátula y plan de trabajo final.`
       },
 
@@ -410,6 +491,7 @@
         fileName: 'ORDENANZA CD No 006-2024 - PROC READMISION ALUMNOS.pdf',
         title: 'Ordenanza CD 006/2024 - Readmisión de Alumnos',
         type: 'pdf',
+        btnText: 'Descargar Ordenanza Readmisión 2024 (.pdf)',
         content: `Ordenanza CD N° 006/2024 que fija los pasos y plazos para solicitar la readmisión a la facultad.`
       },
       {
@@ -417,6 +499,7 @@
         fileName: 'ReglamentoGralAlumnos.pdf',
         title: 'Reglamento General de Alumnos FTyCA',
         type: 'pdf',
+        btnText: 'Descargar Reglamento Gral. de Alumnos (.pdf)',
         content: `Reglamento marco de los estudiantes: cursada, regularidad y derechos.`
       },
       {
@@ -424,6 +507,7 @@
         fileName: 'ESTATUTO DE LA UNCA.pdf',
         title: 'Estatuto Universitario de la UNCA',
         type: 'pdf',
+        btnText: 'Descargar Estatuto de la UNCA (.pdf)',
         content: `Estatuto de la Universidad Nacional de Catamarca.`
       },
       {
@@ -431,6 +515,7 @@
         fileName: 'Ordenanza CD 003-2018 - Modif. examen de fecha.pdf',
         title: 'Ordenanza CD 003/2018 - Fechas y Mesas de Examen',
         type: 'pdf',
+        btnText: 'Descargar Ordenanza CD 003/2018 (.pdf)',
         content: `Normativa sobre turnos de examen final y regularidad.`
       },
       {
@@ -438,6 +523,7 @@
         fileName: 'Ordenanza CD 006-2019-Reglam Equivalencias.pdf',
         title: 'Ordenanza CD 006/2019 - Reglamento de Equivalencias',
         type: 'pdf',
+        btnText: 'Descargar Reglamento Equivalencias (.pdf)',
         content: `Régimen para reconocimiento de equivalencias de materias.`
       },
       {
@@ -445,6 +531,7 @@
         fileName: 'Reglamento-Concursos-Ayudantes-Estudiantiles_compressed.pdf',
         title: 'Reglamento de Concursos de Ayudantes Estudiantiles',
         type: 'pdf',
+        btnText: 'Descargar Reglamento Ayudantes (.pdf)',
         content: `Condiciones para concursar cargos de ayudantías estudiantiles.`
       },
       {
@@ -452,6 +539,7 @@
         fileName: 'Ordenanza CD 002-2007- Condiciones Ingreso FTYCA.pdf',
         title: 'Ordenanza CD 002/2007 - Condiciones de Ingreso a la FTyCA',
         type: 'pdf',
+        btnText: 'Descargar Condiciones de Ingreso (.pdf)',
         content: `Requisitos documentales de ingreso a la facultad.`
       },
       {
@@ -459,6 +547,7 @@
         fileName: 'Ordenanza CD 008-2017 - Curso Niv. Ingreso Ing-Lic-Tecn.pdf',
         title: 'Ordenanza CD 008/2017 - Curso Nivelación Ing-Lic-Tecn',
         type: 'pdf',
+        btnText: 'Descargar Nivelación Ing-Lic-Tecn (.pdf)',
         content: `Pautas del curso de nivelación para Ingenierías, Licenciaturas y Tecnicaturas.`
       },
       {
@@ -466,6 +555,7 @@
         fileName: 'Resoluc. 190-2016-Reglam Curso de Niv. Ingreso -Arquitectura.pdf',
         title: 'Resolución 190/2016 - Curso Nivelación Arquitectura',
         type: 'pdf',
+        btnText: 'Descargar Nivelación Arquitectura (.pdf)',
         content: `Reglamentación del curso de ingreso para Arquitectura.`
       },
       {
@@ -473,14 +563,16 @@
         fileName: 'Mensaje de Bienvenida.pdf',
         title: 'Mensaje de Bienvenida Institucional',
         type: 'pdf',
+        btnText: 'Descargar Mensaje Institucional (.pdf)',
         content: `Palabras de bienvenida de las autoridades de la FTyCA.`
       },
 
-      // --- ENLACES WEB INSTITUCIONALES (DAA - UNCA) ---
+      // --- ENLACES WEB INSTITUCIONALES (DAA - FTyCA) ---
       {
         id: 'link-horarios',
         title: 'Portal de Horarios DAA',
         type: 'link',
+        btnText: 'Ir a Horarios DAA Oficial',
         externalUrl: 'https://daa.unca.edu.ar/?page_id=32#horarios',
         content: `Página web de horarios de cursada de la FTyCA.`
       },
@@ -488,6 +580,7 @@
         id: 'link-aulas',
         title: 'Portal de Aulas DAA',
         type: 'link',
+        btnText: 'Ir a Aulas DAA Oficial',
         externalUrl: 'https://daa.unca.edu.ar/?page_id=32#aulas',
         content: `Página web de distribución de aulas de la FTyCA.`
       },
@@ -495,6 +588,7 @@
         id: 'link-formularios',
         title: 'Portal de Formularios y Notas DAA',
         type: 'link',
+        btnText: 'Ir a Formularios DAA',
         externalUrl: 'https://daa.unca.edu.ar/?page_id=32#formularios',
         content: `Página web con modelos de notas y formularios de la DAA.`
       },
@@ -502,6 +596,7 @@
         id: 'link-pps',
         title: 'Portal de PPS DAA',
         type: 'link',
+        btnText: 'Ir a Portal de PPS',
         externalUrl: 'https://daa.unca.edu.ar/?page_id=32#pps',
         content: `Página web sobre Práctica Profesional Supervisada de la FTyCA.`
       },
@@ -509,6 +604,7 @@
         id: 'link-reglamentos',
         title: 'Portal de Reglamentos DAA',
         type: 'link',
+        btnText: 'Ir a Reglamentos DAA',
         externalUrl: 'https://daa.unca.edu.ar/?page_id=32#reglamentos',
         content: `Página web con reglamentos de la FTyCA.`
       },
@@ -516,6 +612,7 @@
         id: 'link-siu-unca',
         title: 'SIU Guaraní UNCA',
         type: 'link',
+        btnText: 'Ingresar al SIU Guaraní UNCA',
         externalUrl: 'https://guarani.unca.edu.ar/',
         content: `Portal del SIU Guaraní UNCA para inscripciones y trámites.`
       },
@@ -523,6 +620,7 @@
         id: 'link-preinscripcion-unca',
         title: 'Preinscripción UNCA',
         type: 'link',
+        btnText: 'Ingresar a Preinscripción UNCA',
         externalUrl: 'https://preinscripcion.unca.edu.ar/',
         content: `Portal de preinscripción para ingresantes a la UNCA.`
       },
@@ -530,6 +628,7 @@
         id: 'link-programas',
         title: 'Programas Analíticos',
         type: 'link',
+        btnText: 'Abrir Programas Analíticos',
         externalUrl: 'https://script.google.com/macros/s/AKfycbx8GbcwR_45vAxDMX1HpWTeAEIVWLIBMr1Utpo8ctfSBxFBWCO1a1lK65e1p7A646Z19A/exec',
         content: `Buscador de programas analíticos oficiales de materias.`
       },
@@ -537,6 +636,7 @@
         id: 'link-moodle',
         title: 'Campus Virtual Moodle',
         type: 'link',
+        btnText: 'Ingresar a Campus Moodle FTyCA',
         externalUrl: 'https://moodle-ftyca.unca.edu.ar/',
         content: `Campus virtual Moodle de la FTyCA.`
       },
@@ -544,6 +644,7 @@
         id: 'link-facultad',
         title: 'Página DAA - FTyCA',
         type: 'link',
+        btnText: 'Visitar Página Oficial DAA',
         externalUrl: 'https://daa.unca.edu.ar/',
         content: `Sitio oficial del Departamento Alumnos y Bedelía.`
       }
@@ -556,7 +657,7 @@
         subtitulo: 'Avisos de cursada, becas y fechas',
         url: 'https://whatsapp.com/channel/0029VaKI6W72P59hmu1S3i1s',
         icono: 'fa-brands fa-whatsapp text-emerald-600',
-        btnText: 'Unirme',
+        btnText: 'Unirme al Canal de WhatsApp',
         btnColor: 'bg-emerald-600 hover:bg-emerald-700'
       },
       {
@@ -564,7 +665,7 @@
         subtitulo: 'Centro de Estudiantes de Tecnología',
         url: 'https://whatsapp.com/channel/0029Vau4HZ63rZZjQWltvs2V',
         icono: 'fa-brands fa-whatsapp text-emerald-600',
-        btnText: 'Unirme',
+        btnText: 'Unirme al Canal de CETECA',
         btnColor: 'bg-emerald-600 hover:bg-emerald-700'
       },
       {
@@ -572,7 +673,7 @@
         subtitulo: '@franja.moradatecno',
         url: 'https://www.instagram.com/franja.moradatecno/',
         icono: 'fa-brands fa-instagram text-rose-500',
-        btnText: 'Instagram',
+        btnText: 'Abrir Instagram Franja',
         btnColor: 'bg-gradient-to-r from-purple-600 to-rose-500 hover:opacity-90'
       },
       {
@@ -580,7 +681,7 @@
         subtitulo: '@cetecat',
         url: 'https://www.instagram.com/cetecat/',
         icono: 'fa-brands fa-instagram text-rose-500',
-        btnText: 'Instagram',
+        btnText: 'Abrir Instagram CETECA',
         btnColor: 'bg-gradient-to-r from-purple-600 to-rose-500 hover:opacity-90'
       }
     ];
@@ -659,14 +760,11 @@
       adminModal.classList.add('hidden');
     });
 
-    // -------------------------------------------------------------
-    // FUNCIÓN DE DESCARGA DIRECTA (ENLACE RELATIVO AL REPOSITORIO)
-    // -------------------------------------------------------------
+    // Función de descarga directa
     window.downloadDoc = function(docId) {
       const doc = DOCUMENTOS_GLOBALES.find(d => d.id === docId);
       if (!doc || doc.type === 'link') return;
 
-      // Al estar en la raíz de GitHub Pages, se accede directamente codificando el nombre
       const fileUrl = encodeURIComponent(doc.fileName);
       const a = document.createElement('a');
       a.href = fileUrl;
@@ -676,7 +774,7 @@
       document.body.removeChild(a);
     };
 
-    // Render de la barra lateral con buscador instantáneo
+    // Render lateral con filtro
     function renderSideDocs(filter = '') {
       sideFileList.innerHTML = '';
       const filtered = DOCUMENTOS_GLOBALES.filter(d => 
@@ -694,11 +792,14 @@
         item.className = 'flex items-center justify-between p-2 rounded-lg border border-slate-100 bg-slate-50 hover:bg-sky-50 transition text-xs';
         
         let iconHtml = '<i class="fa-solid fa-file-pdf text-red-500 text-sm"></i>';
-        let actionBtn = `<button onclick="downloadDoc('${doc.id}')" class="text-facu-600 hover:text-facu-800 p-1" title="Descargar"><i class="fa-solid fa-download"></i></button>`;
+        let actionBtn = `<button onclick="downloadDoc('${doc.id}')" class="bg-facu-600 hover:bg-facu-700 text-white px-2 py-1 rounded text-[11px] font-semibold flex items-center gap-1 shadow-2xs" title="Descargar"><i class="fa-solid fa-download"></i> Bajar</button>`;
 
         if (doc.type === 'link') {
-          iconHtml = '<i class="fa-solid fa-arrow-up-right-from-square text-sky-600 text-sm"></i>';
-          actionBtn = `<a href="${doc.externalUrl}" target="_blank" class="text-sky-600 hover:text-sky-800 p-1" title="Abrir página"><i class="fa-solid fa-external-link"></i></a>`;
+          let linkIcon = 'fa-arrow-up-right-from-square';
+          if (doc.id.startsWith('link-fac-')) linkIcon = 'fa-building-columns text-amber-600';
+          if (doc.id === 'link-unca-general') linkIcon = 'fa-landmark text-indigo-600';
+          iconHtml = `<i class="fa-solid ${linkIcon} text-sm"></i>`;
+          actionBtn = `<a href="${doc.externalUrl}" target="_blank" class="bg-sky-600 hover:bg-sky-700 text-white px-2 py-1 rounded text-[11px] font-semibold flex items-center gap-1 shadow-2xs" title="Abrir página"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir</a>`;
         } else if (doc.type === 'xlsx') {
           iconHtml = '<i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i>';
         } else if (doc.type === 'docx' || doc.type === 'doc') {
@@ -708,7 +809,7 @@
         }
 
         item.innerHTML = `
-          <div class="flex items-center gap-2 overflow-hidden pr-1">
+          <div class="flex items-center gap-2 overflow-hidden pr-2">
             ${iconHtml}
             <span class="truncate font-medium text-slate-700" title="${doc.title}">${doc.title}</span>
           </div>
@@ -740,7 +841,7 @@
                   </div>
                 </div>
                 <a href="${red.url}" target="_blank" class="${red.btnColor} text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition flex-shrink-0">
-                  ${red.btnText}
+                  <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> ${red.btnText}
                 </a>
               </div>
             `).join('')}
@@ -778,38 +879,40 @@
 
     function generateCentroChatCard() {
       let redesHtml = CANALES_Y_REDES.map(red => `
-        <a href="${red.url}" target="_blank" class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:border-facu-500 text-xs transition">
+        <a href="${red.url}" target="_blank" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-white border border-emerald-200 hover:border-emerald-500 shadow-2xs hover:shadow transition">
           <div class="flex items-center gap-2 overflow-hidden">
-            <i class="${red.icono} text-sm"></i>
-            <span class="font-semibold text-slate-800 truncate">${red.titulo}</span>
+            <i class="${red.icono} text-base"></i>
+            <span class="font-bold text-xs text-slate-800 truncate">${red.titulo}</span>
           </div>
-          <span class="text-[10px] text-facu-600 font-bold flex items-center gap-1">Entrar <i class="fa-solid fa-arrow-right text-[9px]"></i></span>
+          <span class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold px-3 py-1 rounded-lg flex items-center gap-1 shadow-2xs">
+            Abrir <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+          </span>
         </a>
       `).join('');
 
       let delegadosHtml = MIEMBROS_CENTRO.map(m => `
-        <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 text-xs">
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200 text-xs">
           <div>
             <p class="font-bold text-slate-800">${m.nombre}</p>
-            <p class="text-[10px] text-slate-500">${m.cargo}</p>
+            <p class="text-[11px] text-slate-500">${m.cargo} • ${m.numeroVisible}</p>
           </div>
-          <a href="https://wa.me/${m.telefono}?text=Hola%20${encodeURIComponent(m.nombre)},%20te%20contacto%20por%20una%20consulta%20de%20la%20facultad" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-[11px] font-semibold flex items-center gap-1">
-            <i class="fa-brands fa-whatsapp"></i> Chat
+          <a href="https://wa.me/${m.telefono}?text=Hola%20${encodeURIComponent(m.nombre)},%20te%20contacto%20por%20una%20consulta%20de%20la%20facultad" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-2xs">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Escribir a WhatsApp
           </a>
         </div>
       `).join('');
 
       return `
-        <div class="mt-3 p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-3">
+        <div class="mt-3 p-3.5 bg-emerald-50/80 border border-emerald-200 rounded-2xl space-y-3">
           <div>
-            <p class="text-xs font-bold text-emerald-950 flex items-center gap-1.5 mb-1.5">
-              <i class="fa-solid fa-bullhorn text-emerald-600"></i> Canales de Difusión e Instagram:
+            <p class="text-xs font-bold text-emerald-950 flex items-center gap-1.5 mb-2">
+              <i class="fa-solid fa-bullhorn text-emerald-600"></i> Botones directos a Canales y Redes:
             </p>
             <div class="space-y-1.5">${redesHtml}</div>
           </div>
           <div>
-            <p class="text-xs font-bold text-emerald-950 flex items-center gap-1.5 mb-1.5">
-              <i class="fa-solid fa-user-shield text-emerald-600"></i> Contactos de Guardia:
+            <p class="text-xs font-bold text-emerald-950 flex items-center gap-1.5 mb-2">
+              <i class="fa-solid fa-headset text-emerald-600"></i> Contactos de Guardia Directos:
             </p>
             <div class="space-y-1.5">${delegadosHtml}</div>
           </div>
@@ -817,17 +920,73 @@
       `;
     }
 
-    // Consulta inteligente con Gemini
+    // GENERADOR DE BOTÓN DIRECTO EN PANTALLA
+    function generateInteractiveButtonCard(matched) {
+      if (!matched) return '';
+
+      if (matched.type === 'link') {
+        let iconClass = 'fa-arrow-up-right-from-square';
+        let bgIcon = 'bg-sky-100 text-sky-700';
+        let btnColor = 'bg-sky-600 hover:bg-sky-700';
+
+        if (matched.id.startsWith('link-fac-') || matched.id === 'link-unca-general') {
+          iconClass = 'fa-building-columns';
+          bgIcon = 'bg-amber-100 text-amber-700';
+          btnColor = 'bg-amber-600 hover:bg-amber-700';
+        }
+
+        return `
+          <div class="mt-3 p-3 bg-white border-2 border-sky-300 rounded-2xl shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 overflow-hidden w-full sm:w-auto">
+              <div class="w-9 h-9 rounded-xl ${bgIcon} flex items-center justify-center text-base flex-shrink-0">
+                <i class="fa-solid ${iconClass}"></i>
+              </div>
+              <div class="truncate">
+                <p class="font-bold text-xs text-slate-800 truncate">${matched.title}</p>
+                <p class="text-[10px] text-slate-400">Portal oficial de la UNCA</p>
+              </div>
+            </div>
+            <a href="${matched.externalUrl}" target="_blank" class="w-full sm:w-auto ${btnColor} active:scale-95 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow transition">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> ${matched.btnText || 'Abrir Página Directamente'}
+            </a>
+          </div>
+        `;
+      } else {
+        let badgeColor = 'bg-red-100 text-red-700';
+        let icon = 'fa-file-pdf';
+        if (matched.type === 'xlsx') { badgeColor = 'bg-emerald-100 text-emerald-700'; icon = 'fa-file-excel'; }
+        if (matched.type === 'docx' || matched.type === 'doc') { badgeColor = 'bg-blue-100 text-blue-700'; icon = 'fa-file-word'; }
+        if (matched.type === 'png' || matched.type === 'jpeg') { badgeColor = 'bg-purple-100 text-purple-700'; icon = 'fa-file-image'; }
+
+        return `
+          <div class="mt-3 p-3 bg-white border-2 border-facu-500 rounded-2xl shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 overflow-hidden w-full sm:w-auto">
+              <div class="w-9 h-9 rounded-xl ${badgeColor} flex items-center justify-center text-base flex-shrink-0">
+                <i class="fa-solid ${icon}"></i>
+              </div>
+              <div class="truncate">
+                <p class="font-bold text-xs text-slate-800 truncate">${matched.title}</p>
+                <p class="text-[10px] text-slate-400">${matched.fileName}</p>
+              </div>
+            </div>
+            <button onclick="downloadDoc('${matched.id}')" class="w-full sm:w-auto bg-facu-600 hover:bg-facu-700 active:scale-95 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow transition">
+              <i class="fa-solid fa-cloud-arrow-down"></i> ${matched.btnText || 'Descargar Archivo Directo'}
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    // Consulta con Gemini Flash
     async function askGemini(userQuestion) {
       const candidateModels = ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
-      const systemInstruction = `Sos Franfi, el asistente virtual oficial de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA).
+      const systemInstruction = `Sos Franfi, el asistente virtual de la Universidad Nacional de Catamarca con foco principal en la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA).
 Reglas:
-1. Usá tono universitario cordial, argentino / rioplatense (usá "che", "hola!", "un gusto", "consultame lo que necesites").
-2. Si el estudiante pide horarios (Minas, Informática, Electrónica, Agrimensura, Geología, Arquitectura, TUDS, TUPSLi, TUI), modelos de notas (mesa especial, cambio de plan, equivalencia), formularios de PPS/PPA o el plano de aulas, mencionale que abajo tiene la tarjeta de descarga directa del archivo oficial.
-3. Si te preguntan por las aulas, recordale que tiene la imagen del plano oficial para consultar o descargar.
-4. Si no figura la información, sugerí consultar directamente con el Centro de Estudiantes CETECA o Franja Morada.`;
+1. Usá tono universitario cordial, argentino / rioplatense (usá "che", "hola!", "un gusto").
+2. Si te preguntan por otras facultades de la UNCA (Económicas, Salud, Derecho, Humanidades, Agrarias, Exactas o el sitio general de la UNCA) o por carreras ajenas a Tecnología (ej: Contador, Abogacía, Enfermería, Agronomía, Letras), explicale con buena onda que esa carrera pertenece a otra unidad académica y avisale que abajo le dejás el botón para entrar a su página oficial correspondiente.
+3. Si pide archivos o trámites de Tecnología, avisale que tiene el botón de descarga abajo.`;
 
-      let context = "--- DOCUMENTACIÓN, HORARIOS 2°C 2026 Y ENLACES OFICIALES FTyCA ---\n";
+      let context = "--- DOCUMENTACIÓN, HORARIOS 2°C 2026 Y ENLACES OFICIALES UNCA ---\n";
       DOCUMENTOS_GLOBALES.forEach(d => {
         context += `\n[TÍTULO: ${d.title} | ARCHIVO: ${d.fileName || d.externalUrl}]\n${d.content}\n`;
       });
@@ -857,23 +1016,32 @@ Reglas:
       return null;
     }
 
-    // Buscador de coincidencias para tarjetas de descarga interactiva
+    // Buscador de coincidencias exactas (FTyCA y OTRAS FACULTADES)
     function findMatchingDocOrLink(query) {
       const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-      // Horarios por carrera
+      // OTRAS FACULTADES Y CARRERAS
+      if (q.includes('economica') || q.includes('contador') || q.includes('administracion')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-economica');
+      if (q.includes('salud') || q.includes('enfermeria') || q.includes('nutricion') || q.includes('bromatologia')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-salud');
+      if (q.includes('derecho') || q.includes('abogacia') || q.includes('abogado') || q.includes('leyes')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-derecho');
+      if (q.includes('humanidades') || q.includes('letras') || q.includes('historia') || q.includes('geografia') || q.includes('filosofia') || q.includes('ingles') || q.includes('frances') || q.includes('pedagogia')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-humanidades');
+      if (q.includes('agrarias') || q.includes('agronomia') || q.includes('agronomo') || q.includes('campo')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-agrarias');
+      if (q.includes('exactas') || q.includes('biologia') || q.includes('quimica') || q.includes('fisica') || q.includes('matematica') || q.includes('ambiental')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-exactas');
+      if (q.includes('rectorado') || q.includes('pagina de la unca') || q.includes('sitio de la unca') || (q.includes('portal') && q.includes('unca') && !q.includes('guarani'))) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-unca-general');
+
+      // Horarios por carrera FTyCA
       if (q.includes('minas')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-minas');
-      if (q.includes('informatica') && (q.includes('horario') || q.includes('clase') || q.includes('materia'))) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-informatica');
+      if (q.includes('informatica')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-informatica');
       if (q.includes('electronica')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-electronica');
       if (q.includes('agrimensura')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-agrimensura');
-      if (q.includes('geologia') && (q.includes('horario') || q.includes('clase'))) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-geologia');
-      if (q.includes('arquitectura') && (q.includes('horario') || q.includes('taller'))) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-arquitectura');
-      if (q.includes('tuds') || q.includes('software')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tuds');
-      if (q.includes('tupsli')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tupsli');
+      if (q.includes('geologia')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-geologia');
+      if (q.includes('arquitectura')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-arquitectura');
+      if (q.includes('tuds') || (q.includes('software') && !q.includes('libre'))) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tuds');
+      if (q.includes('tupsli') || q.includes('libre')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tupsli');
       if (q.includes('tui')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tui');
 
       // Aulas y Calendario
-      if (q.includes('aula') || q.includes('donde queda') || q.includes('plano')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'img-aulas');
+      if (q.includes('aula') || q.includes('donde queda') || q.includes('plano') || q.includes('ubicacion')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'img-aulas');
       if (q.includes('calendario') || q.includes('fechas') || q.includes('receso')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'img-calendario');
 
       // Notas y Solicitudes
@@ -888,11 +1056,13 @@ Reglas:
       if (q.includes('trabajo final') || q.includes('tesis')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'reg-tf-general');
       if (q.includes('ayudante') || q.includes('concurso')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'reg-ayudantes');
 
-      // Enlaces
+      // Enlaces Web FTyCA
       if (q.includes('siu') || q.includes('guarani')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-siu-unca');
-      if (q.includes('preinscripcion')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-preinscripcion-unca');
+      if (q.includes('preinscripcion') || q.includes('ingresante')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-preinscripcion-unca');
       if (q.includes('moodle') || q.includes('campus')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-moodle');
       if (q.includes('programa') || q.includes('analitico')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-programas');
+      if (q.includes('formulario') || q.includes('nota')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-formularios');
+      if (q.includes('reglamento')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-reglamentos');
 
       return DOCUMENTOS_GLOBALES.find(d => {
         const title = d.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -937,83 +1107,48 @@ Reglas:
 
       const lower = text.toLowerCase();
       const matched = findMatchingDocOrLink(text);
-
-      let interactiveCard = '';
-      if (matched) {
-        if (matched.type === 'link') {
-          interactiveCard = `
-            <div class="mt-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2 overflow-hidden">
-                <span class="text-xs px-2 py-1 rounded font-bold border bg-sky-50 text-sky-700 border-sky-200 uppercase">ENLACE</span>
-                <div class="truncate">
-                  <p class="font-semibold text-xs text-slate-800 truncate">${matched.title}</p>
-                  <p class="text-[10px] text-slate-400">Portal oficial de la FTyCA - UNCA</p>
-                </div>
-              </div>
-              <a href="${matched.externalUrl}" target="_blank" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Enlace
-              </a>
-            </div>
-          `;
-        } else {
-          let badgeColor = 'bg-red-50 text-red-600 border-red-200';
-          if (matched.type === 'xlsx') badgeColor = 'bg-emerald-50 text-emerald-600 border-emerald-200';
-          if (matched.type === 'docx' || matched.type === 'doc') badgeColor = 'bg-blue-50 text-blue-600 border-blue-200';
-          if (matched.type === 'png' || matched.type === 'jpeg') badgeColor = 'bg-purple-50 text-purple-600 border-purple-200';
-
-          interactiveCard = `
-            <div class="mt-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2 overflow-hidden">
-                <span class="text-xs px-2 py-1 rounded font-bold border ${badgeColor} uppercase">${matched.type}</span>
-                <div class="truncate">
-                  <p class="font-semibold text-xs text-slate-800 truncate">${matched.title}</p>
-                  <p class="text-[10px] text-slate-400">${matched.fileName}</p>
-                </div>
-              </div>
-              <button onclick="downloadDoc('${matched.id}')" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
-                <i class="fa-solid fa-cloud-arrow-down"></i> Descargar
-              </button>
-            </div>
-          `;
-        }
-      }
+      const actionButtonHtml = generateInteractiveButtonCard(matched);
 
       if (lower.includes('centro') || lower.includes('estudiantes') || lower.includes('contacto') || lower.includes('delegado') || lower.includes('telefono') || lower.includes('instagram') || lower.includes('canal') || lower.includes('difusion') || lower.includes('franja') || lower.includes('ceteca') || lower.includes('milagros') || lower.includes('nicolas')) {
-        appendMessage('bot', 'Acá tenés los canales de difusión de WhatsApp, Instagram oficial y los contactos directos de guardia:', generateCentroChatCard());
+        appendMessage('bot', '¡De una! Acá tenés los botones directos para unirte a los canales, Instagram oficial y escribirles por WhatsApp a los chicos de guardia:', generateCentroChatCard());
         return;
       }
 
       if (GEMINI_API_KEY) {
-        const loading = appendMessage('bot', 'Franfi está buscando en los documentos y archivos oficiales...');
+        const loading = appendMessage('bot', 'Franfi está preparando la información y el botón directo...');
         try {
           const aiResponse = await askGemini(text);
           loading.remove();
           
           if (aiResponse) {
             const isUnknown = aiResponse.toLowerCase().includes('no figura') || aiResponse.toLowerCase().includes('centro de estudiantes');
-            const extra = interactiveCard + (isUnknown ? generateCentroChatCard() : '');
+            const extra = actionButtonHtml + (isUnknown ? generateCentroChatCard() : '');
             appendMessage('bot', aiResponse, extra);
           } else {
-            appendMessage('bot', 'Esa consulta no figura en los registros cargados. Te comparto los contactos del Centro de Estudiantes:', generateCentroChatCard());
+            appendMessage('bot', 'No encontré ese dato puntual en los reglamentos. Te comparto el contacto del Centro de Estudiantes:', generateCentroChatCard());
           }
         } catch (err) {
           loading.remove();
-          appendMessage('bot', 'Tuve una demora con el servidor. Te dejo los canales y accesos disponibles:', generateCentroChatCard());
+          appendMessage('bot', 'Acá tenés el botón directo para lo que buscás:', actionButtonHtml || generateCentroChatCard());
         }
       } else {
         setTimeout(() => {
           if (matched) {
             if (matched.type === 'link') {
-              appendMessage('bot', `Acá tenés el enlace que pediste:`, interactiveCard);
+              if (matched.id.startsWith('link-fac-') || matched.id === 'link-unca-general') {
+                appendMessage('bot', `Esa carrera o consulta pertenece a otra unidad académica de la UNCA. Tocá el botón de abajo para entrar directamente a su página oficial:`, actionButtonHtml);
+              } else {
+                appendMessage('bot', `¡Listo! Hacé clic en el botón de abajo para entrar directamente al portal oficial:`, actionButtonHtml);
+              }
             } else {
-              appendMessage('bot', `Acá tenés el archivo oficial listo para descargar:`, interactiveCard);
+              appendMessage('bot', `¡Acá lo tenés! Hacé clic en el botón de abajo para descargarte el archivo oficial:`, actionButtonHtml);
             }
           } else if (lower.includes('hola') || lower.includes('buenas')) {
-            appendMessage('bot', '¡Hola! ¿Cómo estás? Soy Franfi. Podés pedirme los horarios de tu carrera en Excel, modelos de notas, el plano de aulas o consultar reglamentos.');
+            appendMessage('bot', '¡Hola! ¿Cómo andás? Soy Franfi. Pedime los horarios de tu carrera en Excel, el plano de aulas, notas modelo o enlaces de cualquier facultad de la UNCA.');
           } else {
-            appendMessage('bot', 'No encontré esa información en los registros actuales. Podés consultar directamente en los canales de difusión o con el Centro de Estudiantes:', generateCentroChatCard());
+            appendMessage('bot', 'No encontré esa información en los registros actuales. Podés escribirle directamente a los delegados del Centro de Estudiantes tocando los botones abajo:', generateCentroChatCard());
           }
-        }, 300);
+        }, 250);
       }
     });
 
