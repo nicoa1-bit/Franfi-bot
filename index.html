@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Franfi - Asistente Académico FTyCA - UNCA</title>
+  
+  <!-- Favicon para la pestaña del navegador -->
+  <link rel="icon" type="image/png" href="logo.png">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -41,8 +45,9 @@
   <header class="bg-facu-800 text-white shadow-md z-20 flex-shrink-0">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-full bg-facu-600 flex items-center justify-center font-bold text-xl border-2 border-sky-300 shadow-inner">
-          <i class="fa-solid fa-robot text-sky-200"></i>
+        <!-- Contenedor del Logo con fallback a icono robot si no existe la imagen -->
+        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-0.5 border-2 border-sky-300 shadow-inner overflow-hidden flex-shrink-0">
+          <img src="logo.png" alt="Logo Franfi" class="w-full h-full object-contain rounded-full" onerror="this.onerror=null; this.parentElement.className='w-10 h-10 rounded-full bg-facu-600 flex items-center justify-center font-bold text-xl border-2 border-sky-300 shadow-inner'; this.parentElement.innerHTML='<i class=\'fa-solid fa-robot text-sky-200 text-lg\'></i>';">
         </div>
         <div>
           <div class="flex items-center space-x-2">
@@ -73,6 +78,7 @@
       </h2>
       <p class="text-xs text-slate-500 mb-2">Buscá horarios, notas, reglamentos o accesos directos a facultades UNCA.</p>
       
+      <!-- Buscador interno en la barra lateral -->
       <div class="relative mb-3">
         <input type="text" id="sideDocSearch" placeholder="Buscar archivo o facultad..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-7 pr-2 py-1.5 focus:outline-none focus:border-facu-600">
         <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
@@ -103,13 +109,13 @@
           <i class="fa-regular fa-lightbulb text-amber-500"></i> Rápidos:
         </span>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
+          <i class="fa-solid fa-book-open text-amber-600"></i> Guía Nivelación Matemática y Física
+        </button>
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
           <i class="fa-solid fa-globe text-sky-600"></i> Portal de Horarios DAA
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
           <i class="fa-solid fa-file-excel text-emerald-600"></i> Horarios de Minas 2°C
-        </button>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
-          <i class="fa-solid fa-file-excel text-emerald-600"></i> Horarios de Informática 2°C
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
           <i class="fa-solid fa-map text-purple-600"></i> Plano de aulas
@@ -127,7 +133,7 @@
           </div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
             <p class="font-semibold text-facu-800 mb-1">¡Hola! Soy Franfi 👋</p>
-            <p>Soy el asistente académico de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA). Cuando me pidas cualquier archivo, trámite o portal, te voy a dar **el botón directo** para que entres o lo descargues al instante.</p>
+            <p>Soy el asistente académico de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA). Cuando me pidas cualquier archivo, guía de nivelación, trámite o portal institucional, te voy a dar **el botón directo** para que entres o lo descargues al instante.</p>
           </div>
         </div>
       </div>
@@ -138,7 +144,7 @@
           <input 
             type="text" 
             id="chatInput"
-            placeholder="Pedí un horario, nota, o consultá por carreras de la UNCA..." 
+            placeholder="Pedí un horario, guía de nivelación, nota o facultad..." 
             class="flex-1 bg-slate-50 border border-slate-300 focus:border-facu-600 focus:bg-white focus:outline-none rounded-xl px-4 py-2.5 text-sm transition placeholder-slate-400"
             required
             autocomplete="off"
@@ -202,9 +208,19 @@
 
   <script>
     // -------------------------------------------------------------
-    // BASE DE DATOS EXACTA DE ARCHIVOS Y ENLACES
+    // BASE DE DATOS EXACTA DE ARCHIVOS Y ENLACES (FTyCA + TODA LA UNCA)
     // -------------------------------------------------------------
     const DOCUMENTOS_GLOBALES = [
+      // --- CURSO DE NIVELACIÓN ---
+      {
+        id: 'guia-nivelacion-2025',
+        fileName: '03 GUIA CURSO NIVELACION Matemáticas y Física 2025.pdf',
+        title: 'Guía Curso de Nivelación: Matemática y Física (2025)',
+        type: 'pdf',
+        btnText: 'Descargar Guía de Nivelación (.pdf)',
+        content: `Guía oficial del Curso de Nivelación de Matemáticas y Física 2025: ejercicios prácticos, teoría, unidades temáticas y contenidos esenciales para ingresantes de la FTyCA.`
+      },
+
       // --- PORTAL DE HORARIOS OFICIAL DAA ---
       {
         id: 'link-horarios',
@@ -302,7 +318,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Cs. Económicas',
         externalUrl: 'https://eco.unca.edu.ar/',
-        content: `Facultad de Ciencias Económicas y de Administración de la UNCA.`
+        content: `Facultad de Ciencias Económicas y de Administración de la UNCA: Contador, Administración.`
       },
       {
         id: 'link-fac-salud',
@@ -310,7 +326,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Cs. de la Salud',
         externalUrl: 'https://salud.unca.edu.ar/',
-        content: `Facultad de Ciencias de la Salud de la UNCA.`
+        content: `Facultad de Ciencias de la Salud de la UNCA: Enfermería, Nutrición, Bromatología.`
       },
       {
         id: 'link-fac-derecho',
@@ -326,7 +342,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Humanidades',
         externalUrl: 'https://huma.unca.edu.ar/',
-        content: `Facultad de Humanidades de la UNCA.`
+        content: `Facultad de Humanidades de la UNCA: Profesorados, Letras, Historia, Geografía, Filosofía, Idiomas.`
       },
       {
         id: 'link-fac-agrarias',
@@ -334,7 +350,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Cs. Agrarias',
         externalUrl: 'https://agrarias.unca.edu.ar/',
-        content: `Facultad de Ciencias Agrarias de la UNCA.`
+        content: `Facultad de Ciencias Agrarias de la UNCA: Agronomía y producción vegetal.`
       },
       {
         id: 'link-fac-exactas',
@@ -342,7 +358,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Cs. Exactas',
         externalUrl: 'https://informes-exactas.unca.edu.ar/exactas_sitio/',
-        content: `Facultad de Ciencias Exactas y Naturales de la UNCA.`
+        content: `Facultad de Ciencias Exactas y Naturales de la UNCA: Matemática, Física, Química, Biología.`
       },
 
       // --- HORARIOS DE CURSADA 2°C 2026 (EXCEL) ---
@@ -973,19 +989,16 @@
       }
     }
 
-    // CONVERTIDOR DE TEXTO / MARKDOWN A BOTONES HTML REALES
+    // CONVERTIDOR DE MARKDOWN A BOTONES HTML REALES
     function formatMessageContent(rawText) {
-      // Reemplaza [Nombre](https://...) por un botón HTML estilizado
       const linkRegex = /\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g;
-      let formatted = rawText.replace(linkRegex, (match, title, url) => {
+      return rawText.replace(linkRegex, (match, title, url) => {
         return `<div class="my-2.5">
           <a href="${url}" target="_blank" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-xs hover:shadow transition active:scale-95">
             <i class="fa-solid fa-arrow-up-right-from-square"></i> ${title}
           </a>
         </div>`;
       });
-
-      return formatted;
     }
 
     // Consulta con Gemini Flash
@@ -996,7 +1009,7 @@ Reglas:
 1. Usá tono universitario cordial, argentino / rioplatense (usá "che", "hola!", "un gusto").
 2. Respondé en forma breve y clara.
 3. Si el estudiante pide una página o enlace (como la página de horarios, aulas, SIU o Moodle), no escribas links largos; confirmale amablemente que abajo tiene el botón directo para ingresar.
-4. Si piden archivos o carreras de Tecnología, indicales que tienen el botón de descarga abajo.
+4. Si piden archivos, guías de nivelación o materias de Tecnología, indicales que tienen el botón de descarga abajo.
 5. Si preguntan por otra facultad de la UNCA, indicales que les dejás el botón para acceder a su sitio oficial.`;
 
       let context = "--- DOCUMENTACIÓN, HORARIOS 2°C 2026 Y ENLACES OFICIALES UNCA ---\n";
@@ -1033,7 +1046,12 @@ Reglas:
     function findMatchingDocOrLink(query) {
       const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-      // PRIORIDAD 1: Si pide expresamente PÁGINA / LINK / WEB / SITIO de HORARIOS -> Llevar a la web DAA
+      // GUÍA DE NIVELACIÓN
+      if (q.includes('guia') || q.includes('nivelacion') || (q.includes('matematica') && q.includes('curso')) || (q.includes('fisica') && q.includes('curso'))) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'guia-nivelacion-2025');
+      }
+
+      // PRIORIDAD 1: PÁGINA / LINK / SITIO DE HORARIOS
       if ((q.includes('link') || q.includes('pagina') || q.includes('portal') || q.includes('sitio') || q.includes('web')) && q.includes('horario')) {
         return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-horarios');
       }
@@ -1058,7 +1076,7 @@ Reglas:
       if (q.includes('tupsli') || q.includes('libre')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tupsli');
       if (q.includes('tui')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tui');
 
-      // Si pide horarios en general sin aclarar carrera -> Llevar al portal web DAA
+      // Si pide horarios en general sin aclarar carrera
       if (q.includes('horario') || q.includes('horarios') || q.includes('cursadas')) {
         return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-horarios');
       }
@@ -1169,7 +1187,7 @@ Reglas:
               appendMessage('bot', `¡Acá lo tenés! Hacé clic en el botón de abajo para descargar el archivo oficial:`, actionButtonHtml);
             }
           } else if (lower.includes('hola') || lower.includes('buenas')) {
-            appendMessage('bot', '¡Hola! ¿Cómo andás? Soy Franfi. Pedime los horarios de tu carrera en Excel, la página oficial de horarios, el plano de aulas, notas modelo o enlaces de cualquier facultad de la UNCA.');
+            appendMessage('bot', '¡Hola! ¿Cómo andás? Soy Franfi. Pedime la guía de nivelación, los horarios de tu carrera en Excel, la página oficial de horarios, el plano de aulas, notas modelo o enlaces de cualquier facultad de la UNCA.');
           } else {
             appendMessage('bot', 'No encontré esa información en los registros actuales. Podés escribirle directamente a los delegados del Centro de Estudiantes tocando los botones abajo:', generateCentroChatCard());
           }
