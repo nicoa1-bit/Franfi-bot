@@ -73,15 +73,12 @@
       </h2>
       <p class="text-xs text-slate-500 mb-2">Buscá horarios, notas, reglamentos o accesos directos a facultades UNCA.</p>
       
-      <!-- Buscador interno en la barra lateral -->
       <div class="relative mb-3">
         <input type="text" id="sideDocSearch" placeholder="Buscar archivo o facultad..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-7 pr-2 py-1.5 focus:outline-none focus:border-facu-600">
         <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
       </div>
 
-      <div id="sideFileList" class="space-y-1.5 flex-1 overflow-y-auto">
-        <!-- Render dinámico -->
-      </div>
+      <div id="sideFileList" class="space-y-1.5 flex-1 overflow-y-auto"></div>
 
       <!-- Tarjeta del Centro de Estudiantes y Canales -->
       <div class="mt-4 pt-3 border-t border-slate-100 bg-sky-50 -mx-4 -mb-4 p-3 rounded-b-xl">
@@ -106,6 +103,9 @@
           <i class="fa-regular fa-lightbulb text-amber-500"></i> Rápidos:
         </span>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
+          <i class="fa-solid fa-globe text-sky-600"></i> Portal de Horarios DAA
+        </button>
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
           <i class="fa-solid fa-file-excel text-emerald-600"></i> Horarios de Minas 2°C
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
@@ -117,9 +117,6 @@
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
           <i class="fa-solid fa-graduation-cap text-sky-600"></i> SIU Guaraní UNCA
         </button>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
-          <i class="fa-solid fa-building-columns text-slate-600"></i> Otras Facultades UNCA
-        </button>
       </div>
 
       <!-- Mensajes -->
@@ -130,8 +127,7 @@
           </div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
             <p class="font-semibold text-facu-800 mb-1">¡Hola! Soy Franfi 👋</p>
-            <p>Soy el asistente académico de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA). Tengo cargados los horarios en Excel de todas las carreras, plano de aulas, notas modelo y reglamentos oficiales.</p>
-            <p class="mt-1 text-xs text-slate-600">También puedo derivarte directamente con un botón oficial si buscás otra facultad de la UNCA (Económicas, Salud, Derecho, Humanidades, Agrarias, Exactas o el portal central).</p>
+            <p>Soy el asistente académico de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA). Cuando me pidas cualquier archivo, trámite o portal, te voy a dar **el botón directo** para que entres o lo descargues al instante.</p>
           </div>
         </div>
       </div>
@@ -206,17 +202,99 @@
 
   <script>
     // -------------------------------------------------------------
-    // BASE DE DATOS EXACTA DE ARCHIVOS Y ENLACES (FTyCA + TODAS LAS FACULTADES UNCA)
+    // BASE DE DATOS EXACTA DE ARCHIVOS Y ENLACES
     // -------------------------------------------------------------
     const DOCUMENTOS_GLOBALES = [
-      // --- OTRAS FACULTADES Y PORTAL GENERAL DE LA UNCA ---
+      // --- PORTAL DE HORARIOS OFICIAL DAA ---
+      {
+        id: 'link-horarios',
+        title: 'Portal Oficial de Horarios (DAA)',
+        type: 'link',
+        btnText: 'Abrir Portal de Horarios DAA',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#horarios',
+        content: `Página web oficial de horarios de cursada de la FTyCA - Dirección de Asuntos Académicos (DAA).`
+      },
+      {
+        id: 'link-aulas',
+        title: 'Portal de Aulas DAA',
+        type: 'link',
+        btnText: 'Ir a Aulas DAA Oficial',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#aulas',
+        content: `Página web de distribución de aulas de la FTyCA.`
+      },
+      {
+        id: 'link-formularios',
+        title: 'Portal de Formularios y Notas DAA',
+        type: 'link',
+        btnText: 'Ir a Formularios DAA',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#formularios',
+        content: `Página web con modelos de notas y formularios de la DAA.`
+      },
+      {
+        id: 'link-pps',
+        title: 'Portal de PPS DAA',
+        type: 'link',
+        btnText: 'Ir a Portal de PPS',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#pps',
+        content: `Página web sobre Práctica Profesional Supervisada de la FTyCA.`
+      },
+      {
+        id: 'link-reglamentos',
+        title: 'Portal de Reglamentos DAA',
+        type: 'link',
+        btnText: 'Ir a Reglamentos DAA',
+        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#reglamentos',
+        content: `Página web con reglamentos de la FTyCA.`
+      },
+      {
+        id: 'link-siu-unca',
+        title: 'SIU Guaraní UNCA',
+        type: 'link',
+        btnText: 'Ingresar al SIU Guaraní UNCA',
+        externalUrl: 'https://guarani.unca.edu.ar/',
+        content: `Portal del SIU Guaraní UNCA para inscripciones y trámites.`
+      },
+      {
+        id: 'link-preinscripcion-unca',
+        title: 'Preinscripción UNCA',
+        type: 'link',
+        btnText: 'Ingresar a Preinscripción UNCA',
+        externalUrl: 'https://preinscripcion.unca.edu.ar/',
+        content: `Portal de preinscripción para ingresantes a la UNCA.`
+      },
+      {
+        id: 'link-programas',
+        title: 'Programas Analíticos',
+        type: 'link',
+        btnText: 'Abrir Programas Analíticos',
+        externalUrl: 'https://script.google.com/macros/s/AKfycbx8GbcwR_45vAxDMX1HpWTeAEIVWLIBMr1Utpo8ctfSBxFBWCO1a1lK65e1p7A646Z19A/exec',
+        content: `Buscador de programas analíticos oficiales de materias.`
+      },
+      {
+        id: 'link-moodle',
+        title: 'Campus Virtual Moodle',
+        type: 'link',
+        btnText: 'Ingresar a Campus Moodle FTyCA',
+        externalUrl: 'https://moodle-ftyca.unca.edu.ar/',
+        content: `Campus virtual Moodle de la FTyCA.`
+      },
+      {
+        id: 'link-facultad',
+        title: 'Página DAA - FTyCA',
+        type: 'link',
+        btnText: 'Visitar Página Oficial DAA',
+        externalUrl: 'https://daa.unca.edu.ar/',
+        content: `Sitio oficial del Departamento Alumnos y Bedelía.`
+      },
+
+      // --- OTRAS FACULTADES Y PORTAL CENTRAL UNCA ---
       {
         id: 'link-unca-general',
         title: 'Portal Oficial General UNCA',
         type: 'link',
         btnText: 'Ir a Página Central UNCA',
         externalUrl: 'https://www.unca.edu.ar/',
-        content: `Portal web central de la Universidad Nacional de Catamarca: noticias institucionales, secretarías generales, rectorado, becas y servicios generales.`
+        content: `Portal web central de la Universidad Nacional de Catamarca.`
       },
       {
         id: 'link-fac-economica',
@@ -224,7 +302,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Cs. Económicas',
         externalUrl: 'https://eco.unca.edu.ar/',
-        content: `Facultad de Ciencias Económicas y de Administración de la UNCA: Contador Público, Licenciatura en Administración, etc.`
+        content: `Facultad de Ciencias Económicas y de Administración de la UNCA.`
       },
       {
         id: 'link-fac-salud',
@@ -232,7 +310,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Cs. de la Salud',
         externalUrl: 'https://salud.unca.edu.ar/',
-        content: `Facultad de Ciencias de la Salud de la UNCA: Licenciatura en Enfermería, Nutrición, Bromatología, etc.`
+        content: `Facultad de Ciencias de la Salud de la UNCA.`
       },
       {
         id: 'link-fac-derecho',
@@ -240,7 +318,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Derecho',
         externalUrl: 'https://derecho.unca.edu.ar/',
-        content: `Facultad de Derecho de la UNCA: carrera de Abogacía, peritajes y ciencias jurídicas.`
+        content: `Facultad de Derecho de la UNCA: carrera de Abogacía.`
       },
       {
         id: 'link-fac-humanidades',
@@ -248,7 +326,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Humanidades',
         externalUrl: 'https://huma.unca.edu.ar/',
-        content: `Facultad de Humanidades de la UNCA: Profesorados, Letras, Historia, Geografía, Filosofía, Lenguas Extranjeras y Ciencias de la Educación.`
+        content: `Facultad de Humanidades de la UNCA.`
       },
       {
         id: 'link-fac-agrarias',
@@ -256,7 +334,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Cs. Agrarias',
         externalUrl: 'https://agrarias.unca.edu.ar/',
-        content: `Facultad de Ciencias Agrarias de la UNCA: Ingeniería Agronómica, Tecnicatura en Producción Vegetal, etc.`
+        content: `Facultad de Ciencias Agrarias de la UNCA.`
       },
       {
         id: 'link-fac-exactas',
@@ -264,7 +342,7 @@
         type: 'link',
         btnText: 'Ir a Facultad de Cs. Exactas',
         externalUrl: 'https://informes-exactas.unca.edu.ar/exactas_sitio/',
-        content: `Facultad de Ciencias Exactas y Naturales de la UNCA: Licenciaturas y Profesorados en Matemática, Física, Química, Biología y Ciencias Ambientales.`
+        content: `Facultad de Ciencias Exactas y Naturales de la UNCA.`
       },
 
       // --- HORARIOS DE CURSADA 2°C 2026 (EXCEL) ---
@@ -356,7 +434,7 @@
         title: 'Calendario Académico Oficial 2026',
         type: 'jpeg',
         btnText: 'Ver Calendario Académico 2026',
-        content: `Afiche oficial del Calendario Académico 2026: fechas de cuatrimestres, receso y turnos de exámenes.`
+        content: `Afiche oficial del Calendario Académico 2026.`
       },
 
       // --- MODELOS DE NOTAS Y SOLICITUDES ---
@@ -366,7 +444,7 @@
         title: 'Solicitud de Mesa Especial (Modelo Word)',
         type: 'docx',
         btnText: 'Descargar Solicitud de Mesa Especial (.docx)',
-        content: `Modelo de nota en Word para pedir mesa especial de examen final ante Decanato/Secretaría Académica.`
+        content: `Modelo de nota en Word para pedir mesa especial de examen final.`
       },
       {
         id: 'nota-cambio-plan',
@@ -565,88 +643,6 @@
         type: 'pdf',
         btnText: 'Descargar Mensaje Institucional (.pdf)',
         content: `Palabras de bienvenida de las autoridades de la FTyCA.`
-      },
-
-      // --- ENLACES WEB INSTITUCIONALES (DAA - FTyCA) ---
-      {
-        id: 'link-horarios',
-        title: 'Portal de Horarios DAA',
-        type: 'link',
-        btnText: 'Ir a Horarios DAA Oficial',
-        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#horarios',
-        content: `Página web de horarios de cursada de la FTyCA.`
-      },
-      {
-        id: 'link-aulas',
-        title: 'Portal de Aulas DAA',
-        type: 'link',
-        btnText: 'Ir a Aulas DAA Oficial',
-        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#aulas',
-        content: `Página web de distribución de aulas de la FTyCA.`
-      },
-      {
-        id: 'link-formularios',
-        title: 'Portal de Formularios y Notas DAA',
-        type: 'link',
-        btnText: 'Ir a Formularios DAA',
-        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#formularios',
-        content: `Página web con modelos de notas y formularios de la DAA.`
-      },
-      {
-        id: 'link-pps',
-        title: 'Portal de PPS DAA',
-        type: 'link',
-        btnText: 'Ir a Portal de PPS',
-        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#pps',
-        content: `Página web sobre Práctica Profesional Supervisada de la FTyCA.`
-      },
-      {
-        id: 'link-reglamentos',
-        title: 'Portal de Reglamentos DAA',
-        type: 'link',
-        btnText: 'Ir a Reglamentos DAA',
-        externalUrl: 'https://daa.unca.edu.ar/?page_id=32#reglamentos',
-        content: `Página web con reglamentos de la FTyCA.`
-      },
-      {
-        id: 'link-siu-unca',
-        title: 'SIU Guaraní UNCA',
-        type: 'link',
-        btnText: 'Ingresar al SIU Guaraní UNCA',
-        externalUrl: 'https://guarani.unca.edu.ar/',
-        content: `Portal del SIU Guaraní UNCA para inscripciones y trámites.`
-      },
-      {
-        id: 'link-preinscripcion-unca',
-        title: 'Preinscripción UNCA',
-        type: 'link',
-        btnText: 'Ingresar a Preinscripción UNCA',
-        externalUrl: 'https://preinscripcion.unca.edu.ar/',
-        content: `Portal de preinscripción para ingresantes a la UNCA.`
-      },
-      {
-        id: 'link-programas',
-        title: 'Programas Analíticos',
-        type: 'link',
-        btnText: 'Abrir Programas Analíticos',
-        externalUrl: 'https://script.google.com/macros/s/AKfycbx8GbcwR_45vAxDMX1HpWTeAEIVWLIBMr1Utpo8ctfSBxFBWCO1a1lK65e1p7A646Z19A/exec',
-        content: `Buscador de programas analíticos oficiales de materias.`
-      },
-      {
-        id: 'link-moodle',
-        title: 'Campus Virtual Moodle',
-        type: 'link',
-        btnText: 'Ingresar a Campus Moodle FTyCA',
-        externalUrl: 'https://moodle-ftyca.unca.edu.ar/',
-        content: `Campus virtual Moodle de la FTyCA.`
-      },
-      {
-        id: 'link-facultad',
-        title: 'Página DAA - FTyCA',
-        type: 'link',
-        btnText: 'Visitar Página Oficial DAA',
-        externalUrl: 'https://daa.unca.edu.ar/',
-        content: `Sitio oficial del Departamento Alumnos y Bedelía.`
       }
     ];
 
@@ -686,7 +682,7 @@
       }
     ];
 
-    // Contactos oficiales de guardia
+    // Contactos de guardia
     const MIEMBROS_CENTRO = [
       {
         nombre: 'Milagros Duarte',
@@ -920,7 +916,7 @@
       `;
     }
 
-    // GENERADOR DE BOTÓN DIRECTO EN PANTALLA
+    // BOTÓN DE ACCIÓN DESTACADO (TARJETA)
     function generateInteractiveButtonCard(matched) {
       if (!matched) return '';
 
@@ -977,14 +973,31 @@
       }
     }
 
+    // CONVERTIDOR DE TEXTO / MARKDOWN A BOTONES HTML REALES
+    function formatMessageContent(rawText) {
+      // Reemplaza [Nombre](https://...) por un botón HTML estilizado
+      const linkRegex = /\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g;
+      let formatted = rawText.replace(linkRegex, (match, title, url) => {
+        return `<div class="my-2.5">
+          <a href="${url}" target="_blank" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-xs hover:shadow transition active:scale-95">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> ${title}
+          </a>
+        </div>`;
+      });
+
+      return formatted;
+    }
+
     // Consulta con Gemini Flash
     async function askGemini(userQuestion) {
       const candidateModels = ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
-      const systemInstruction = `Sos Franfi, el asistente virtual de la Universidad Nacional de Catamarca con foco principal en la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA).
+      const systemInstruction = `Sos Franfi, el asistente virtual oficial de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA).
 Reglas:
 1. Usá tono universitario cordial, argentino / rioplatense (usá "che", "hola!", "un gusto").
-2. Si te preguntan por otras facultades de la UNCA (Económicas, Salud, Derecho, Humanidades, Agrarias, Exactas o el sitio general de la UNCA) o por carreras ajenas a Tecnología (ej: Contador, Abogacía, Enfermería, Agronomía, Letras), explicale con buena onda que esa carrera pertenece a otra unidad académica y avisale que abajo le dejás el botón para entrar a su página oficial correspondiente.
-3. Si pide archivos o trámites de Tecnología, avisale que tiene el botón de descarga abajo.`;
+2. Respondé en forma breve y clara.
+3. Si el estudiante pide una página o enlace (como la página de horarios, aulas, SIU o Moodle), no escribas links largos; confirmale amablemente que abajo tiene el botón directo para ingresar.
+4. Si piden archivos o carreras de Tecnología, indicales que tienen el botón de descarga abajo.
+5. Si preguntan por otra facultad de la UNCA, indicales que les dejás el botón para acceder a su sitio oficial.`;
 
       let context = "--- DOCUMENTACIÓN, HORARIOS 2°C 2026 Y ENLACES OFICIALES UNCA ---\n";
       DOCUMENTOS_GLOBALES.forEach(d => {
@@ -1016,20 +1029,25 @@ Reglas:
       return null;
     }
 
-    // Buscador de coincidencias exactas (FTyCA y OTRAS FACULTADES)
+    // Buscador de coincidencias exactas con PRIORIDAD INTELIGENTE
     function findMatchingDocOrLink(query) {
       const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+      // PRIORIDAD 1: Si pide expresamente PÁGINA / LINK / WEB / SITIO de HORARIOS -> Llevar a la web DAA
+      if ((q.includes('link') || q.includes('pagina') || q.includes('portal') || q.includes('sitio') || q.includes('web')) && q.includes('horario')) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-horarios');
+      }
 
       // OTRAS FACULTADES Y CARRERAS
       if (q.includes('economica') || q.includes('contador') || q.includes('administracion')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-economica');
       if (q.includes('salud') || q.includes('enfermeria') || q.includes('nutricion') || q.includes('bromatologia')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-salud');
       if (q.includes('derecho') || q.includes('abogacia') || q.includes('abogado') || q.includes('leyes')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-derecho');
-      if (q.includes('humanidades') || q.includes('letras') || q.includes('historia') || q.includes('geografia') || q.includes('filosofia') || q.includes('ingles') || q.includes('frances') || q.includes('pedagogia')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-humanidades');
+      if (q.includes('humanidades') || q.includes('letras') || q.includes('historia') || q.includes('geografia') || q.includes('filosofia') || q.includes('ingles') || q.includes('pedagogia')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-humanidades');
       if (q.includes('agrarias') || q.includes('agronomia') || q.includes('agronomo') || q.includes('campo')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-agrarias');
       if (q.includes('exactas') || q.includes('biologia') || q.includes('quimica') || q.includes('fisica') || q.includes('matematica') || q.includes('ambiental')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-fac-exactas');
       if (q.includes('rectorado') || q.includes('pagina de la unca') || q.includes('sitio de la unca') || (q.includes('portal') && q.includes('unca') && !q.includes('guarani'))) return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-unca-general');
 
-      // Horarios por carrera FTyCA
+      // PRIORIDAD 2: Horarios por carrera específica (Excel)
       if (q.includes('minas')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-minas');
       if (q.includes('informatica')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-informatica');
       if (q.includes('electronica')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-electronica');
@@ -1039,6 +1057,11 @@ Reglas:
       if (q.includes('tuds') || (q.includes('software') && !q.includes('libre'))) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tuds');
       if (q.includes('tupsli') || q.includes('libre')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tupsli');
       if (q.includes('tui')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'h-tui');
+
+      // Si pide horarios en general sin aclarar carrera -> Llevar al portal web DAA
+      if (q.includes('horario') || q.includes('horarios') || q.includes('cursadas')) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-horarios');
+      }
 
       // Aulas y Calendario
       if (q.includes('aula') || q.includes('donde queda') || q.includes('plano') || q.includes('ubicacion')) return DOCUMENTOS_GLOBALES.find(d => d.id === 'img-aulas');
@@ -1082,10 +1105,12 @@ Reglas:
           <div class="w-8 h-8 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center font-bold text-xs flex-shrink-0">Tú</div>
         `;
       } else {
+        const processedText = formatMessageContent(text);
+
         msgDiv.innerHTML = `
           <div class="w-8 h-8 rounded-full bg-facu-700 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 shadow">F</div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
-            <p class="whitespace-pre-line">${text}</p>
+            <div class="whitespace-pre-line">${processedText}</div>
             ${extraHtml}
           </div>
         `;
@@ -1115,7 +1140,7 @@ Reglas:
       }
 
       if (GEMINI_API_KEY) {
-        const loading = appendMessage('bot', 'Franfi está preparando la información y el botón directo...');
+        const loading = appendMessage('bot', 'Franfi está buscando la información oficial...');
         try {
           const aiResponse = await askGemini(text);
           loading.remove();
@@ -1129,22 +1154,22 @@ Reglas:
           }
         } catch (err) {
           loading.remove();
-          appendMessage('bot', 'Acá tenés el botón directo para lo que buscás:', actionButtonHtml || generateCentroChatCard());
+          appendMessage('bot', 'Acá tenés el botón directo para lo que necesitás:', actionButtonHtml || generateCentroChatCard());
         }
       } else {
         setTimeout(() => {
           if (matched) {
             if (matched.type === 'link') {
               if (matched.id.startsWith('link-fac-') || matched.id === 'link-unca-general') {
-                appendMessage('bot', `Esa carrera o consulta pertenece a otra unidad académica de la UNCA. Tocá el botón de abajo para entrar directamente a su página oficial:`, actionButtonHtml);
+                appendMessage('bot', `Esa consulta corresponde a otra unidad académica de la UNCA. Tocá el botón de abajo para entrar a su sitio oficial:`, actionButtonHtml);
               } else {
                 appendMessage('bot', `¡Listo! Hacé clic en el botón de abajo para entrar directamente al portal oficial:`, actionButtonHtml);
               }
             } else {
-              appendMessage('bot', `¡Acá lo tenés! Hacé clic en el botón de abajo para descargarte el archivo oficial:`, actionButtonHtml);
+              appendMessage('bot', `¡Acá lo tenés! Hacé clic en el botón de abajo para descargar el archivo oficial:`, actionButtonHtml);
             }
           } else if (lower.includes('hola') || lower.includes('buenas')) {
-            appendMessage('bot', '¡Hola! ¿Cómo andás? Soy Franfi. Pedime los horarios de tu carrera en Excel, el plano de aulas, notas modelo o enlaces de cualquier facultad de la UNCA.');
+            appendMessage('bot', '¡Hola! ¿Cómo andás? Soy Franfi. Pedime los horarios de tu carrera en Excel, la página oficial de horarios, el plano de aulas, notas modelo o enlaces de cualquier facultad de la UNCA.');
           } else {
             appendMessage('bot', 'No encontré esa información en los registros actuales. Podés escribirle directamente a los delegados del Centro de Estudiantes tocando los botones abajo:', generateCentroChatCard());
           }
