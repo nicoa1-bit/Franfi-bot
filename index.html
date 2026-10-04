@@ -49,7 +49,7 @@
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> FTyCA - UNCA
             </span>
           </div>
-          <p class="text-xs text-sky-200">Asistente oficial: trámites, ordenanzas, enlaces y contacto estudiantil</p>
+          <p class="text-xs text-sky-200">Asistente oficial: trámites, SIU Guaraní, ordenanzas y contacto estudiantil</p>
         </div>
       </div>
 
@@ -70,7 +70,7 @@
       <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
         <i class="fa-solid fa-compass text-facu-600"></i> Accesos y Archivos
       </h2>
-      <p class="text-xs text-slate-500 mb-3">Portales institucionales, programas y reglamentaciones oficiales.</p>
+      <p class="text-xs text-slate-500 mb-3">Portales UNCA, SIU Guaraní, programas y reglamentaciones oficiales.</p>
       
       <div id="sideFileList" class="space-y-2 flex-1 overflow-y-auto">
         <!-- Render dinámico de enlaces y documentos -->
@@ -99,16 +99,19 @@
           <i class="fa-regular fa-lightbulb text-amber-500"></i> Accesos rápidos:
         </span>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
+          Ingresar al SIU Guaraní UNCA
+        </button>
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
+          Link de Preinscripción
+        </button>
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
           Programas analíticos
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
           Campus Virtual Moodle
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Pasame el PDF de la ordenanza
-        </button>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Canales de WhatsApp y Redes
+          Canales y Redes Estudiantiles
         </button>
       </div>
 
@@ -120,7 +123,7 @@
           </div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
             <p class="font-semibold text-facu-800 mb-1">¡Hola! Soy Franfi 👋</p>
-            <p>Estoy para ayudarte con información de la facultad, ordenanzas de exámenes, fechas y materias. También puedo darte los links al Moodle, la página oficial, los programas analíticos o los canales de difusión del Centro de Estudiantes.</p>
+            <p>Estoy para ayudarte con información de la facultad, ordenanzas de exámenes, fechas y materias. También te comparto los enlaces oficiales al **SIU Guaraní UNCA**, **Preinscripción**, el Campus Moodle, la página oficial de la facultad o los canales de difusión de **CETECA** y **Franja Morada**.</p>
           </div>
         </div>
       </div>
@@ -131,7 +134,7 @@
           <input 
             type="text" 
             id="chatInput"
-            placeholder="Preguntale a Franfi por un enlace, ordenanza o contacto..." 
+            placeholder="Preguntale a Franfi por SIU Guaraní, materias, ordenanzas o contactos..." 
             class="flex-1 bg-slate-50 border border-slate-300 focus:border-facu-600 focus:bg-white focus:outline-none rounded-xl px-4 py-2.5 text-sm transition placeholder-slate-400"
             required
             autocomplete="off"
@@ -159,9 +162,7 @@
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
-      <div class="p-5 space-y-4 overflow-y-auto" id="centroContactList">
-        <!-- Render dinámico de redes y contactos -->
-      </div>
+      <div class="p-5 space-y-4 overflow-y-auto" id="centroContactList"></div>
       <div class="bg-slate-50 px-5 py-3 border-t border-slate-200 text-right">
         <button onclick="closeCentroModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-4 py-1.5 rounded-lg text-xs">Cerrar</button>
       </div>
@@ -197,9 +198,27 @@
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
     // -------------------------------------------------------------
-    // BASE DE REPOSITORIO Y ENLACES OFICIALES
+    // BASE DE REPOSITORIO Y ENLACES OFICIALES (INCLUYE SIU Y PREINSCRIPCIÓN)
     // -------------------------------------------------------------
     const DOCUMENTOS_GLOBALES = [
+      {
+        id: 'link-siu-unca',
+        title: 'SIU Guaraní UNCA (Autogestión Alumnos)',
+        type: 'link',
+        size: 'Portal Oficial',
+        date: 'Activo',
+        externalUrl: 'https://guarani.unca.edu.ar/',
+        content: `Portal oficial del SIU Guaraní de la Universidad Nacional de Catamarca (UNCA). Utilizado para inscripciones a materias, solicitud de exámenes finales, certificados de regularidad e historia académica.`
+      },
+      {
+        id: 'link-preinscripcion-unca',
+        title: 'Sistema de Preinscripción UNCA',
+        type: 'link',
+        size: 'Portal Ingresantes',
+        date: 'Activo',
+        externalUrl: 'https://preinscripcion.unca.edu.ar/',
+        content: `Sistema oficial de preinscripción para nuevos ingresantes y aspirantes a las carreras universitarias de la UNCA y de la FTyCA.`
+      },
       {
         id: 'link-programas',
         title: 'Programas Analíticos de Materias',
@@ -254,21 +273,19 @@
       }
     ];
 
-    // -------------------------------------------------------------
-    // CONTACTOS PERSONALES Y CANALES / REDES ESTUDIANTILES
-    // -------------------------------------------------------------
+    // Contactos y Canales
     const MIEMBROS_CENTRO = [
       {
-        nombre: 'Nicolas Aguero',
-        cargo: 'Asuntos Estudiantiles y Académicos',
-        telefono: '5493834249192',
-        numeroVisible: '+54 9 383 424-9192'
+        nombre: 'Milagros Duarte',
+        cargo: 'Secretaria General',
+        telefono: '5493834288482',
+        numeroVisible: '+54 9 383 428-8482'
       },
       {
-        nombre: 'Nombre y apellido',
-        cargo: 'Secretaría de Alumnos y Regularidad',
-        telefono: '5493834987654',
-        numeroVisible: '+54 9 383 498-7654'
+        nombre: 'Nicoalas Aguero',
+        cargo: 'Secretario Estudiantil',
+        telefono: '5493834249192',
+        numeroVisible: '+54 9 383 424-9192'
       }
     ];
 
@@ -418,13 +435,11 @@
       }
     };
 
-    // Render del modal completo de contactos, canales e Instagram
     window.showCentroContactModal = function() {
       centroContactList.innerHTML = `
-        <!-- Canales de Difusión y Redes -->
         <div>
           <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-1.5">
-            <i class="fa-solid fa-bullhorn text-facu-600"></i> Canales de Información y Redes
+            <i class="fa-solid fa-bullhorn text-facu-600"></i> Canales de Difusión y Redes
           </h4>
           <div class="space-y-2">
             ${CANALES_Y_REDES.map(red => `
@@ -444,7 +459,6 @@
           </div>
         </div>
 
-        <!-- Contactos Directos -->
         <div class="pt-3 border-t border-slate-100">
           <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-1.5">
             <i class="fa-solid fa-headset text-facu-600"></i> Contactos de Guardia
@@ -474,7 +488,6 @@
       centroModal.classList.add('hidden');
     };
 
-    // Tarjeta enriquecida para el Chat con contactos, canales e Instagram
     function generateCentroChatCard() {
       let redesHtml = CANALES_Y_REDES.map(red => `
         <a href="${red.url}" target="_blank" class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:border-facu-500 text-xs transition">
@@ -516,16 +529,14 @@
       `;
     }
 
-    // Consulta con Gemini Flash
     async function askGemini(userQuestion) {
       const candidateModels = ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
       const systemInstruction = `Sos Franfi, el asistente virtual oficial de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA).
 Características:
 1. Usá tono universitario cordial, argentino / rioplatense (usá "che", "hola!", "un gusto", "consultame lo que necesites").
-2. Si te saludan ("hola", "buenas"), saludá cordialmente.
-3. Si el estudiante pide links (Moodle, Facultad, Programas Analíticos, Instagram o Canales de WhatsApp), explicale brevemente para qué sirve y recordale que abajo tiene el botón directo para ingresar.
-4. Si pide ordenanzas o calendarios, indicale que tiene la tarjeta de descarga disponible abajo.
-5. Si no figura la información o es un trámite particular que requiera gestión, recomendale contactar al Centro de Estudiantes CETECA o a Franja Morada.`;
+2. Si el estudiante pide links (SIU Guaraní UNCA, Preinscripción, Moodle, Facultad, Programas Analíticos, Instagram o Canales de WhatsApp), explicale brevemente para qué sirve y recordale que abajo tiene el botón directo para ingresar.
+3. Si pide ordenanzas o calendarios, indicale que tiene la tarjeta de descarga disponible abajo.
+4. Si no figura la información o es un trámite particular que requiera gestión, recomendale contactar al Centro de Estudiantes CETECA o a Franja Morada.`;
 
       let context = "--- ENLACES Y REPOSITORIO DE LA FACULTAD ---\n";
       DOCUMENTOS_GLOBALES.forEach(d => {
@@ -561,10 +572,16 @@ Características:
       return null;
     }
 
-    // Buscador de coincidencias en links o archivos
+    // Buscador de coincidencias exactas para SIU, Preinscripción, Moodle, etc.
     function findMatchingDocOrLink(query) {
       const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       
+      if (q.includes('preinscripcion') || q.includes('ingresante') || q.includes('anotarme') || q.includes('inscribirme a la carrera')) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-preinscripcion-unca');
+      }
+      if (q.includes('siu') || q.includes('guarani') || q.includes('autogestion') || q.includes('certificado de alumno regular')) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-siu-unca');
+      }
       if (q.includes('programa') || q.includes('analitico') || q.includes('plan de estudio')) {
         return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-programas');
       }
@@ -634,7 +651,7 @@ Características:
                 <span class="text-xs px-2 py-1 rounded font-bold border bg-sky-50 text-sky-700 border-sky-200 uppercase">ENLACE</span>
                 <div class="truncate">
                   <p class="font-semibold text-xs text-slate-800 truncate">${matched.title}</p>
-                  <p class="text-[10px] text-slate-400">Portal oficial de la FTyCA</p>
+                  <p class="text-[10px] text-slate-400">Portal oficial de la UNCA</p>
                 </div>
               </div>
               <a href="${matched.externalUrl}" target="_blank" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
@@ -692,7 +709,7 @@ Características:
               appendMessage('bot', `Acá tenés el documento oficial que solicitaste:`, interactiveCard);
             }
           } else if (lower.includes('hola') || lower.includes('buenas')) {
-            appendMessage('bot', '¡Hola! ¿Cómo estás? Soy Franfi. Consultame por materias, programas analíticos, Moodle, ordenanzas o canales del Centro de Estudiantes.');
+            appendMessage('bot', '¡Hola! ¿Cómo estás? Soy Franfi. Consultame por SIU Guaraní, preinscripciones, programas analíticos, Moodle, ordenanzas o canales del Centro de Estudiantes.');
           } else {
             appendMessage('bot', 'No encontré esa información en los registros cargados. Podés consultar directamente en los canales de difusión o con el Centro de Estudiantes:', generateCentroChatCard());
           }
@@ -709,7 +726,5 @@ Características:
 
     renderGlobalDocs();
   </script>
-</body>
-</html>
 </body>
 </html>
