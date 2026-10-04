@@ -109,13 +109,13 @@
           <i class="fa-regular fa-lightbulb text-amber-500"></i> Rápidos:
         </span>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
+          <i class="fa-solid fa-handshake-angle text-facu-600"></i> ¡Hola Franfi! ¿Cómo andás?
+        </button>
+        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
           <i class="fa-solid fa-book-open text-amber-600"></i> Guía Nivelación Matemática y Física
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
           <i class="fa-solid fa-globe text-sky-600"></i> Portal de Horarios DAA
-        </button>
-        <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
-          <i class="fa-solid fa-file-excel text-emerald-600"></i> Horarios de Minas 2°C
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition flex items-center gap-1">
           <i class="fa-solid fa-map text-purple-600"></i> Plano de aulas
@@ -132,8 +132,9 @@
             F
           </div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
-            <p class="font-semibold text-facu-800 mb-1">¡Hola! Soy Franfi 👋</p>
-            <p>Soy el asistente académico de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA). Cuando me pidas cualquier archivo, guía de nivelación, trámite o portal institucional, te voy a dar **el botón directo** para que entres o lo descargues al instante.</p>
+            <p class="font-semibold text-facu-800 mb-1">¡Hola, che! Soy Franfi 👋</p>
+            <p>Acá estoy para darte una mano con la facu. Ya sea que te estés volviendo loco con los horarios, no sepas dónde queda un aula, necesites una nota modelo o quieras saber las fechas del calendario, preguntame tranquilo que lo resolvemos juntos.</p>
+            <p class="mt-2 text-xs text-slate-600">¿De qué carrera sos o con qué materia o trámite andás necesitando una mano hoy?</p>
           </div>
         </div>
       </div>
@@ -144,7 +145,7 @@
           <input 
             type="text" 
             id="chatInput"
-            placeholder="Pedí un horario, guía de nivelación, nota o facultad..." 
+            placeholder="Escribile a Franfi lo que te pasa o qué necesitás saber..." 
             class="flex-1 bg-slate-50 border border-slate-300 focus:border-facu-600 focus:bg-white focus:outline-none rounded-xl px-4 py-2.5 text-sm transition placeholder-slate-400"
             required
             autocomplete="off"
@@ -715,6 +716,9 @@
     ];
 
     let GEMINI_API_KEY = localStorage.getItem('franfi_gemini_key') || '';
+    
+    // Historial de conversación en memoria para dar continuidad al diálogo
+    let chatConversationHistory = [];
 
     // Elementos DOM
     const chatMessages = document.getElementById('chatMessages');
@@ -1001,26 +1005,38 @@
       });
     }
 
-    // Consulta con Gemini Flash
+    // Consulta con Gemini Flash con TONO CÁLIDO, EMPÁTICO Y MEMORIA DE DIÁLOGO
     async function askGemini(userQuestion) {
       const candidateModels = ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
-      const systemInstruction = `Sos Franfi, el asistente virtual oficial de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA).
-Reglas:
-1. Usá tono universitario cordial, argentino / rioplatense (usá "che", "hola!", "un gusto").
-2. Respondé en forma breve y clara.
-3. Si el estudiante pide una página o enlace (como la página de horarios, aulas, SIU o Moodle), no escribas links largos; confirmale amablemente que abajo tiene el botón directo para ingresar.
-4. Si piden archivos, guías de nivelación o materias de Tecnología, indicales que tienen el botón de descarga abajo.
-5. Si preguntan por otra facultad de la UNCA, indicales que les dejás el botón para acceder a su sitio oficial.`;
+      
+      const systemInstruction = `Sos Franfi, el asistente virtual y compañero de los estudiantes de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA) en Catamarca, Argentina.
 
-      let context = "--- DOCUMENTACIÓN, HORARIOS 2°C 2026 Y ENLACES OFICIALES UNCA ---\n";
+TU PERSONALIDAD Y TONO:
+- Sos re cálido, compinche, cercano y recontra empático con la vida universitaria. Hablás como un estudiante avanzado o un compañero de Franja / Centro de Estudiantes que te frena en el pasillo a darte una mano.
+- Usás modismos argentinos naturales: "¡Hola, che!", "¿Cómo andás?", "Uf, qué tema ese", "Quedate tranqui", "De una", "Te paso la data posta", "Cualquier cosa avisame".
+- ¡NO seas un robot seco! No tires solamente datos o botones sueltos: conversá, preguntá cómo le está yendo, qué materia le preocupa o si necesita algún consejo extra sobre correlativas, profes o cursada.
+- Si el estudiante saluda o hace una consulta general, charlá con él, preguntale de qué carrera es y en qué año está.
+- Si le das una respuesta sobre un trámite complicado (mesa especial, correlativas, readmisión), dale ánimo ("Metele para adelante que se aprueba", "No te cuelgues con las fechas del SIU").
+- Avisale siempre que abajo le dejás el botón para descargar el archivo o para entrar directamente al enlace oficial sin vueltas.
+- Si pregunta por otra facultad de la UNCA (Salud, Económicas, Derecho, Humanidades, etc.), respondé con la mejor onda explicándole que es en otra facultad pero dejándole el botón para entrar a su portal oficial.`;
+
+      let contextDocs = "--- DOCUMENTACIÓN, HORARIOS 2°C 2026 Y ENLACES OFICIALES UNCA ---\n";
       DOCUMENTOS_GLOBALES.forEach(d => {
-        context += `\n[TÍTULO: ${d.title} | ARCHIVO: ${d.fileName || d.externalUrl}]\n${d.content}\n`;
+        contextDocs += `\n[TÍTULO: ${d.title} | ARCHIVO: ${d.fileName || d.externalUrl}]\n${d.content}\n`;
       });
+
+      // Estructuramos el contenido con historial para que no pierda el hilo de la charla
+      const contentsPayload = [
+        { role: "user", parts: [{ text: contextDocs }] },
+        { role: "model", parts: [{ text: "¡De una! Tengo toda la documentación de la facu cargada y estoy listo para acompañar a los chicos en lo que necesiten." }] },
+        ...chatConversationHistory,
+        { role: "user", parts: [{ text: userQuestion }] }
+      ];
 
       const requestBody = {
         system_instruction: { parts: [{ text: systemInstruction }] },
-        contents: [{ role: "user", parts: [{ text: context }, { text: `Consulta: ${userQuestion}` }] }],
-        generationConfig: { temperature: 0.25 }
+        contents: contentsPayload,
+        generationConfig: { temperature: 0.65 } // Mayor calidez y espontaneidad natural
       };
 
       for (const model of candidateModels) {
@@ -1033,7 +1049,14 @@ Reglas:
           });
           if (res.ok) {
             const data = await res.json();
-            return data.candidates?.[0]?.content?.parts?.[0]?.text;
+            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (reply) {
+              // Guardamos en el historial para mantener la conversación
+              chatConversationHistory.push({ role: "user", parts: [{ text: userQuestion }] });
+              chatConversationHistory.push({ role: "model", parts: [{ text: reply }] });
+              if (chatConversationHistory.length > 8) chatConversationHistory.splice(0, 2);
+              return reply;
+            }
           }
         } catch (e) {
           console.warn(`Error con ${model}`);
@@ -1152,13 +1175,14 @@ Reglas:
       const matched = findMatchingDocOrLink(text);
       const actionButtonHtml = generateInteractiveButtonCard(matched);
 
+      // Si pide expresamente contacto de guardia o redes
       if (lower.includes('centro') || lower.includes('estudiantes') || lower.includes('contacto') || lower.includes('delegado') || lower.includes('telefono') || lower.includes('instagram') || lower.includes('canal') || lower.includes('difusion') || lower.includes('franja') || lower.includes('ceteca') || lower.includes('milagros') || lower.includes('nicolas')) {
-        appendMessage('bot', '¡De una! Acá tenés los botones directos para unirte a los canales, Instagram oficial y escribirles por WhatsApp a los chicos de guardia:', generateCentroChatCard());
+        appendMessage('bot', '¡De una, che! Acá tenés los botones directos para sumarte a los canales de WhatsApp, entrar al Instagram oficial o escribirles a los chicos de guardia por cualquier consulta particular:', generateCentroChatCard());
         return;
       }
 
       if (GEMINI_API_KEY) {
-        const loading = appendMessage('bot', 'Franfi está buscando la información oficial...');
+        const loading = appendMessage('bot', 'Franfi está pensando...');
         try {
           const aiResponse = await askGemini(text);
           loading.remove();
@@ -1168,28 +1192,29 @@ Reglas:
             const extra = actionButtonHtml + (isUnknown ? generateCentroChatCard() : '');
             appendMessage('bot', aiResponse, extra);
           } else {
-            appendMessage('bot', 'No encontré ese dato puntual en los reglamentos. Te comparto el contacto del Centro de Estudiantes:', generateCentroChatCard());
+            appendMessage('bot', 'No encontré ese dato puntual en los reglamentos, che. Te comparto el contacto de los chicos del Centro de Estudiantes para que les escribas:', generateCentroChatCard());
           }
         } catch (err) {
           loading.remove();
-          appendMessage('bot', 'Acá tenés el botón directo para lo que necesitás:', actionButtonHtml || generateCentroChatCard());
+          appendMessage('bot', 'Acá tenés lo que necesitás:', actionButtonHtml || generateCentroChatCard());
         }
       } else {
+        // Fallback interactivo y cálido si no hay API Key configurada
         setTimeout(() => {
           if (matched) {
             if (matched.type === 'link') {
               if (matched.id.startsWith('link-fac-') || matched.id === 'link-unca-general') {
-                appendMessage('bot', `Esa consulta corresponde a otra unidad académica de la UNCA. Tocá el botón de abajo para entrar a su sitio oficial:`, actionButtonHtml);
+                appendMessage('bot', `¡Che, esa carrera o consulta corresponde a otra facultad de la UNCA! Pero no te preocupes, te dejo acá abajo el botón oficial para que entres directo a su página:`, actionButtonHtml);
               } else {
-                appendMessage('bot', `¡Listo! Hacé clic en el botón de abajo para entrar directamente al portal oficial:`, actionButtonHtml);
+                appendMessage('bot', `¡De una! Acá abajo te dejo el botón directo para que entres al portal oficial:`, actionButtonHtml);
               }
             } else {
-              appendMessage('bot', `¡Acá lo tenés! Hacé clic en el botón de abajo para descargar el archivo oficial:`, actionButtonHtml);
+              appendMessage('bot', `¡Buenísimo! Acá abajo te dejo el botón directo para que te descargues el archivo oficial en el momento:`, actionButtonHtml);
             }
-          } else if (lower.includes('hola') || lower.includes('buenas')) {
-            appendMessage('bot', '¡Hola! ¿Cómo andás? Soy Franfi. Pedime la guía de nivelación, los horarios de tu carrera en Excel, la página oficial de horarios, el plano de aulas, notas modelo o enlaces de cualquier facultad de la UNCA.');
+          } else if (lower.includes('hola') || lower.includes('buenas') || lower.includes('que tal') || lower.includes('como andas')) {
+            appendMessage('bot', '¡Hola, che! ¿Cómo andás? Todo tranquilo por acá. Contame en qué año andás o qué materias estás cursando así te paso los horarios, fechas de examen o lo que te haga falta.');
           } else {
-            appendMessage('bot', 'No encontré esa información en los registros actuales. Podés escribirle directamente a los delegados del Centro de Estudiantes tocando los botones abajo:', generateCentroChatCard());
+            appendMessage('bot', 'Mirá, che, esa información puntual no me figura en los papeles de la facultad. Pero no te quedes con la duda: escribiles a los chicos del Centro de Estudiantes tocando los botones de acá abajo:', generateCentroChatCard());
           }
         }, 250);
       }
