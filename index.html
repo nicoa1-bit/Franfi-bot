@@ -8,6 +8,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Mammoth.js para extraer texto de Word .docx -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <!-- PDF.js para lectura de documentos -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -41,14 +46,14 @@
           <div class="flex items-center space-x-2">
             <h1 class="text-xl font-bold tracking-tight">Franfi</h1>
             <span class="bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-emerald-400/30 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Alumnado y Facultad
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> FTyCA - UNCA
             </span>
           </div>
-          <p class="text-xs text-sky-200">Consultas de ordenanzas, fechas, cursadas y contacto estudiantil</p>
+          <p class="text-xs text-sky-200">Asistente oficial: trámites, ordenanzas, enlaces y contacto estudiantil</p>
         </div>
       </div>
 
-      <!-- El botón de Admin ahora está oculto por defecto para los estudiantes -->
+      <!-- Botón de administración oculto (Ctrl+Alt+A o ?admin=true) -->
       <div class="flex items-center space-x-2">
         <button id="btnOpenAdmin" class="hidden text-slate-400 hover:text-white p-2 rounded-lg text-xs transition" title="Administración">
           <i class="fa-solid fa-shield-halved"></i>
@@ -63,24 +68,24 @@
     <!-- Barra Lateral -->
     <aside class="hidden md:flex flex-col w-72 bg-white rounded-xl shadow-sm border border-slate-200 p-4 overflow-y-auto">
       <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
-        <i class="fa-solid fa-folder-open text-facu-600"></i> Documentos Oficiales
+        <i class="fa-solid fa-compass text-facu-600"></i> Accesos y Archivos
       </h2>
-      <p class="text-xs text-slate-500 mb-3">Ordenanzas, calendarios y reglamentos vigentes. Hacé clic para descargar o pedíselos a Franfi.</p>
+      <p class="text-xs text-slate-500 mb-3">Portales institucionales, programas y reglamentaciones oficiales.</p>
       
       <div id="sideFileList" class="space-y-2 flex-1 overflow-y-auto">
-        <!-- Render de archivos oficiales compartidos para todos -->
+        <!-- Render dinámico de enlaces y documentos -->
       </div>
 
-      <!-- Tarjeta del Centro de Estudiantes en el Menú Lateral -->
+      <!-- Tarjeta del Centro de Estudiantes y Canales -->
       <div class="mt-4 pt-3 border-t border-slate-100 bg-sky-50 -mx-4 -mb-4 p-3 rounded-b-xl">
         <p class="text-xs font-bold text-facu-800 mb-1 flex items-center gap-1.5">
-          <i class="fa-solid fa-users text-facu-600"></i> Centro de Estudiantes
+          <i class="fa-solid fa-users text-facu-600"></i> Centro & Agrupación
         </p>
         <p class="text-[11px] text-slate-600 leading-tight mb-2">
-          ¿Problemas con inscripciones o reclamos? Contactá a los delegados.
+          Canales de difusión, Instagram oficial y números de guardia.
         </p>
         <button onclick="showCentroContactModal()" class="w-full bg-facu-600 hover:bg-facu-700 text-white text-xs font-semibold py-1.5 rounded-lg shadow-xs transition">
-          Ver contactos de guardia
+          Ver contactos y redes
         </button>
       </div>
     </aside>
@@ -91,19 +96,19 @@
       <!-- Sugerencias Rápidas -->
       <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs gap-2 overflow-x-auto whitespace-nowrap">
         <span class="text-slate-500 font-medium flex items-center gap-1">
-          <i class="fa-regular fa-lightbulb text-amber-500"></i> Ejemplos:
+          <i class="fa-regular fa-lightbulb text-amber-500"></i> Accesos rápidos:
         </span>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Hola Franfi, ¿qué podés hacer?
+          Programas analíticos
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          ¿Qué dice la ordenanza CD 003-2018?
+          Campus Virtual Moodle
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
           Pasame el PDF de la ordenanza
         </button>
         <button class="quick-chip bg-white border border-slate-200 hover:border-facu-500 text-slate-700 px-2.5 py-1 rounded-full transition">
-          Contacto Centro de Estudiantes
+          Canales de WhatsApp y Redes
         </button>
       </div>
 
@@ -115,8 +120,7 @@
           </div>
           <div class="bg-slate-100 rounded-2xl rounded-tl-none p-3.5 max-w-[85%] text-sm text-slate-800 border border-slate-200/70 shadow-sm leading-relaxed">
             <p class="font-semibold text-facu-800 mb-1">¡Hola! Soy Franfi 👋</p>
-            <p>Soy el asistente de la facultad. Podés hacerme preguntas sobre ordenanzas, fechas de exámenes, trámites en SIU Guaraní o pedirme los archivos oficiales para descargar.</p>
-            <p class="mt-2 text-xs text-slate-600">Si hay algún trámite específico o reclamo que no figure en los reglamentos, te contacto directamente con los chicos del **Centro de Estudiantes**.</p>
+            <p>Estoy para ayudarte con información de la facultad, ordenanzas de exámenes, fechas y materias. También puedo darte los links al Moodle, la página oficial, los programas analíticos o los canales de difusión del Centro de Estudiantes.</p>
           </div>
         </div>
       </div>
@@ -127,7 +131,7 @@
           <input 
             type="text" 
             id="chatInput"
-            placeholder="Preguntale a Franfi o pedí un archivo..." 
+            placeholder="Preguntale a Franfi por un enlace, ordenanza o contacto..." 
             class="flex-1 bg-slate-50 border border-slate-300 focus:border-facu-600 focus:bg-white focus:outline-none rounded-xl px-4 py-2.5 text-sm transition placeholder-slate-400"
             required
             autocomplete="off"
@@ -143,20 +147,20 @@
     </section>
   </main>
 
-  <!-- MODAL: CONTACTOS DEL CENTRO DE ESTUDIANTES -->
+  <!-- MODAL: CONTACTOS DEL CENTRO DE ESTUDIANTES Y REDES -->
   <div id="centroModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 overflow-hidden flex flex-col">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
       <div class="bg-facu-800 text-white px-5 py-4 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-users text-sky-300"></i>
-          <h3 class="font-bold text-sm">Centro de Estudiantes - Guardia</h3>
+          <h3 class="font-bold text-sm">Centro de Estudiantes & Canales Oficiales</h3>
         </div>
         <button onclick="closeCentroModal()" class="text-slate-300 hover:text-white">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
-      <div class="p-5 space-y-3" id="centroContactList">
-        <!-- Render de contactos -->
+      <div class="p-5 space-y-4 overflow-y-auto" id="centroContactList">
+        <!-- Render dinámico de redes y contactos -->
       </div>
       <div class="bg-slate-50 px-5 py-3 border-t border-slate-200 text-right">
         <button onclick="closeCentroModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-4 py-1.5 rounded-lg text-xs">Cerrar</button>
@@ -168,49 +172,72 @@
   <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden flex flex-col">
       <div class="bg-slate-900 text-white px-5 py-3 flex items-center justify-between">
-        <h3 class="font-bold text-xs uppercase tracking-wider text-slate-300"><i class="fa-solid fa-lock text-amber-400 mr-1.5"></i> Administración Franfi</h3>
+        <h3 class="font-bold text-xs uppercase tracking-wider text-slate-300"><i class="fa-solid fa-lock text-amber-400 mr-1.5"></i> Configuración Franfi</h3>
         <button id="btnCloseAdmin" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <!-- Formulario Login -->
       <div id="adminAuthView" class="p-6 text-center space-y-3">
-        <p class="text-xs text-slate-600">Acceso restringido únicamente a administradores.</p>
+        <p class="text-xs text-slate-600">Acceso exclusivo de administración.</p>
         <input type="password" id="adminPassInput" placeholder="Clave de Administrador" class="w-full text-center border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-facu-600">
-        <button id="btnAdminLogin" class="w-full bg-facu-700 hover:bg-facu-800 text-white text-xs font-semibold py-2 rounded-lg transition">Acceder</button>
+        <button id="btnAdminLogin" class="w-full bg-facu-700 hover:bg-facu-800 text-white text-xs font-semibold py-2 rounded-lg transition">Ingresar</button>
         <p id="adminAuthError" class="text-xs text-rose-500 font-semibold hidden">Clave incorrecta.</p>
       </div>
 
-      <!-- Controles de Configuración -->
       <div id="adminDashboardView" class="hidden p-5 space-y-4 max-h-[75vh] overflow-y-auto text-xs">
         <div>
           <label class="font-bold text-slate-700 block mb-1">Google Gemini API Key:</label>
           <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full border border-slate-300 rounded p-2 font-mono text-xs">
           <button id="btnSaveApiKey" class="mt-1.5 bg-facu-600 text-white px-3 py-1 rounded text-xs font-semibold">Guardar Clave</button>
         </div>
-        <div class="pt-3 border-t border-slate-200">
-          <p class="font-semibold text-slate-700 mb-1">Aviso:</p>
-          <p class="text-slate-500">Para actualizar los documentos compartidos para todos los alumnos permanentemente, podés editar el objeto <code>DOCUMENTOS_GLOBALES</code> directamente en GitHub para que ningún dato se pierda al cambiar de celular.</p>
-        </div>
       </div>
     </div>
   </div>
 
   <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
     // -------------------------------------------------------------
-    // 1. BASE DE CONOCIMIENTO CENTRAL (VISIBLE PARA TODOS LOS ALUMNOS)
+    // BASE DE REPOSITORIO Y ENLACES OFICIALES
     // -------------------------------------------------------------
     const DOCUMENTOS_GLOBALES = [
+      {
+        id: 'link-programas',
+        title: 'Programas Analíticos de Materias',
+        type: 'link',
+        size: 'Sistema Web',
+        date: 'Activo',
+        externalUrl: 'https://script.google.com/macros/s/AKfycbx8GbcwR_45vAxDMX1HpWTeAEIVWLIBMr1Utpo8ctfSBxFBWCO1a1lK65e1p7A646Z19A/exec',
+        content: `Consulta y descarga de los programas analíticos oficiales de todas las asignaturas y carreras de la Facultad de Tecnología y Ciencias Aplicadas.`
+      },
+      {
+        id: 'link-facultad',
+        title: 'Página Oficial de la Facultad (DAA - FTyCA)',
+        type: 'link',
+        size: 'Sitio Web',
+        date: 'Activo',
+        externalUrl: 'https://daa.unca.edu.ar/',
+        content: `Página web oficial de la Facultad de Tecnología y Ciencias Aplicadas (UNCA) - Departamento Alumnos y Bedelía: resoluciones, noticias, novedades de carreras y avisos generales.`
+      },
+      {
+        id: 'link-moodle',
+        title: 'Campus Virtual Moodle (FTyCA)',
+        type: 'link',
+        size: 'Plataforma Virtual',
+        date: 'Activo',
+        externalUrl: 'https://moodle-ftyca.unca.edu.ar/',
+        content: `Plataforma de cursada online y aulas virtuales de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA) para entregas de trabajos prácticos, foros y material de cátedra.`
+      },
       {
         id: 'ord-003-2018',
         title: 'Ordenanza CD 003-2018 - Modif. fecha examen.pdf',
         type: 'pdf',
         size: '572 KB',
         date: '03/10/2026',
-        downloadUrl: '#', // Podés colocar aquí el enlace directo al archivo subido en GitHub o Google Drive
+        externalUrl: null,
+        downloadUrl: 'docs/Ordenanza_CD_003_2018.pdf',
         content: `Ordenanza CD Nº 003/2018:
-        - Modificación y adecuación de fechas e instancias de exámenes finales y turnos generales.
-        - Establece las condiciones de regularidad, plazos para solicitud de mesas de examen y turnos extraordinarios para alumnos que adeuden materias finales para recibirse.
-        - Régimen de correlatividades y asistencia a clases prácticas.`
+        - Modificación de fechas e instancias de exámenes finales y turnos generales.
+        - Establece regularidad, mesas de examen extraordinarias para alumnos que cursen el tramo final de la carrera y régimen de correlativas.`
       },
       {
         id: 'cal-2026',
@@ -218,41 +245,72 @@
         type: 'pdf',
         size: '310 KB',
         date: '01/03/2026',
-        downloadUrl: '#',
+        externalUrl: null,
+        downloadUrl: 'docs/Calendario_Academico_2026.pdf',
         content: `Calendario Académico 2026:
-        - Período de cursada 1º Cuatrimestre: 18 de marzo al 26 de junio de 2026.
-        - Mesas de examen turno Julio/Agosto: 27 de julio al 14 de agosto de 2026.
-        - Inscripción por SIU Guaraní: 48 horas hábiles antes de cada mesa de examen.
-        - Receso invernal de la facultad: 13 de julio al 24 de julio de 2026.`
+        - 1º Cuatrimestre: 18 de marzo al 26 de junio de 2026.
+        - Turno de exámenes Julio/Agosto: 27 de julio al 14 de agosto de 2026.
+        - Receso invernal: 13 al 24 de julio de 2026.`
       }
     ];
 
     // -------------------------------------------------------------
-    // 2. CONTACTOS DEL CENTRO DE ESTUDIANTES
-    // (Podés cambiar los nombres y números por los reales de tu facultad)
+    // CONTACTOS PERSONALES Y CANALES / REDES ESTUDIANTILES
     // -------------------------------------------------------------
     const MIEMBROS_CENTRO = [
       {
-        nombre: 'Nicolas Aguero',
-        cargo: 'Secretario Estudiantil - Asuntos Académicos',
-        telefono: '5493834249192', // Formato internacional sin +
-        numeroVisible: '+54 9 383 424-9192'
+        nombre: 'Matías Silva',
+        cargo: 'Asuntos Estudiantiles y Académicos',
+        telefono: '5493834123456',
+        numeroVisible: '+54 9 383 412-3456'
       },
       {
-        nombre: 'Apellido y Nombre',
+        nombre: 'Florencia Herrera',
         cargo: 'Secretaría de Alumnos y Regularidad',
         telefono: '5493834987654',
         numeroVisible: '+54 9 383 498-7654'
-      },
-      {
-        nombre: 'Guardia Centro de Estudiantes',
-        cargo: 'Mesa de Entradas Estudiantil',
-        telefono: '5493834000111',
-        numeroVisible: '+54 9 383 400-0111'
       }
     ];
 
-    // Clave de API de Gemini compartida o configurada
+    const CANALES_Y_REDES = [
+      {
+        titulo: 'Canal de Difusión - Franja Morada',
+        subtitulo: 'Avisos, novedades de cursada y fechas',
+        tipo: 'whatsapp',
+        url: 'https://whatsapp.com/channel/0029VaKI6W72P59hmu1S3i1s',
+        icono: 'fa-brands fa-whatsapp text-emerald-600',
+        btnText: 'Unirme al Canal',
+        btnColor: 'bg-emerald-600 hover:bg-emerald-700'
+      },
+      {
+        titulo: 'Canal de Difusión - CETECA (Centro de Estudiantes)',
+        subtitulo: 'Canal oficial del Centro de Estudiantes de Tecnología',
+        tipo: 'whatsapp',
+        url: 'https://whatsapp.com/channel/0029Vau4HZ63rZZjQWltvs2V',
+        icono: 'fa-brands fa-whatsapp text-emerald-600',
+        btnText: 'Unirme al Canal',
+        btnColor: 'bg-emerald-600 hover:bg-emerald-700'
+      },
+      {
+        titulo: 'Instagram Franja Morada Tecno',
+        subtitulo: '@franja.moradatecno',
+        tipo: 'instagram',
+        url: 'https://www.instagram.com/franja.moradatecno/',
+        icono: 'fa-brands fa-instagram text-rose-500',
+        btnText: 'Ver Instagram',
+        btnColor: 'bg-gradient-to-r from-purple-600 to-rose-500 hover:opacity-90'
+      },
+      {
+        titulo: 'Instagram CETECA',
+        subtitulo: '@cetecat',
+        tipo: 'instagram',
+        url: 'https://www.instagram.com/cetecat/',
+        icono: 'fa-brands fa-instagram text-rose-500',
+        btnText: 'Ver Instagram',
+        btnColor: 'bg-gradient-to-r from-purple-600 to-rose-500 hover:opacity-90'
+      }
+    ];
+
     let GEMINI_API_KEY = localStorage.getItem('franfi_gemini_key') || '';
 
     // Elementos DOM
@@ -273,14 +331,9 @@
     const apiKeyInput = document.getElementById('apiKeyInput');
     const btnSaveApiKey = document.getElementById('btnSaveApiKey');
 
-    // -------------------------------------------------------------
-    // 3. SEGURIDAD DEL PANEL ADMIN (OCULTO PARA ESTUDIANTES)
-    // -------------------------------------------------------------
-    // Se activa únicamente si se entra a la página con "?admin=true" o pulsando "Ctrl + Shift + A"
+    // Admin Oculto (?admin=true o Ctrl+Alt+A)
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('admin') === 'true') {
-      btnOpenAdmin.classList.remove('hidden');
-    }
+    if (urlParams.get('admin') === 'true') btnOpenAdmin.classList.remove('hidden');
 
     window.addEventListener('keydown', (e) => {
       if (e.ctrlKey && e.altKey && (e.key === 'a' || e.key === 'A')) {
@@ -299,7 +352,6 @@
     btnCloseAdmin.addEventListener('click', () => adminModal.classList.add('hidden'));
 
     btnAdminLogin.addEventListener('click', () => {
-      // Clave de administrador (cambiala por la que prefieras)
       if (adminPassInput.value === 'FranfiAdmin2026') {
         adminAuthView.classList.add('hidden');
         adminDashboardView.classList.remove('hidden');
@@ -312,26 +364,31 @@
     btnSaveApiKey.addEventListener('click', () => {
       GEMINI_API_KEY = apiKeyInput.value.trim();
       localStorage.setItem('franfi_gemini_key', GEMINI_API_KEY);
-      alert('Clave de IA configurada con éxito.');
+      alert('Clave guardada con éxito.');
       adminModal.classList.add('hidden');
     });
 
-    // -------------------------------------------------------------
-    // 4. RENDER DE DOCUMENTOS PARA TODOS LOS ALUMNOS
-    // -------------------------------------------------------------
+    // Render lateral de accesos y archivos
     function renderGlobalDocs() {
       sideFileList.innerHTML = '';
       DOCUMENTOS_GLOBALES.forEach(doc => {
         const item = document.createElement('div');
         item.className = 'flex items-center justify-between p-2.5 rounded-lg border border-slate-100 bg-slate-50 hover:bg-sky-50 transition text-xs';
+        
+        let iconHtml = '<i class="fa-solid fa-file-pdf text-red-500 text-sm"></i>';
+        let actionBtn = `<button onclick="downloadGlobalDoc('${doc.id}')" class="text-facu-600 hover:text-facu-800 p-1" title="Descargar"><i class="fa-solid fa-download"></i></button>`;
+
+        if (doc.type === 'link') {
+          iconHtml = '<i class="fa-solid fa-arrow-up-right-from-square text-sky-600 text-sm"></i>';
+          actionBtn = `<a href="${doc.externalUrl}" target="_blank" class="text-sky-600 hover:text-sky-800 p-1" title="Abrir página"><i class="fa-solid fa-external-link"></i></a>`;
+        }
+
         item.innerHTML = `
           <div class="flex items-center gap-2 overflow-hidden pr-1">
-            <i class="fa-solid fa-file-pdf text-red-500 text-sm"></i>
+            ${iconHtml}
             <span class="truncate font-medium text-slate-700" title="${doc.title}">${doc.title}</span>
           </div>
-          <button onclick="downloadGlobalDoc('${doc.id}')" class="text-facu-600 hover:text-facu-800 p-1" title="Descargar documento">
-            <i class="fa-solid fa-download"></i>
-          </button>
+          ${actionBtn}
         `;
         sideFileList.appendChild(item);
       });
@@ -339,41 +396,77 @@
 
     window.downloadGlobalDoc = function(docId) {
       const doc = DOCUMENTOS_GLOBALES.find(d => d.id === docId);
-      if (!doc) return;
-      // Generar descarga con el texto oficial del documento
-      const blob = new Blob([`${doc.title}\n\n${doc.content}`], { type: 'text/plain;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = doc.title;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      if (!doc || doc.type === 'link') return;
+
+      if (doc.downloadUrl && doc.downloadUrl !== '#') {
+        const a = document.createElement('a');
+        a.href = doc.downloadUrl;
+        a.download = doc.title;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        const blob = new Blob([`${doc.title}\n\n${doc.content}`], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = doc.title.endsWith('.txt') ? doc.title : `${doc.title}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
     };
 
-    // -------------------------------------------------------------
-    // 5. MODAL DE CONTACTO DEL CENTRO DE ESTUDIANTES
-    // -------------------------------------------------------------
+    // Render del modal completo de contactos, canales e Instagram
     window.showCentroContactModal = function() {
-      centroContactList.innerHTML = '';
-      MIEMBROS_CENTRO.forEach(m => {
-        const card = document.createElement('div');
-        card.className = 'p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-2';
-        card.innerHTML = `
-          <div>
-            <p class="font-bold text-xs text-slate-800">${m.nombre}</p>
-            <p class="text-[11px] text-slate-500">${m.cargo}</p>
-            <p class="text-[11px] font-mono text-facu-700">${m.numeroVisible}</p>
+      centroContactList.innerHTML = `
+        <!-- Canales de Difusión y Redes -->
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-bullhorn text-facu-600"></i> Canales de Información y Redes
+          </h4>
+          <div class="space-y-2">
+            ${CANALES_Y_REDES.map(red => `
+              <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5 overflow-hidden">
+                  <i class="${red.icono} text-xl"></i>
+                  <div class="truncate">
+                    <p class="font-bold text-xs text-slate-800 truncate">${red.titulo}</p>
+                    <p class="text-[11px] text-slate-500 truncate">${red.subtitulo}</p>
+                  </div>
+                </div>
+                <a href="${red.url}" target="_blank" class="${red.btnColor} text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition flex-shrink-0">
+                  ${red.btnText}
+                </a>
+              </div>
+            `).join('')}
           </div>
-          <a href="https://wa.me/${m.telefono}?text=Hola%20${encodeURIComponent(m.nombre)},%20te%20contacto%20desde%20la%20página%20de%20Franfi%20por%20una%20consulta%20de%20la%20facultad" 
-             target="_blank" 
-             class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs transition">
-            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
-          </a>
-        `;
-        centroContactList.appendChild(card);
-      });
+        </div>
+
+        <!-- Contactos Directos -->
+        <div class="pt-3 border-t border-slate-100">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-headset text-facu-600"></i> Contactos de Guardia
+          </h4>
+          <div class="space-y-2">
+            ${MIEMBROS_CENTRO.map(m => `
+              <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-2">
+                <div>
+                  <p class="font-bold text-xs text-slate-800">${m.nombre}</p>
+                  <p class="text-[11px] text-slate-500">${m.cargo}</p>
+                  <p class="text-[11px] font-mono text-facu-700">${m.numeroVisible}</p>
+                </div>
+                <a href="https://wa.me/${m.telefono}?text=Hola\%20${encodeURIComponent(m.nombre)},%20te%20escribo%20desde%20la%20página%20de%20Franfi%20por%20una%20consulta%20de%20la%20facu" 
+                   target="_blank" 
+                   class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition flex-shrink-0">
+                  <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
+                </a>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
       centroModal.classList.remove('hidden');
     };
 
@@ -381,56 +474,71 @@
       centroModal.classList.add('hidden');
     };
 
-    // Generar tarjeta de contacto para insertar en el chat
+    // Tarjeta enriquecida para el Chat con contactos, canales e Instagram
     function generateCentroChatCard() {
-      let cardsHtml = '';
-      MIEMBROS_CENTRO.forEach(m => {
-        cardsHtml += `
-          <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 text-xs">
-            <div>
-              <p class="font-bold text-slate-800">${m.nombre}</p>
-              <p class="text-[10px] text-slate-500">${m.cargo}</p>
-            </div>
-            <a href="https://wa.me/${m.telefono}?text=Hola%20${encodeURIComponent(m.nombre)},%20te%20escribo%20por%20una%20consulta%20de%20la%20facultad" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-[11px] font-semibold flex items-center gap-1">
-              <i class="fa-brands fa-whatsapp"></i> Chat
-            </a>
+      let redesHtml = CANALES_Y_REDES.map(red => `
+        <a href="${red.url}" target="_blank" class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:border-facu-500 text-xs transition">
+          <div class="flex items-center gap-2 overflow-hidden">
+            <i class="${red.icono} text-sm"></i>
+            <span class="font-semibold text-slate-800 truncate">${red.titulo}</span>
           </div>
-        `;
-      });
+          <span class="text-[10px] text-facu-600 font-bold flex items-center gap-1">Entrar <i class="fa-solid fa-arrow-right text-[9px]"></i></span>
+        </a>
+      `).join('');
+
+      let delegadosHtml = MIEMBROS_CENTRO.map(m => `
+        <div class="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 text-xs">
+          <div>
+            <p class="font-bold text-slate-800">${m.nombre}</p>
+            <p class="text-[10px] text-slate-500">${m.cargo}</p>
+          </div>
+          <a href="https://wa.me/${m.telefono}?text=Hola%20${encodeURIComponent(m.nombre)},%20te%20contacto%20por%20una%20consulta%20de%20la%20facultad" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-[11px] font-semibold flex items-center gap-1">
+            <i class="fa-brands fa-whatsapp"></i> Chat
+          </a>
+        </div>
+      `).join('');
 
       return `
-        <div class="mt-3 p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2">
-          <p class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
-            <i class="fa-solid fa-hand-holding-hand text-emerald-600"></i> Contacto directo con el Centro de Estudiantes:
-          </p>
-          <div class="space-y-1.5">
-            ${cardsHtml}
+        <div class="mt-3 p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-3">
+          <div>
+            <p class="text-xs font-bold text-emerald-950 flex items-center gap-1.5 mb-1.5">
+              <i class="fa-solid fa-bullhorn text-emerald-600"></i> Canales de Difusión e Instagram:
+            </p>
+            <div class="space-y-1.5">${redesHtml}</div>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-emerald-950 flex items-center gap-1.5 mb-1.5">
+              <i class="fa-solid fa-user-shield text-emerald-600"></i> Contactos de Guardia:
+            </p>
+            <div class="space-y-1.5">${delegadosHtml}</div>
           </div>
         </div>
       `;
     }
 
-    // -------------------------------------------------------------
-    // 6. MOTOR DE RESPUESTA INTELIGENTE (CON SALUDOS Y DERIVACIÓN)
-    // -------------------------------------------------------------
+    // Consulta con Gemini Flash
     async function askGemini(userQuestion) {
       const candidateModels = ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash'];
-      const systemInstruction = `Sos Franfi, el asistente virtual oficial de la facultad.
-Características clave:
-1. Hablá en tono cordial, universitario argentino (usá "che", "hola!", "un gusto").
-2. Si te saludan ("hola", "buenas"), saludá amablemente y preguntales qué materia, trámite o fecha necesitan consultar.
-3. Respondé en base a los documentos provistos.
-4. Si la consulta es un reclamo particular, excepción de correlativas, problema personal con un acta de examen o algo no contemplado en los documentos, indicá amablemente que para esos casos puntuales pueden comunicarse con los delegados del Centro de Estudiantes.
-5. Si piden el archivo de la ordenanza o calendario, mencionales que abajo tienen el botón directo para descargarlo.`;
+      const systemInstruction = `Sos Franfi, el asistente virtual oficial de la Facultad de Tecnología y Ciencias Aplicadas (FTyCA - UNCA).
+Características:
+1. Usá tono universitario cordial, argentino / rioplatense (usá "che", "hola!", "un gusto", "consultame lo que necesites").
+2. Si te saludan ("hola", "buenas"), saludá cordialmente.
+3. Si el estudiante pide links (Moodle, Facultad, Programas Analíticos, Instagram o Canales de WhatsApp), explicale brevemente para qué sirve y recordale que abajo tiene el botón directo para ingresar.
+4. Si pide ordenanzas o calendarios, indicale que tiene la tarjeta de descarga disponible abajo.
+5. Si no figura la información o es un trámite particular que requiera gestión, recomendale contactar al Centro de Estudiantes CETECA o a Franja Morada.`;
 
-      let docContext = "--- REGLAMENTOS Y ORDENANZAS DE LA FACULTAD ---\n";
+      let context = "--- ENLACES Y REPOSITORIO DE LA FACULTAD ---\n";
       DOCUMENTOS_GLOBALES.forEach(d => {
-        docContext += `\n[DOCUMENTO: ${d.title}]\n${d.content}\n`;
+        context += `\n[TIPO: ${d.type} | TÍTULO: ${d.title}]\n${d.content}\n${d.externalUrl ? 'URL: ' + d.externalUrl : ''}\n`;
+      });
+      context += "\n--- CANALES Y REDES ESTUDIANTILES ---\n";
+      CANALES_Y_REDES.forEach(r => {
+        context += `\n[RED/CANAL: ${r.titulo}] Enlace: ${r.url}\n`;
       });
 
       const requestBody = {
         system_instruction: { parts: [{ text: systemInstruction }] },
-        contents: [{ role: "user", parts: [{ text: docContext }, { text: `Consulta: ${userQuestion}` }] }],
+        contents: [{ role: "user", parts: [{ text: context }, { text: `Consulta: ${userQuestion}` }] }],
         generationConfig: { temperature: 0.25 }
       };
 
@@ -447,24 +555,38 @@ Características clave:
             return data.candidates?.[0]?.content?.parts?.[0]?.text;
           }
         } catch (e) {
-          console.warn(`Fallo con ${model}, intentando siguiente...`);
+          console.warn(`Error con ${model}`);
         }
       }
       return null;
     }
 
-    // Detector de solicitud de archivo
-    function findMatchingDoc(query) {
+    // Buscador de coincidencias en links o archivos
+    function findMatchingDocOrLink(query) {
       const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+      if (q.includes('programa') || q.includes('analitico') || q.includes('plan de estudio')) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-programas');
+      }
+      if (q.includes('moodle') || q.includes('campus') || q.includes('aula virtual')) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-moodle');
+      }
+      if (q.includes('pagina') || q.includes('web') || q.includes('daa') || q.includes('facultad')) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'link-facultad');
+      }
+      if (q.includes('ordenanza')) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'ord-003-2018');
+      }
+      if (q.includes('calendario')) {
+        return DOCUMENTOS_GLOBALES.find(d => d.id === 'cal-2026');
+      }
+
       return DOCUMENTOS_GLOBALES.find(d => {
         const title = d.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        return q.includes('ordenanza') && title.includes('ordenanza') ||
-               (q.includes('calendario') && title.includes('calendario')) ||
-               title.split(' ').some(w => w.length > 4 && q.includes(w));
+        return title.split(' ').some(w => w.length > 4 && q.includes(w));
       });
     }
 
-    // Función para renderizar mensajes en el chat
     function appendMessage(sender, text, extraHtml = '') {
       const msgDiv = document.createElement('div');
       msgDiv.className = sender === 'user' ? 'flex items-start justify-end gap-3' : 'flex items-start gap-3';
@@ -491,7 +613,7 @@ Características clave:
       return msgDiv;
     }
 
-    // Manejo de preguntas
+    // Submit del chat
     chatForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const text = chatInput.value.trim();
@@ -501,70 +623,83 @@ Características clave:
       chatInput.value = '';
 
       const lower = text.toLowerCase();
-      const matchedDoc = findMatchingDoc(text);
+      const matched = findMatchingDocOrLink(text);
 
-      let downloadCard = '';
-      if (matchedDoc) {
-        downloadCard = `
-          <div class="mt-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs flex items-center justify-between gap-3">
-            <div class="flex items-center gap-2 overflow-hidden">
-              <span class="text-xs px-2 py-1 rounded font-bold border bg-red-50 text-red-600 border-red-200 uppercase">${matchedDoc.type}</span>
-              <div class="truncate">
-                <p class="font-semibold text-xs text-slate-800 truncate">${matchedDoc.title}</p>
-                <p class="text-[10px] text-slate-400">${matchedDoc.size}</p>
+      let interactiveCard = '';
+      if (matched) {
+        if (matched.type === 'link') {
+          interactiveCard = `
+            <div class="mt-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2 overflow-hidden">
+                <span class="text-xs px-2 py-1 rounded font-bold border bg-sky-50 text-sky-700 border-sky-200 uppercase">ENLACE</span>
+                <div class="truncate">
+                  <p class="font-semibold text-xs text-slate-800 truncate">${matched.title}</p>
+                  <p class="text-[10px] text-slate-400">Portal oficial de la FTyCA</p>
+                </div>
               </div>
+              <a href="${matched.externalUrl}" target="_blank" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Enlace
+              </a>
             </div>
-            <button onclick="downloadGlobalDoc('${matchedDoc.id}')" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
-              <i class="fa-solid fa-cloud-arrow-down"></i> Descargar
-            </button>
-          </div>
-        `;
+          `;
+        } else {
+          interactiveCard = `
+            <div class="mt-3 p-3 bg-white border border-slate-200 rounded-xl shadow-xs flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2 overflow-hidden">
+                <span class="text-xs px-2 py-1 rounded font-bold border bg-red-50 text-red-600 border-red-200 uppercase">${matched.type}</span>
+                <div class="truncate">
+                  <p class="font-semibold text-xs text-slate-800 truncate">${matched.title}</p>
+                  <p class="text-[10px] text-slate-400">${matched.size}</p>
+                </div>
+              </div>
+              <button onclick="downloadGlobalDoc('${matched.id}')" class="bg-facu-600 hover:bg-facu-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-sm transition flex-shrink-0">
+                <i class="fa-solid fa-cloud-arrow-down"></i> Descargar
+              </button>
+            </div>
+          `;
+        }
       }
 
-      // Si el alumno pide explícitamente contacto del Centro de Estudiantes
-      if (lower.includes('centro') || lower.includes('estudiantes') || lower.includes('contacto') || lower.includes('delegado') || lower.includes('telefono')) {
-        appendMessage('bot', 'Acá tenés el contacto directo de los miembros de guardia del Centro de Estudiantes para que les escribas por WhatsApp:', generateCentroChatCard());
+      // Si pide contacto, centro, redes, instagram o canal de difusión
+      if (lower.includes('centro') || lower.includes('estudiantes') || lower.includes('contacto') || lower.includes('delegado') || lower.includes('telefono') || lower.includes('instagram') || lower.includes('canal') || lower.includes('difusion') || lower.includes('franja') || lower.includes('ceteca')) {
+        appendMessage('bot', 'Acá tenés los canales de difusión de WhatsApp, Instagram oficial y los contactos directos de guardia:', generateCentroChatCard());
         return;
       }
 
-      // Si hay API Key configurada
       if (GEMINI_API_KEY) {
-        const loading = appendMessage('bot', 'Franfi está buscando en los reglamentos oficiales...');
+        const loading = appendMessage('bot', 'Franfi está consultando las fuentes oficiales...');
         try {
           const aiResponse = await askGemini(text);
           loading.remove();
           
           if (aiResponse) {
-            // Si la IA detecta que no tiene la respuesta o no está en los reglamentos
-            const isUnknown = aiResponse.toLowerCase().includes('no figura') || 
-                              aiResponse.toLowerCase().includes('no se encuentra') || 
-                              aiResponse.toLowerCase().includes('centro de estudiantes');
-            
-            const extra = downloadCard + (isUnknown ? generateCentroChatCard() : '');
+            const isUnknown = aiResponse.toLowerCase().includes('no figura') || aiResponse.toLowerCase().includes('centro de estudiantes');
+            const extra = interactiveCard + (isUnknown ? generateCentroChatCard() : '');
             appendMessage('bot', aiResponse, extra);
           } else {
-            loading.remove();
-            appendMessage('bot', 'Esa información específica no figura en las ordenanzas cargadas. Te comparto el contacto del Centro de Estudiantes para que te den una mano:', generateCentroChatCard());
+            appendMessage('bot', 'Esa consulta puntual no figura en los registros cargados. Te comparto los canales y contactos para que consultes directamente:', generateCentroChatCard());
           }
         } catch (err) {
           loading.remove();
-          appendMessage('bot', 'Tuve una demora de conexión, pero podés contactar a los chicos del Centro de Estudiantes:', generateCentroChatCard());
+          appendMessage('bot', 'Tuve una pequeña demora con el servidor. Te dejo los canales y contactos de ayuda:', generateCentroChatCard());
         }
       } else {
-        // Modo sin API Key activa
         setTimeout(() => {
-          if (matchedDoc) {
-            appendMessage('bot', `Encontré la reglamentación que buscás: **${matchedDoc.title}**. Podés descargarla acá mismo:`, downloadCard);
-          } else if (lower.includes('hola') || lower.includes('buenas') || lower.includes('que tal')) {
-            appendMessage('bot', '¡Hola! ¿Cómo estás? Soy Franfi. Podés consultarme sobre las ordenanzas de cursada, turnos de exámenes o pedirme contacto con el Centro de Estudiantes.');
+          if (matched) {
+            if (matched.type === 'link') {
+              appendMessage('bot', `Acá tenés el enlace oficial que necesitás:`, interactiveCard);
+            } else {
+              appendMessage('bot', `Acá tenés el documento oficial que solicitaste:`, interactiveCard);
+            }
+          } else if (lower.includes('hola') || lower.includes('buenas')) {
+            appendMessage('bot', '¡Hola! ¿Cómo estás? Soy Franfi. Consultame por materias, programas analíticos, Moodle, ordenanzas o canales del Centro de Estudiantes.');
           } else {
-            appendMessage('bot', 'No encontré esa información en los documentos vigentes de la facultad. Si tenés una situación particular con materias o actas, hablá directamente con el Centro de Estudiantes:', generateCentroChatCard());
+            appendMessage('bot', 'No encontré esa información en los registros cargados. Podés consultar directamente en los canales de difusión o con el Centro de Estudiantes:', generateCentroChatCard());
           }
         }, 300);
       }
     });
 
-    // Chips interactivos
     document.querySelectorAll('.quick-chip').forEach(btn => {
       btn.addEventListener('click', () => {
         chatInput.value = btn.textContent.trim();
@@ -572,8 +707,9 @@ Características clave:
       });
     });
 
-    // Inicializar documentos compartidos
     renderGlobalDocs();
   </script>
+</body>
+</html>
 </body>
 </html>
